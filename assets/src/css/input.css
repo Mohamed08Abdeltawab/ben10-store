@@ -1,0 +1,23 @@
+@import "./tokens.css";
+@import "./base.css";
+@import "./woocommerce-reset.css";
+@import "./components/buttons.css";
+@import "./components/cards.css";
+@import "./components/badges.css";
+@import "./components/header.css";
+@import "./components/drawers.css";
+@import "./components/footer.css";
+@import "./components/modals.css";
+
+/* Modular Page Stylesheets */
+@import "./pages/catalog.css";
+@import "./pages/single-product.css";
+@import "./pages/cart.css";
+@import "./pages/checkout.css";
+@import "./pages/account.css";
+@import "./pages/admin-portal.css";
+@import "./pages/admin-metabox.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

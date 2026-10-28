@@ -1,0 +1,88 @@
+/**
+ * Admin Portal Application Stylesheet
+ *
+ * Extracted from template-admin-portal.php to strictly enforce zero inline styles.
+ *
+ * @package CustomStoreBoilerplate
+ * @since 1.0.0
+ */
+
+/* 1. Fluid Full-Width Application Styling */
+.page-template-template-admin-portal,
+.page-template-template-admin-portal body,
+.admin-portal-active {
+	background-color: #f8fafc;
+	font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+}
+
+/* Hide WP Admin Bar on full-width custom portal */
+.page-template-template-admin-portal #wpadminbar,
+.admin-portal-active #wpadminbar {
+	display: none;
+}
+
+/* 2. Modular Tab Navigation & Content Visibility */
+.portal-tab-content {
+	display: none;
+}
+
+.portal-tab-content.active,
+.tab-content.active {
+	display: block;
+}
+
+.tab-content {
+	display: none;
+}
+
+/* 3. RTL Select Dropdown Arrow Styling for Admin Portal */
+.admin-portal-view select,
+.portal-container select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+	background-position: left 0.75rem center;
+	background-repeat: no-repeat;
+	background-size: 1.25rem 1.25rem;
+	padding-right: 1rem;
+	padding-left: 2.5rem;
+	text-align: right;
+	direction: rtl;
+}
+
+.admin-portal-view select option,
+.portal-container select option {
+	text-align: right;
+	direction: rtl;
+}
+
+/* 4. Search input truncation and RTL placeholder styling */
+.portal-search-input {
+	text-overflow: ellipsis;
+}
+
+.portal-search-input::placeholder {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	font-size: 13.5px;
+	color: #94a3b8;
+}
+
+@media (min-width: 640px) {
+	.portal-search-input::placeholder {
+		font-size: 14px;
+	}
+}
+
+/* 5. Date input native picker indicator styling */
+.portal-date-input::-webkit-calendar-picker-indicator {
+	cursor: pointer;
+	opacity: 0.6;
+	transition: opacity 0.15s;
+}
+
+.portal-date-input::-webkit-calendar-picker-indicator:hover {
+	opacity: 1;
+}

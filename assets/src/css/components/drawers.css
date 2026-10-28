@@ -1,0 +1,247 @@
+/**
+ * Ashrafco Cart Drawer & Wishlist Drawer Components
+ * Custom Store Boilerplate
+ *
+ * Sliding desktop drawers and mobile bottom sheets with zero !important.
+ */
+
+/* Drawer Root Overlay Containers */
+#ashrafco-cart-drawer,
+#ashrafco-wishlist-drawer,
+.drawer-root {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    user-select: none;
+    transition: opacity 300ms ease, visibility 300ms ease;
+}
+
+#ashrafco-cart-drawer.opacity-100,
+#ashrafco-wishlist-drawer.opacity-100,
+.drawer-root.is-open,
+.drawer-root.is-visible {
+    pointer-events: auto;
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Backdrop */
+#ashrafco-cart-backdrop,
+#ashrafco-wishlist-backdrop,
+.drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    transition: opacity 300ms ease;
+    cursor: pointer;
+}
+
+#ashrafco-cart-drawer.opacity-100 #ashrafco-cart-backdrop,
+#ashrafco-wishlist-drawer.opacity-100 #ashrafco-wishlist-backdrop,
+.drawer-root.is-open .drawer-backdrop,
+.drawer-root.is-visible .drawer-backdrop {
+    opacity: 1;
+}
+
+/* Panels Base */
+#ashrafco-cart-panel,
+#ashrafco-wishlist-panel {
+    background-color: #ffffff;
+    z-index: 99999;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 1. Desktop Mode (>= 768px): Left Drawer for Cart, Right Drawer for Wishlist */
+@media (min-width: 768px) {
+    #ashrafco-cart-panel {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: auto;
+        width: 460px;
+        max-width: 100vw;
+        height: 100dvh;
+        border-radius: 0;
+        box-shadow: 15px 0 45px -5px rgba(0, 0, 0, 0.28);
+        border-right: 1px solid rgba(0, 0, 0, 0.06);
+        transform: translateX(-100%);
+        transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #ashrafco-cart-panel.translate-x-0 {
+        transform: translateX(0);
+    }
+
+    #ashrafco-wishlist-panel {
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: auto;
+        width: 460px;
+        max-width: 100vw;
+        height: 100dvh;
+        border-radius: 0;
+        box-shadow: -15px 0 45px -5px rgba(0, 0, 0, 0.28);
+        border-left: 1px solid rgba(0, 0, 0, 0.06);
+        transform: translateX(100%);
+        transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #ashrafco-wishlist-panel.translate-x-0 {
+        transform: translateX(0);
+    }
+}
+
+/* 2. Mobile Mode (< 768px): Bottom Sheet (Max 90dvh, Rounded Top, Drag Handle) */
+@media (max-width: 767.98px) {
+    #ashrafco-cart-panel,
+    #ashrafco-wishlist-panel {
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: auto;
+        width: 100%;
+        max-height: 90dvh;
+        height: auto;
+        border-radius: 28px 28px 0 0;
+        box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.28);
+        transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+        padding-bottom: max(12px, env(safe-area-inset-bottom, 12px));
+    }
+
+    #ashrafco-cart-panel {
+        transform: translateY(100%);
+    }
+
+    #ashrafco-cart-panel.translate-y-0 {
+        transform: translateY(0);
+    }
+
+    #ashrafco-wishlist-panel {
+        transform: translateY(100%);
+    }
+
+    #ashrafco-wishlist-panel.translate-y-0 {
+        transform: translateY(0);
+    }
+}
+
+/* Scrollable Drawer Items Body */
+#ashrafco-cart-body,
+#ashrafco-wishlist-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #e2e8f0 transparent;
+}
+
+#ashrafco-cart-body::-webkit-scrollbar,
+#ashrafco-wishlist-body::-webkit-scrollbar {
+    width: 5px;
+}
+
+#ashrafco-cart-body::-webkit-scrollbar-track,
+#ashrafco-wishlist-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#ashrafco-cart-body::-webkit-scrollbar-thumb,
+#ashrafco-wishlist-body::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 10px;
+}
+
+#ashrafco-cart-body::-webkit-scrollbar-thumb:hover,
+#ashrafco-wishlist-body::-webkit-scrollbar-thumb:hover {
+    background-color: #94a3b8;
+}
+
+/* Sticky Footers */
+#ashrafco-cart-footer,
+#ashrafco-wishlist-footer {
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.04);
+}
+
+/* Ensure no default browser underline on ins tags in drawer prices */
+.ashrafco-item-price,
+.ashrafco-item-price ins {
+    text-decoration: none !important;
+}
+
+/* Quantity Controls */
+.ashrafco-qty-picker {
+    border-color: #e2e8f0;
+    background: #ffffff;
+}
+
+.ashrafco-qty-btn {
+    cursor: pointer;
+    user-select: none;
+}
+
+.ashrafco-qty-btn:active {
+    background-color: #f1f5f9;
+}
+
+/* Item Loading State during AJAX */
+.ashrafco-item-loading {
+    opacity: 0.55;
+    pointer-events: none;
+    filter: grayscale(30%);
+    transition: opacity 0.2s ease, filter 0.2s ease;
+}
+
+/* Single Product Button Spinner */
+.ashrafco-btn-loading {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+}
+
+.ashrafco-btn-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    margin-top: -9px;
+    margin-left: -9px;
+    border: 2px solid #ffffff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: ashrafco-spin 0.6s linear infinite;
+}
+
+@keyframes ashrafco-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Heart Micro Bounce Animation */
+.test-theme-wishlist-toggle.is-active svg {
+    animation: ashrafco-heart-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes ashrafco-heart-pop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

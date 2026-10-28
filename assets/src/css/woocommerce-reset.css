@@ -1,0 +1,264 @@
+/**
+ * WooCommerce Reset & Decoupled Overrides
+ * Custom Store Boilerplate
+ *
+ * Modern Flexbox & CSS Grid replacements for legacy WooCommerce float layouts,
+ * AJAX loading overlay styles, notices, and password strength feedback.
+ * 100% free of !important declarations.
+ */
+
+/* =========================================================================
+   1. Modern Grid & Flexbox Form Rows (Zero Floats)
+   ========================================================================= */
+.woocommerce form .form-row,
+.woocommerce-page form .form-row {
+    padding: 0;
+    margin: 0 0 1rem;
+    float: none;
+    clear: both;
+    width: 100%;
+}
+
+.woocommerce form .form-row-first,
+.woocommerce-page form .form-row-first,
+.woocommerce form .form-row-last,
+.woocommerce-page form .form-row-last,
+.woocommerce form .form-row-wide,
+.woocommerce-page form .form-row-wide {
+    float: none;
+    clear: both;
+    width: 100%;
+}
+
+.woocommerce form .form-row label,
+.woocommerce-page form .form-row label {
+    display: block;
+    margin-bottom: 0.375rem;
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-text-main);
+}
+
+.woocommerce form .form-row .required,
+.woocommerce-page form .form-row .required {
+    color: var(--color-error);
+    text-decoration: none;
+}
+
+.woocommerce form .form-row input.input-text,
+.woocommerce form .form-row textarea,
+.woocommerce form .form-row select,
+.woocommerce-page form .form-row input.input-text,
+.woocommerce-page form .form-row textarea,
+.woocommerce-page form .form-row select {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.75rem 1rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-main);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    outline: none;
+}
+
+.woocommerce form .form-row input.input-text:focus,
+.woocommerce form .form-row textarea:focus,
+.woocommerce form .form-row select:focus,
+.woocommerce-page form .form-row input.input-text:focus,
+.woocommerce-page form .form-row textarea:focus,
+.woocommerce-page form .form-row select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(217, 4, 41, 0.12);
+}
+
+/* 2-Column Responsive Form Grids */
+@media (min-width: 640px) {
+    .ashrafco-form-grid,
+    .woocommerce-billing-fields__field-wrapper,
+    .woocommerce-shipping-fields__field-wrapper,
+    .woocommerce-address-fields__field-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .ashrafco-form-grid .form-row-wide,
+    .ashrafco-form-grid .notes,
+    .woocommerce-billing-fields__field-wrapper .form-row-wide,
+    .woocommerce-billing-fields__field-wrapper .notes,
+    .woocommerce-shipping-fields__field-wrapper .form-row-wide,
+    .woocommerce-address-fields__field-wrapper .form-row-wide {
+        grid-column: 1 / -1;
+    }
+
+    .woocommerce form .form-row-first,
+    .woocommerce-page form .form-row-first {
+        grid-column: 1 / 2;
+    }
+
+    .woocommerce form .form-row-last,
+    .woocommerce-page form .form-row-last {
+        grid-column: 2 / 3;
+    }
+}
+
+/* =========================================================================
+   2. Modern BlockUI Overlay (AJAX Operations)
+   ========================================================================= */
+.blockUI.blockOverlay {
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: var(--radius-lg);
+    z-index: 1000;
+    border: none;
+}
+
+.blockUI.blockMsg {
+    border: none;
+    background: transparent;
+    padding: 0;
+    position: relative;
+}
+
+/* Modern Spinner Replacement */
+.blockUI.blockMsg::after {
+    content: '';
+    display: block;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin: 0 auto;
+    border: 3px solid rgba(217, 4, 41, 0.2);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: ashrafco-spin 0.7s linear infinite;
+}
+
+@keyframes ashrafco-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================================
+   3. Modern Notice Fragments & Alerts
+   ========================================================================= */
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.25rem;
+    margin-bottom: 1.5rem;
+    border-radius: var(--radius-lg);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    line-height: var(--line-height-normal);
+    text-align: right;
+    direction: rtl;
+    list-style: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.woocommerce-message {
+    background-color: var(--color-success-light);
+    border: 1px solid rgba(22, 163, 74, 0.25);
+    color: var(--color-success);
+}
+
+.woocommerce-info {
+    background-color: var(--color-info-light);
+    border: 1px solid rgba(37, 99, 235, 0.25);
+    color: var(--color-info);
+}
+
+.woocommerce-error {
+    background-color: var(--color-error-light);
+    border: 1px solid rgba(220, 38, 38, 0.25);
+    color: var(--color-error);
+}
+
+.woocommerce-message .button,
+.woocommerce-info .button,
+.woocommerce-error .button {
+    margin-inline-start: auto;
+    padding: 0.375rem 0.875rem;
+    border-radius: var(--radius-md);
+    background-color: var(--color-surface);
+    color: var(--color-text-main);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    border: 1px solid var(--color-border);
+    transition: background-color var(--transition-fast);
+}
+
+.woocommerce-message .button:hover,
+.woocommerce-info .button:hover,
+.woocommerce-error .button:hover {
+    background-color: var(--color-surface-hover);
+}
+
+/* =========================================================================
+   4. Password Strength Meter & Realtime Hint Feedback
+   ========================================================================= */
+.woocommerce-password-strength {
+    display: block;
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    line-height: var(--line-height-tight);
+    text-align: right;
+    direction: rtl;
+    box-sizing: border-box;
+    transition: all var(--transition-base);
+}
+
+.woocommerce-password-strength[style*="display: none"] {
+    display: none;
+}
+
+.woocommerce-password-strength.short {
+    background-color: var(--color-error-light);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    color: var(--color-error);
+}
+
+.woocommerce-password-strength.bad {
+    background-color: #fff7ed;
+    border: 1px solid rgba(234, 88, 12, 0.3);
+    color: #ea580c;
+}
+
+.woocommerce-password-strength.good {
+    background-color: var(--color-warning-light);
+    border: 1px solid rgba(202, 138, 4, 0.3);
+    color: #ca8a04;
+}
+
+.woocommerce-password-strength.strong {
+    background-color: var(--color-success-light);
+    border: 1px solid rgba(22, 163, 74, 0.3);
+    color: var(--color-success);
+}
+
+.woocommerce-password-hint {
+    display: block;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    margin-top: 0.375rem;
+    margin-bottom: 0.5rem;
+    line-height: var(--line-height-normal);
+    text-align: right;
+    direction: rtl;
+}
+
+.woocommerce-password-hint[style*="display: none"] {
+    display: none;
+}

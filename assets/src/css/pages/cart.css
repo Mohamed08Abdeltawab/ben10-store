@@ -1,0 +1,46 @@
+﻿/**
+ * Cart Page Styles
+ *
+ * @package CustomStoreBoilerplate
+ * @since 1.0.0
+ */
+
+.woocommerce-cart .woocommerce-cart-form,
+.woocommerce-cart .cart-collaterals,
+.woocommerce-cart .cart_totals {
+    float: none;
+    width: 100%;
+    max-width: 100%;
+}
+
+.woocommerce-cart .test-theme-cart-page {
+    width: 100%;
+}
+
+.cart_totals span,
+.cart_totals div {
+    overflow-wrap: break-word;
+}
+
+.ashrafco-free-shipping {
+    color: var(--color-success);
+    font-weight: 700;
+}
+
+.ashrafco-shipping-box ul#shipping_method {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ashrafco-shipping-box ul#shipping_method li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+}
+
+.ashrafco-shipping-box ul#shipping_method li input[type="radio"] {
+    margin: 0;
+}

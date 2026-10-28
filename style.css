@@ -1,0 +1,38 @@
+﻿/*
+Theme Name: Custom Store Boilerplate
+Theme URI: https://github.com/ashrafco/custom-store-boilerplate
+Description: A high-performance, standalone, mobile-first WooCommerce starter boilerplate theme built with modular design tokens, zero parent-theme coupling, and complete UI independence.
+Author: Ashrafco Architecture & Engineering Team
+Author URI: https://github.com/ashrafco
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.7
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: custom-store-boilerplate
+*/
+
+/* ==========================================================================
+   Base Fallback & Layout Reset
+   (Production styles compiled into assets/dist/css/main.min.css)
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+}
+
+body {
+    margin: 0;
+    line-height: inherit;
+    font-family: var(--font-primary, system-ui, -apple-system, sans-serif);
+    background-color: var(--color-bg, #f7f7fa);
+    color: var(--color-text-dark, #1e293b);
+}

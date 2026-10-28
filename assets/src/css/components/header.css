@@ -1,0 +1,264 @@
+/**
+ * Header Component Styles
+ * Custom Store Boilerplate
+ *
+ * Strict 1:1 visual parity with test-theme, 0 !important declarations.
+ */
+
+#test-theme-site-header {
+    background: #000000 url('../../images/header-bg.jpg') center center / cover no-repeat;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    position: relative;
+    width: 100%;
+}
+
+#test-theme-site-header .ashrafco-eagle-logo,
+#test-theme-site-header .header-brand-link img,
+#test-theme-site-header .header-brand-logo {
+    width: 32px;
+    height: 32px;
+    max-width: 32px;
+    max-height: 32px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+/* Search Inputs (Mobile & Desktop) */
+.header-search-icon {
+    position: absolute;
+    right: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+}
+
+#test-theme-search-input,
+#desktop-theme-search-input {
+    border: 0;
+    outline: none;
+    border-radius: 1rem;
+    background-color: #ffffff;
+    height: 2.75rem;
+    color: #1e293b;
+    padding-right: 2.625rem;
+    padding-left: 1rem;
+    font-size: 0.875rem;
+    width: 100%;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease-in-out;
+}
+
+#test-theme-search-input:focus,
+#desktop-theme-search-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 23, 31, 0.35);
+}
+
+/* Mobile Wishlist Button (White Background, Compact Rounded Box) */
+#mobile-header-wishlist-btn,
+.mobile-header-wishlist-btn {
+    min-width: 2.75rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 1rem;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 0;
+    flex-shrink: 0;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+    outline: none;
+    border: none;
+    direction: ltr;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#mobile-header-wishlist-btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: #ff171f;
+    color: #ff171f;
+    stroke: none;
+    display: block;
+}
+
+/* Desktop Header Action Items & Wishlist */
+#desktop-header-wishlist-btn,
+.desktop-header-action-item {
+    background-color: transparent;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    min-width: auto;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#desktop-header-wishlist-btn svg,
+.desktop-header-action-item svg {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    max-width: 24px;
+    max-height: 24px;
+    stroke: #ffffff;
+    color: #ffffff;
+    fill: none;
+    display: block;
+    flex-shrink: 0;
+}
+
+/* Red Circular Badges (Cart & Wishlist) */
+#test-theme-site-header .header-wishlist-count-badge,
+#test-theme-site-header .ashrafco-cart-count-badge {
+    background-color: #ff171f;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 900;
+    line-height: 1;
+    border-radius: 9999px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+/* Mobile Hamburger Button */
+#test-theme-site-header .mobile-hamburger-btn {
+    width: 2.625rem;
+    height: 2.625rem;
+    background-color: #161616;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #ffffff;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+#test-theme-site-header .mobile-hamburger-btn svg {
+    width: 24px;
+    height: 24px;
+    stroke: #ffffff;
+    color: #ffffff;
+}
+
+/* Wishlist Heart Icon Specifications */
+#test-theme-wishlist-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    stroke-width: 1.8;
+    transition: fill 0.2s ease, stroke 0.2s ease;
+    outline: none;
+    border: none;
+}
+
+#test-theme-wishlist-icon:not(.is-active) {
+    stroke: #374151;
+    fill: none;
+}
+
+#test-theme-wishlist-icon.is-active {
+    stroke: #ff171f;
+    fill: #ff171f;
+}
+
+/* Frontpage header scroll states */
+#test-theme-site-header.frontpage-header.is-scrolled {
+    background-color: rgba(2, 6, 23, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* ==========================================================================
+   Ashrafco Mobile In-App Notifications Dropdown Positioning
+   ========================================================================== */
+@media (max-width: 767px) {
+    .ashrafco-notif-dropdown-mobile {
+        position: fixed;
+        top: 64px;
+        left: 12px;
+        right: auto;
+        width: calc(100vw - 24px);
+        max-width: 350px;
+        max-height: calc(100vh - 140px);
+        max-height: calc(100dvh - 140px);
+        display: flex;
+        flex-direction: column;
+        z-index: 99999;
+        margin: 0;
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    }
+
+    .ashrafco-notif-dropdown-mobile.hidden {
+        display: none !important;
+    }
+
+    .ashrafco-notif-dropdown-mobile .ashrafco-notif-list-container {
+        max-height: 330px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        flex: 1 1 auto;
+    }
+}
+
+/* ==========================================================================
+   Ashrafco Desktop In-App Notifications Dropdown Width & Sizing
+   ========================================================================== */
+.ashrafco-notif-dropdown-desktop {
+    width: 390px;
+    min-width: 390px;
+    max-width: 440px;
+    z-index: 1000;
+}
+
+.ashrafco-notif-dropdown-desktop.hidden {
+    display: none !important;
+}
+
+.ashrafco-notif-dropdown-desktop .ashrafco-notif-list-container {
+    max-height: 380px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+/* Slim elegant scrollbar for notifications container */
+.ashrafco-notif-list-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.ashrafco-notif-list-container::-webkit-scrollbar-track {
+    background: #f8fafc;
+    border-radius: 4px;
+}
+
+.ashrafco-notif-list-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.ashrafco-notif-list-container::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
