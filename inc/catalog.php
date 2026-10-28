@@ -147,6 +147,136 @@ function test_theme_get_product_country($post_id)
 }
 
 /**
+ * Retrieve the product filter index used by the shop filters.
+ *
+ * Uses Ashrafco Core's index when available. When the plugin is inactive,
+ * build an equivalent theme-local index so filtering remains functional.
+ *
+ * @return array
+ */
+function test_theme_get_product_filter_index()
+{
+	if (function_exists('ashrafco_get_product_filter_index')) {
+		$index = ashrafco_get_product_filter_index();
+		if (is_array($index) && isset($index['products']) && is_array($index['products'])) {
+			return $index;
+		}
+	}
+
+	static $local_index = null;
+	if (null !== $local_index) {
+		return $local_index;
+	}
+
+	$cached = wp_cache_get('product_filter_index', 'test_theme_catalog');
+	if (is_array($cached) && isset($cached['products'])) {
+		$local_index = $cached;
+		return $local_index;
+	}
+
+	$local_index = test_theme_build_product_filter_index();
+	wp_cache_set('product_filter_index', $local_index, 'test_theme_catalog', HOUR_IN_SECONDS);
+
+	return $local_index;
+}
+
+/**
+ * Build a theme-local product filter index.
+ *
+ * Matches the shape expected by the shop filters: products, by_country,
+ * and by_class.
+ *
+ * @return array
+ */
+function test_theme_build_product_filter_index()
+{
+	$index = array(
+		'products' => array(),
+		'by_country' => array(),
+		'by_class' => array(),
+	);
+
+	$product_ids = get_posts(array(
+		'post_type' => 'product',
+		'post_status' => 'publish',
+		'posts_per_page' => -1,
+		'fields' => 'ids',
+		'no_found_rows' => true,
+		'suppress_filters' => true,
+		'orderby' => 'ID',
+		'order' => 'ASC',
+	));
+
+	foreach ($product_ids as $product_id) {
+		$product_id = (int) $product_id;
+		$product = function_exists('wc_get_product') ? wc_get_product($product_id) : null;
+
+		$country = test_theme_get_product_country($product_id);
+		$classification = test_theme_classify_product_id($product_id);
+
+		if ($product instanceof \WC_Product) {
+			$price = (float) $product->get_price();
+			$is_instock = $product->is_in_stock();
+		} else {
+			$price = (float) get_post_meta($product_id, '_price', true);
+			$is_instock = ('instock' === get_post_meta($product_id, '_stock_status', true));
+		}
+
+		$visibility = wp_get_post_terms($product_id, 'product_visibility', array('fields' => 'slugs'));
+		$visibility = is_array($visibility) ? $visibility : array();
+		$exclude_catalog = in_array('exclude-from-catalog', $visibility, true);
+		$exclude_search = in_array('exclude-from-search', $visibility, true);
+
+		$cats = array();
+		$cat_slugs = wp_get_post_terms($product_id, 'product_cat', array('fields' => 'slugs'));
+		$cat_slugs = is_array($cat_slugs) ? $cat_slugs : array();
+		foreach ($cat_slugs as $cat_slug) {
+			$decoded_slug = urldecode($cat_slug);
+			$cats[] = $cat_slug;
+			$cats[] = $decoded_slug;
+			$cats[] = rawurlencode($decoded_slug);
+			$cats[] = sanitize_title($decoded_slug);
+		}
+		$cats = array_values(array_unique(array_filter($cats)));
+
+		$index['products'][$product_id] = array(
+			'country' => $country,
+			'class' => $classification,
+			'price' => $price,
+			'is_instock' => (bool) $is_instock,
+			'cats' => $cats,
+			'catalog_hidden' => $exclude_catalog,
+			'hidden' => ($exclude_catalog && $exclude_search),
+			'search_hidden' => $exclude_search,
+		);
+
+		if (!empty($country)) {
+			$index['by_country'][$country][] = $product_id;
+		}
+		$index['by_class'][$classification][] = $product_id;
+	}
+
+	return $index;
+}
+
+/**
+ * Clear the theme-local filter index after catalog changes.
+ */
+function test_theme_invalidate_product_filter_index()
+{
+	wp_cache_delete('product_filter_index', 'test_theme_catalog');
+}
+add_action('woocommerce_new_product', 'test_theme_invalidate_product_filter_index');
+add_action('woocommerce_update_product', 'test_theme_invalidate_product_filter_index');
+add_action('woocommerce_delete_product', 'test_theme_invalidate_product_filter_index');
+add_action('woocommerce_product_set_stock_status', 'test_theme_invalidate_product_filter_index');
+add_action('woocommerce_variation_set_stock_status', 'test_theme_invalidate_product_filter_index');
+add_action('set_object_terms', 'test_theme_invalidate_product_filter_index');
+add_action('edited_product_cat', 'test_theme_invalidate_product_filter_index');
+add_action('created_product_cat', 'test_theme_invalidate_product_filter_index');
+add_action('delete_product_cat', 'test_theme_invalidate_product_filter_index');
+
+/**
  * Get product IDs matching the given countries.
  *
  * @param array $countries
@@ -157,11 +287,18 @@ function test_theme_get_product_ids_by_country($countries)
 	if (empty($countries)) {
 		return array();
 	}
-	$index = ashrafco_get_product_filter_index();
+	$index = test_theme_get_product_filter_index();
 	$matched = array();
 	foreach ((array) $countries as $c) {
-		if (!empty($index['by_country'][$c])) {
-			$matched = array_merge($matched, $index['by_country'][$c]);
+		$keys = array((string) $c);
+		$normalized = test_theme_normalize_country($c);
+		if (!empty($normalized)) {
+			$keys[] = $normalized;
+		}
+		foreach (array_unique($keys) as $key) {
+			if (!empty($index['by_country'][$key])) {
+				$matched = array_merge($matched, $index['by_country'][$key]);
+			}
 		}
 	}
 	return array_values(array_unique($matched));
@@ -178,7 +315,7 @@ function test_theme_get_product_ids_by_classification($classes)
 	if (empty($classes)) {
 		return array();
 	}
-	$index = ashrafco_get_product_filter_index();
+	$index = test_theme_get_product_filter_index();
 	$matched = array();
 	foreach ((array) $classes as $cls) {
 		if (!empty($index['by_class'][$cls])) {
@@ -219,15 +356,17 @@ function test_theme_compute_filter_counts($args = array())
 	);
 
 	$version = function_exists('ashrafco_get_catalog_cache_version') ? ashrafco_get_catalog_cache_version() : 1;
+	// Namespace local-index counts so stale pre-fix/core cache entries are not reused.
+	$index_source = function_exists('ashrafco_get_product_filter_index') ? 'core' : 'theme-v1';
 	$queried_cat_id = is_product_category() ? get_queried_object_id() : 0;
-	$cache_key = 'ashrafco_fc_' . $version . '_' . md5(wp_json_encode($args) . '_' . $queried_cat_id);
+	$cache_key = 'ashrafco_fc_' . $version . '_' . $index_source . '_' . md5(wp_json_encode($args) . '_' . $queried_cat_id);
 
 	$cached = get_transient($cache_key);
 	if (is_array($cached) && isset($cached['instock'], $cached['countries'], $cached['classifications'])) {
 		return $cached;
 	}
 
-	$index = function_exists('ashrafco_get_product_filter_index') ? ashrafco_get_product_filter_index() : array('products' => array());
+	$index = test_theme_get_product_filter_index();
 	$all_products = isset($index['products']) ? $index['products'] : array();
 
 	// Determine matching category filter

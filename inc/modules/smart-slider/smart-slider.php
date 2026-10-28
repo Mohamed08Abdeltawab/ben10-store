@@ -275,6 +275,47 @@ add_action('init', function () {
 }, 20);
 
 /**
+ * Repoint stale test-theme hero image URLs at the active theme's copies.
+ *
+ * The existing slider records were provisioned while the legacy test-theme
+ * was active. The same hero files exist in this theme, so the rendered URLs
+ * are corrected without touching slider records or plugin internals.
+ *
+ * @param string $output Smart Slider shortcode output.
+ * @return string Corrected output, or an empty string when it still depends on test-theme.
+ */
+function test_theme_repair_stale_hero_asset_urls($output)
+{
+	if (!is_string($output) || '' === $output) {
+		return $output;
+	}
+
+	if ('test-theme' === get_stylesheet() || 'test-theme' === get_template()) {
+		return $output;
+	}
+
+	$stale_path = '/wp-content/themes/test-theme/assets/images/hero/';
+	if (false === strpos($output, $stale_path)) {
+		return $output;
+	}
+
+	$current_base = get_stylesheet_directory_uri() . '/assets/images/hero/';
+	$rewritten = preg_replace(
+		'#(?:https?:)?//[^"\'\s<>]*?' . preg_quote($stale_path, '#') . '#i',
+		$current_base,
+		$output
+	);
+
+	if (null !== $rewritten) {
+		$output = $rewritten;
+	}
+
+	$output = str_replace($stale_path, wp_make_link_relative($current_base), $output);
+
+	return false === strpos($output, $stale_path) ? $output : '';
+}
+
+/**
  * 3. Render Hero Slider using Smart Slider 3 with fixed viewport CTA button overlay.
  */
 function test_theme_render_hero_slider()
@@ -286,6 +327,7 @@ function test_theme_render_hero_slider()
 	$output = '';
 	if (shortcode_exists('smartslider3')) {
 		$output = do_shortcode('[smartslider3 slider="' . esc_attr($slider_alias) . '"]');
+		$output = test_theme_repair_stale_hero_asset_urls($output);
 	}
 
 	if (!empty($output)) {
