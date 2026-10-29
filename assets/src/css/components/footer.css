@@ -7,11 +7,11 @@
 
 #test-theme-site-footer.as-site-footer,
 .as-site-footer {
-    background-color: #080C14;
+    background-color: #101211;
     color: #F5F7FA;
     position: relative;
     overflow: hidden;
-    border-top: 1px solid #1D2633;
+    border-top: 1px solid rgba(36, 74, 39, 0.4);
     font-family: var(--font-cairo), system-ui, -apple-system, sans-serif;
     width: 100%;
     max-width: 100%;
@@ -21,7 +21,7 @@
     direction: rtl;
 }
 
-/* Background Decorative Industrial Artwork & Red Ambient Glow */
+/* Background Decorative Horological Artwork & Subtle Green Ambient Glow */
 .as-footer-bg-decor {
     pointer-events: none;
     position: absolute;
@@ -36,22 +36,23 @@
     left: -30px;
     width: 320px;
     height: 320px;
-    background: radial-gradient(circle, rgba(255, 23, 31, 0.18) 0%, rgba(255, 23, 31, 0.04) 50%, transparent 75%);
-    filter: blur(28px);
+    background: radial-gradient(circle, rgba(163, 230, 53, 0.12) 0%, rgba(36, 74, 39, 0.04) 50%, transparent 75%);
+    filter: blur(32px);
     pointer-events: none;
 }
 
-.as-footer-tools-img {
+.as-footer-tools-img,
+.as-footer-bg-img {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 340px;
+    width: 480px;
     max-width: 85%;
-    max-height: 220px;
-    object-fit: contain;
+    max-height: 280px;
+    object-fit: cover;
     object-position: bottom left;
-    opacity: 0.14;
-    filter: contrast(120%) brightness(85%);
+    opacity: 0.18;
+    filter: contrast(115%) brightness(90%);
     mix-blend-mode: screen;
     pointer-events: none;
     mask-image: radial-gradient(ellipse at bottom left, rgba(0, 0, 0, 1) 40%, rgba(0, 0, 0, 0) 80%);
@@ -59,8 +60,8 @@
 }
 
 .as-footer-overlay {
-    background: linear-gradient(to top, rgba(8, 12, 20, 0.35) 0%, rgba(8, 12, 20, 0.98) 100%),
-        linear-gradient(to right, transparent 0%, #080C14 75%);
+    background: linear-gradient(to top, rgba(16, 18, 17, 0.4) 0%, rgba(16, 18, 17, 0.98) 100%),
+        linear-gradient(to right, transparent 0%, #101211 75%);
 }
 
 /* Brand Section */
@@ -71,8 +72,9 @@
     letter-spacing: -0.2px;
 }
 
+.as-brand-tagline .as-green-accent,
 .as-brand-tagline .as-red-accent {
-    color: #FF171F;
+    color: #A3E635;
 }
 
 .as-brand-desc {
@@ -88,8 +90,8 @@
     min-width: 46px;
     min-height: 46px;
     border-radius: 9999px;
-    background-color: #101722;
-    border: 1px solid #1D2633;
+    background-color: #161917;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: #CBD5E1;
     display: flex;
     align-items: center;
@@ -101,10 +103,10 @@
 
 .as-social-btn:hover,
 .as-social-btn:focus-visible {
-    background-color: #FF171F;
-    border-color: #FF171F;
-    color: #FFFFFF;
-    box-shadow: 0 0 16px rgba(255, 23, 31, 0.4);
+    background-color: #A3E635;
+    border-color: #A3E635;
+    color: #101211;
+    box-shadow: 0 0 16px rgba(163, 230, 53, 0.35);
     transform: translateY(-2px);
 }
 
@@ -144,7 +146,7 @@
 }
 
 .as-accordion-trigger:focus-visible {
-    outline: 2px solid #FF171F;
+    outline: 2px solid #A3E635;
     outline-offset: -2px;
 }
 
@@ -167,7 +169,7 @@
 
 .as-accordion-trigger[aria-expanded="true"] .as-acc-icon,
 .as-accordion-item.is-open .as-acc-icon {
-    color: #FF171F;
+    color: #A3E635;
 }
 
 .as-acc-title {
@@ -190,7 +192,7 @@
 .as-accordion-trigger[aria-expanded="true"] .as-acc-chevron,
 .as-accordion-item.is-open .as-acc-chevron {
     transform: rotate(180deg);
-    color: #FF171F;
+    color: #A3E635;
 }
 
 /* Accordion Smooth Height Animation */
@@ -235,7 +237,7 @@
 
 .as-footer-link:hover,
 .as-footer-link:focus-visible {
-    color: #FF171F;
+    color: #A3E635;
     transform: translateX(-4px);
 }
 
@@ -245,13 +247,13 @@
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background-color: #1D2633;
+    background-color: #244A27;
     transition: background-color 200ms ease, transform 200ms ease;
     flex-shrink: 0;
 }
 
 .as-footer-link:hover::before {
-    background-color: #FF171F;
+    background-color: #A3E635;
     transform: scale(1.4);
 }
 
@@ -270,8 +272,8 @@
 }
 
 .as-contact-card {
-    background-color: #101722;
-    border: 1px solid #1D2633;
+    background-color: #161917;
+    border: 1px solid rgba(36, 74, 39, 0.35);
     border-radius: 14px;
     padding: 12px 6px;
     text-align: center;
@@ -286,16 +288,16 @@
 }
 
 .as-contact-card:hover {
-    background-color: #151D29;
-    border-color: rgba(255, 23, 31, 0.4);
+    background-color: #1f2420;
+    border-color: rgba(163, 230, 53, 0.45);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .as-contact-icon {
     width: 22px;
     height: 22px;
-    color: #FF171F;
+    color: #A3E635;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -323,8 +325,8 @@
 .as-benefits-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    border-top: 1px solid #1D2633;
-    border-bottom: 1px solid #1D2633;
+    border-top: 1px solid rgba(36, 74, 39, 0.35);
+    border-bottom: 1px solid rgba(36, 74, 39, 0.35);
     padding: 18px 0;
 }
 
@@ -347,7 +349,7 @@
     top: 15%;
     bottom: 15%;
     width: 1px;
-    background-color: #1D2633;
+    background-color: rgba(36, 74, 39, 0.35);
 }
 
 .as-benefit-icon {
@@ -359,7 +361,7 @@
 }
 
 .as-benefit-item:hover .as-benefit-icon {
-    color: #FF171F;
+    color: #A3E635;
     transform: scale(1.12);
 }
 
@@ -371,13 +373,13 @@
 }
 
 .as-benefit-item:hover .as-benefit-title {
-    color: #FF171F;
+    color: #A3E635;
 }
 
 /* Section 6 — Payment Methods Badges */
 .as-payment-pill {
-    background-color: #101722;
-    border: 1px solid #1D2633;
+    background-color: #161917;
+    border: 1px solid rgba(36, 74, 39, 0.35);
     border-radius: 9999px;
     padding: 6px 14px;
     display: inline-flex;
@@ -390,8 +392,8 @@
 }
 
 .as-payment-pill:hover {
-    background-color: #151D29;
-    border-color: rgba(255, 23, 31, 0.4);
+    background-color: #1f2420;
+    border-color: rgba(163, 230, 53, 0.45);
     transform: translateY(-1px);
 }
 
@@ -457,9 +459,9 @@
     min-width: 52px;
     min-height: 52px;
     border-radius: 50%;
-    background-color: #FF171F;
-    color: #FFFFFF;
-    box-shadow: 0 4px 20px rgba(255, 23, 31, 0.45);
+    background-color: #A3E635;
+    color: #101211;
+    box-shadow: 0 4px 20px rgba(163, 230, 53, 0.35);
     position: fixed;
     z-index: 40;
     right: 1rem;
@@ -485,8 +487,9 @@
 
 #ast-scroll-top.as-scroll-top-btn:hover,
 .as-scroll-top-btn:hover {
-    background-color: #D90F17;
-    box-shadow: 0 6px 24px rgba(255, 23, 31, 0.6);
+    background-color: #8ce025;
+    color: #101211;
+    box-shadow: 0 6px 24px rgba(163, 230, 53, 0.55);
     transform: scale(1.06);
 }
 
@@ -516,7 +519,7 @@
         padding-bottom: 0.75rem;
         cursor: default;
         pointer-events: none;
-        border-bottom: 2px solid #1D2633;
+        border-bottom: 2px solid rgba(36, 74, 39, 0.4);
         margin-bottom: 0.75rem;
     }
 
@@ -533,9 +536,10 @@
         opacity: 1;
     }
 
-    .as-footer-tools-img {
-        width: 440px;
-        max-height: 280px;
-        opacity: 0.16;
+    .as-footer-tools-img,
+    .as-footer-bg-img {
+        width: 520px;
+        max-height: 320px;
+        opacity: 0.2;
     }
 }

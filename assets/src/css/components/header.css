@@ -6,23 +6,36 @@
  */
 
 #test-theme-site-header {
-    background: #000000 url('../../images/header-bg.jpg') center center / cover no-repeat;
+    background-color: #101211;
+    border-bottom: 1px solid rgba(36, 74, 39, 0.35);
     color: #ffffff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
     position: relative;
     width: 100%;
 }
 
+#test-theme-site-header .ben10-header-logo,
 #test-theme-site-header .ashrafco-eagle-logo,
 #test-theme-site-header .header-brand-link img,
 #test-theme-site-header .header-brand-logo {
-    width: 32px;
-    height: 32px;
-    max-width: 32px;
-    max-height: 32px;
+    height: 36px;
+    width: auto;
+    max-width: 170px;
+    max-height: 36px;
     object-fit: contain;
     flex-shrink: 0;
     display: inline-block;
+}
+
+@media (max-width: 767px) {
+    #test-theme-site-header .ben10-header-logo,
+    #test-theme-site-header .ashrafco-eagle-logo,
+    #test-theme-site-header .header-brand-link img,
+    #test-theme-site-header .header-brand-logo {
+        height: 30px;
+        max-width: 135px;
+        max-height: 30px;
+    }
 }
 
 /* Search Inputs (Mobile & Desktop) */
@@ -58,7 +71,7 @@
 #test-theme-search-input:focus,
 #desktop-theme-search-input:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(255, 23, 31, 0.35);
+    box-shadow: 0 0 0 2px rgba(163, 230, 53, 0.45);
 }
 
 /* Mobile Wishlist Button (White Background, Compact Rounded Box) */
@@ -86,9 +99,8 @@
 #mobile-header-wishlist-btn svg {
     width: 1.25rem;
     height: 1.25rem;
-    fill: #ff171f;
-    color: #ff171f;
-    stroke: none;
+    stroke: #101211;
+    color: #101211;
     display: block;
 }
 
@@ -110,6 +122,7 @@
     justify-content: center;
     text-decoration: none;
     cursor: pointer;
+    transition: color 0.15s ease;
 }
 
 #desktop-header-wishlist-btn svg,
@@ -125,26 +138,33 @@
     fill: none;
     display: block;
     flex-shrink: 0;
+    transition: stroke 0.15s ease, color 0.15s ease;
 }
 
-/* Red Circular Badges (Cart & Wishlist) */
+#desktop-header-wishlist-btn:hover svg,
+.desktop-header-action-item:hover svg {
+    stroke: #A3E635;
+    color: #A3E635;
+}
+
+/* Ben10 Green Circular Badges (Cart & Wishlist) */
 #test-theme-site-header .header-wishlist-count-badge,
 #test-theme-site-header .ashrafco-cart-count-badge {
-    background-color: #ff171f;
-    color: #ffffff;
+    background-color: #A3E635;
+    color: #101211;
     font-size: 10px;
     font-weight: 900;
     line-height: 1;
     border-radius: 9999px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 /* Mobile Hamburger Button */
 #test-theme-site-header .mobile-hamburger-btn {
     width: 2.625rem;
     height: 2.625rem;
-    background-color: #161616;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #161917;
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 0.875rem;
     display: flex;
     align-items: center;
@@ -153,13 +173,20 @@
     color: #ffffff;
     padding: 0;
     flex-shrink: 0;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+#test-theme-site-header .mobile-hamburger-btn:hover,
+#test-theme-site-header .mobile-hamburger-btn:focus-visible {
+    border-color: rgba(163, 230, 53, 0.45);
+    color: #A3E635;
 }
 
 #test-theme-site-header .mobile-hamburger-btn svg {
     width: 24px;
     height: 24px;
-    stroke: #ffffff;
-    color: #ffffff;
+    stroke: currentColor;
+    color: inherit;
 }
 
 /* Wishlist Heart Icon Specifications */
@@ -178,15 +205,16 @@
 }
 
 #test-theme-wishlist-icon.is-active {
-    stroke: #ff171f;
-    fill: #ff171f;
+    stroke: #A3E635;
+    fill: #A3E635;
 }
 
 /* Frontpage header scroll states */
 #test-theme-site-header.frontpage-header.is-scrolled {
-    background-color: rgba(2, 6, 23, 0.8);
+    background-color: rgba(16, 18, 17, 0.92);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(163, 230, 53, 0.2);
 }
 
 /* ==========================================================================

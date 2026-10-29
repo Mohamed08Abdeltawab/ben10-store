@@ -1,8 +1,8 @@
 <?php
 /**
- * Mobile-First Modern E-Commerce Footer Component for A & S
+ * Mobile-First Modern E-Commerce Footer Component for Ben10 Timepieces
  *
- * RTL Arabic layout for premium tools & hardware store.
+ * RTL Arabic layout for premium luxury watch store.
  * Reproduces the visual language, hierarchy, spacing, colors, and interactions.
  *
  * @package Ashrafco
@@ -22,14 +22,14 @@ $wishlist_url = function_exists('test_theme_get_wishlist_url') ? test_theme_get_
 $contact_url = home_url('/contact');
 $policy_url = home_url('/policy');
 $current_year = date('Y');
-$store_name = function_exists('ashrafco_get_store_name') ? ashrafco_get_store_name('ar') : 'أشرفكو';
-$brand_symbol = function_exists('ashrafco_settings') ? ashrafco_settings('brand_symbol', 'A & S') : 'A & S';
-$tagline = function_exists('ashrafco_settings') ? ashrafco_settings('tagline', 'أدوات أصلية .. لأداء أقوى') : 'أدوات أصلية .. لأداء أقوى';
-$description = function_exists('ashrafco_settings') ? ashrafco_settings('description', 'نوفر لك مجموعة مختارة من أفضل الأدوات والمعدات لجودة عالية ومتينة تدوم.') : 'نوفر لك مجموعة مختارة من أفضل الأدوات والمعدات لجودة عالية ومتينة تدوم.';
+$store_name = function_exists('ashrafco_get_store_name') ? ashrafco_get_store_name('ar') : 'Ben10';
+$brand_symbol = function_exists('ashrafco_get_store_name') ? ashrafco_get_store_name('en') : 'Ben10';
+$tagline = 'ساعات فاخرة .. دقة وأناقة تدوم';
+$description = 'نقدم لك تشكيلة راقية من الساعات، تجمع بين دقة الأداء وأصالة التصميم العصري لتمنحك إطلالة فريدة ومتميزة.';
 $wa_phone = function_exists('ashrafco_get_whatsapp_phone') ? ashrafco_get_whatsapp_phone() : (string) apply_filters('ashrafco_whatsapp_phone', '201065712366');
-$wa_footer_url = function_exists('ashrafco_get_whatsapp_url') ? ashrafco_get_whatsapp_url(sprintf('مرحباً متجر %s، أود الاستفسار عن أحدث الأدوات والمعدات.', $brand_symbol)) : ('https://wa.me/' . esc_attr($wa_phone) . '?text=' . rawurlencode('مرحباً متجر A & S، أود الاستفسار عن أحدث الأدوات والمعدات.'));
-$eagle_logo_url = function_exists('ashrafco_get_store_logo_url') ? ashrafco_get_store_logo_url() : (get_stylesheet_directory_uri() . '/assets/images/eagle-logo.webp');
-$tools_bg_url = get_stylesheet_directory_uri() . '/assets/images/footer-tools-bg.webp';
+$wa_footer_url = function_exists('ashrafco_get_whatsapp_url') ? ashrafco_get_whatsapp_url(sprintf('مرحباً متجر %s، أود الاستفسار عن تشكيلات الساعات.', $store_name)) : ('https://wa.me/' . esc_attr($wa_phone) . '?text=' . rawurlencode(sprintf('مرحباً متجر %s، أود الاستفسار عن تشكيلات الساعات.', $store_name)));
+$store_logo_url = function_exists('ashrafco_get_store_logo_url') ? ashrafco_get_store_logo_url() : (get_stylesheet_directory_uri() . '/assets/images/ben10-logo.svg');
+$footer_bg_url = get_stylesheet_directory_uri() . '/assets/images/ben10-footer-bg.webp';
 $contact_phone = function_exists('ashrafco_get_contact_phone') ? ashrafco_get_contact_phone() : '+201065712366';
 $store_address = function_exists('ashrafco_get_store_address') ? ashrafco_get_store_address() : 'القاهرة، مصر العربية';
 $address_details = function_exists('ashrafco_settings') ? ashrafco_settings('address_details', 'المركز الرئيسي والمعرض') : 'المركز الرئيسي والمعرض';
@@ -43,16 +43,16 @@ $social_youtube = function_exists('ashrafco_settings') ? ashrafco_settings('soci
 	class="as-site-footer relative w-full overflow-hidden text-[#F5F7FA] font-sans select-none sm:select-auto" dir="rtl"
 	role="contentinfo">
 
-	<!-- Decorative Background (Bottom-Left Tools Silhouette + Red Ambient Glow) -->
+	<!-- Decorative Background (Bottom-Left Watch Movement Silhouette + Subtle Ambient Glow) -->
 	<div class="as-footer-bg-decor pointer-events-none absolute inset-0 overflow-hidden z-0" aria-hidden="true">
-		<!-- Red ambient radial glow at bottom left -->
+		<!-- Subtle Green ambient radial glow at bottom left -->
 		<div class="as-footer-glow absolute bottom-0 left-0 w-80 h-80 rounded-full"></div>
 
-		<!-- Industrial decorative image: power drill, toolbox, hand tools -->
-		<img src="<?php echo esc_url($tools_bg_url); ?>" alt="" width="480" height="270" loading="lazy" decoding="async"
-			class="as-footer-tools-img absolute bottom-0 left-0" />
+		<!-- Horological mechanical watch skeleton background -->
+		<img src="<?php echo esc_url($footer_bg_url); ?>" alt="" width="520" height="290" loading="lazy" decoding="async"
+			class="as-footer-tools-img as-footer-bg-img absolute bottom-0 left-0" />
 
-		<!-- Seamless gradient overlay into #080C14 -->
+		<!-- Seamless gradient overlay into #101211 -->
 		<div class="as-footer-overlay absolute inset-0"></div>
 	</div>
 
@@ -63,12 +63,12 @@ $social_youtube = function_exists('ashrafco_settings') ? ashrafco_settings('soci
 			 SECTION 1 — BRAND (Top Center)
 			 ================================================================== -->
 		<div class="as-brand-section text-center max-w-md mx-auto mb-6">
-			<!-- A&S Eagle Logo -->
+			<!-- Ben10 Brand Logo -->
 			<a href="<?php echo esc_url(home_url('/')); ?>"
-				class="inline-block transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#FF171F] rounded-2xl p-1 mb-3.5"
-				aria-label="الصفحة الرئيسية لمتجر A & S">
-				<img src="<?php echo esc_url($eagle_logo_url); ?>" alt="A & S Logo" width="64" height="64"
-					class="w-14 h-14 sm:w-16 sm:h-16 mx-auto object-contain filter drop-shadow-[0_2px_12px_rgba(255,23,31,0.22)]" />
+				class="inline-block transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#A3E635] rounded-2xl p-1 mb-3.5"
+				aria-label="<?php echo esc_attr( sprintf( __( 'الصفحة الرئيسية لمتجر %s', 'custom-store-boilerplate' ), $store_name ) ); ?>">
+				<img src="<?php echo esc_url($store_logo_url); ?>" alt="<?php echo esc_attr($store_name); ?>" width="200" height="46"
+					class="h-11 w-auto mx-auto object-contain filter drop-shadow-[0_2px_14px_rgba(163,230,53,0.25)]" />
 			</a>
 
 			<!-- Brand Tagline -->
@@ -166,7 +166,7 @@ $social_youtube = function_exists('ashrafco_settings') ? ashrafco_settings('soci
 				</div>
 			</div>
 
-			<!-- Accordion Row 2: الأقسام الرئيسية -->
+			<!-- Accordion Row 2: التشكيلات الرئيسية -->
 			<div class="as-accordion-item" data-accordion="2">
 				<button type="button" class="as-accordion-trigger" id="as-acc-trigger-2" aria-expanded="false"
 					aria-controls="as-acc-panel-2">
@@ -175,10 +175,10 @@ $social_youtube = function_exists('ashrafco_settings') ? ashrafco_settings('soci
 						<span class="as-acc-icon" aria-hidden="true">
 							<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round"
-									d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+									d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
 							</svg>
 						</span>
-						<span class="as-acc-title">الأقسام الرئيسية</span>
+						<span class="as-acc-title">التشكيلات الرئيسية</span>
 					</span>
 					<!-- Chevron (Left) -->
 					<span class="as-acc-chevron" aria-hidden="true">
@@ -190,16 +190,16 @@ $social_youtube = function_exists('ashrafco_settings') ? ashrafco_settings('soci
 				<div class="as-accordion-panel" id="as-acc-panel-2" role="region" aria-labelledby="as-acc-trigger-2">
 					<div class="as-accordion-content">
 						<ul class="as-link-list">
-							<li><a href="<?php echo esc_url(add_query_arg(array('s' => 'ماكينات قص', 'post_type' => 'product'), home_url('/'))); ?>"
-									class="as-footer-link">ماكينات قص السيراميك والبورسلين</a></li>
-							<li><a href="<?php echo esc_url(add_query_arg(array('s' => 'ليزر', 'post_type' => 'product'), home_url('/'))); ?>"
-									class="as-footer-link">شواخص وموازين ليزر 3D</a></li>
-							<li><a href="<?php echo esc_url(add_query_arg(array('s' => 'تسوية', 'post_type' => 'product'), home_url('/'))); ?>"
-									class="as-footer-link">أدوات الشفط وتثبيت البلاط</a></li>
-							<li><a href="<?php echo esc_url(add_query_arg(array('s' => 'أقراص', 'post_type' => 'product'), home_url('/'))); ?>"
-									class="as-footer-link">أقراص وصلب وألماس القص</a></li>
-							<li><a href="<?php echo esc_url(add_query_arg(array('s' => 'شنط', 'post_type' => 'product'), home_url('/'))); ?>"
-									class="as-footer-link">شنط وحقائب العدد المتكاملة</a></li>
+							<li><a href="<?php echo esc_url($shop_url); ?>"
+									class="as-footer-link">ساعات رجالية فاخرة</a></li>
+							<li><a href="<?php echo esc_url($shop_url); ?>"
+									class="as-footer-link">ساعات أوتوماتيك وميكانيكية</a></li>
+							<li><a href="<?php echo esc_url($shop_url); ?>"
+									class="as-footer-link">ساعات رياضية مقاومة للماء</a></li>
+							<li><a href="<?php echo esc_url($shop_url); ?>"
+									class="as-footer-link">ساعات نسائية أنيقة</a></li>
+							<li><a href="<?php echo esc_url($shop_url); ?>"
+									class="as-footer-link">إكسسوارات وسوارات أصلية</a></li>
 						</ul>
 					</div>
 				</div>
@@ -268,16 +268,15 @@ $social_youtube = function_exists('ashrafco_settings') ? ashrafco_settings('soci
 				<div class="as-accordion-panel" id="as-acc-panel-4" role="region" aria-labelledby="as-acc-trigger-4">
 					<div class="as-accordion-content">
 						<ul class="as-link-list">
-							<li><a href="<?php echo esc_url($contact_url); ?>" class="as-footer-link">عن متجر A &
-									S</a></li>
+							<li><a href="<?php echo esc_url($contact_url); ?>" class="as-footer-link">عن متجر <?php echo esc_html($store_name); ?></a></li>
 							<li><a href="<?php echo esc_url($contact_url); ?>" class="as-footer-link">معارضنا
 									وفروعنا</a></li>
 							<li><a href="<?php echo esc_url($contact_url); ?>" class="as-footer-link">تواصل معنا
 									مباشرة</a></li>
-							<li><a href="<?php echo esc_url($wa_footer_url); ?>" class="as-footer-link">طلب عروض أسعار
-									للشركات</a></li>
+							<li><a href="<?php echo esc_url($wa_footer_url); ?>" class="as-footer-link">خدمات الضمان
+									والصيانة</a></li>
 							<li><a href="<?php echo esc_url($contact_url); ?>" class="as-footer-link">شهادات الجودة
-									والاعتمادات</a></li>
+									والأصالة</a></li>
 						</ul>
 					</div>
 				</div>
@@ -416,9 +415,9 @@ $social_youtube = function_exists('ashrafco_settings') ? ashrafco_settings('soci
 		<!-- ==================================================================
 			 SECTION 7 — COPYRIGHT
 			 ================================================================== -->
-		<div class="as-copyright-section border-t border-[#1D2633] pt-6 text-center">
+		<div class="as-copyright-section border-t border-[#1c261e] pt-6 text-center">
 			<p class="text-xs sm:text-[13px] text-[#8A94A5] font-medium leading-relaxed m-0">
-				جميع الحقوق محفوظة لمتجر A & S © <?php echo esc_html($current_year); ?>
+				جميع الحقوق محفوظة لمتجر <?php echo esc_html($store_name); ?> © <?php echo esc_html($current_year); ?>
 			</p>
 		</div>
 

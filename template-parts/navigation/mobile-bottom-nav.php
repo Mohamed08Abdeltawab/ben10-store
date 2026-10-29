@@ -69,24 +69,24 @@ if ( taxonomy_exists( 'product_cat' ) ) {
 	<!-- Item 1 (Right): الرئيسية (Home - Active State) -->
 	<a
 		href="<?php echo esc_url( $home_url ); ?>"
-		class="flex flex-col items-center justify-center flex-1 h-full py-1 no-underline transition-colors <?php echo $is_home_active ? 'text-[#d90429]' : 'text-slate-500 hover:text-slate-800'; ?>"
+		class="flex flex-col items-center justify-center flex-1 h-full py-1 no-underline transition-colors <?php echo $is_home_active ? 'text-[#101211]' : 'text-slate-500 hover:text-slate-800'; ?>"
 		aria-label="الرئيسية"
 		<?php echo $is_home_active ? 'aria-current="page"' : ''; ?>
 	>
 		<span class="flex items-center justify-center w-6 h-6">
-			<!-- Filled home SVG icon matching image_d700c4.png -->
+			<!-- Filled home SVG icon -->
 			<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
 				<path d="M19 9.3V4h-3v2.7L12 3 2 12h3v8a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-8h3l-3-2.7z"/>
 			</svg>
 		</span>
-		<span class="text-[11px] <?php echo $is_home_active ? 'font-bold' : 'font-medium'; ?> mt-1 leading-none">الرئيسية</span>
-		<span class="w-7 h-0.5 <?php echo $is_home_active ? 'bg-[#d90429]' : 'bg-transparent'; ?> rounded-full mx-auto mt-0.5"></span>
+		<span class="text-[11px] <?php echo $is_home_active ? 'font-black' : 'font-medium'; ?> mt-1 leading-none">الرئيسية</span>
+		<span class="w-7 h-0.5 <?php echo $is_home_active ? 'bg-[#A3E635]' : 'bg-transparent'; ?> rounded-full mx-auto mt-0.5"></span>
 	</a>
 
 	<!-- Item 2: المتجر (Shop) -->
 	<a
 		href="<?php echo esc_url( $shop_url ); ?>"
-		class="flex flex-col items-center justify-center flex-1 h-full py-1 no-underline transition-colors <?php echo $is_categories_active ? 'text-[#d90429]' : 'text-slate-500 hover:text-slate-800'; ?>"
+		class="flex flex-col items-center justify-center flex-1 h-full py-1 no-underline transition-colors <?php echo $is_categories_active ? 'text-[#101211]' : 'text-slate-500 hover:text-slate-800'; ?>"
 		aria-label="المتجر"
 		<?php echo $is_categories_active ? 'aria-current="page"' : ''; ?>
 	>
@@ -99,14 +99,14 @@ if ( taxonomy_exists( 'product_cat' ) ) {
 				<path d="M10 14h4v7h-4z"></path>
 			</svg>
 		</span>
-		<span class="text-[11px] <?php echo $is_categories_active ? 'font-bold' : 'font-medium'; ?> mt-1 leading-none">المتجر</span>
-		<span class="w-7 h-0.5 <?php echo $is_categories_active ? 'bg-[#d90429]' : 'bg-transparent'; ?> rounded-full mx-auto mt-0.5"></span>
+		<span class="text-[11px] <?php echo $is_categories_active ? 'font-black' : 'font-medium'; ?> mt-1 leading-none">المتجر</span>
+		<span class="w-7 h-0.5 <?php echo $is_categories_active ? 'bg-[#A3E635]' : 'bg-transparent'; ?> rounded-full mx-auto mt-0.5"></span>
 	</a>
 
 	<!-- Item 3: العروض (Offers / Deals) -->
 	<a
 		href="<?php echo esc_url( $offers_url ); ?>"
-		class="flex flex-col items-center justify-center flex-1 h-full py-1 no-underline transition-colors <?php echo $is_offers_active ? 'text-[#d90429]' : 'text-slate-500 hover:text-slate-800'; ?>"
+		class="flex flex-col items-center justify-center flex-1 h-full py-1 no-underline transition-colors <?php echo $is_offers_active ? 'text-[#101211]' : 'text-slate-500 hover:text-slate-800'; ?>"
 		aria-label="العروض"
 		<?php echo $is_offers_active ? 'aria-current="page"' : ''; ?>
 	>
@@ -117,15 +117,15 @@ if ( taxonomy_exists( 'product_cat' ) ) {
 				<circle cx="7.5" cy="7.5" r="1.5" fill="currentColor" stroke="none"/>
 			</svg>
 		</span>
-		<span class="text-[11px] <?php echo $is_offers_active ? 'font-bold' : 'font-medium'; ?> mt-1 leading-none">العروض</span>
-		<span class="w-7 h-0.5 <?php echo $is_offers_active ? 'bg-[#d90429]' : 'bg-transparent'; ?> rounded-full mx-auto mt-0.5"></span>
+		<span class="text-[11px] <?php echo $is_offers_active ? 'font-black' : 'font-medium'; ?> mt-1 leading-none">العروض</span>
+		<span class="w-7 h-0.5 <?php echo $is_offers_active ? 'bg-[#A3E635]' : 'bg-transparent'; ?> rounded-full mx-auto mt-0.5"></span>
 	</a>
 
 	<!-- Item 4: السلة (Cart) -->
 	<a
 		href="<?php echo esc_url( $cart_url ); ?>"
 		data-cart-drawer-trigger="true"
-		class="ashrafco-cart-trigger flex flex-col items-center justify-center flex-1 h-full py-1 no-underline transition-colors <?php echo $is_cart_active ? 'text-[#d90429]' : 'text-slate-500 hover:text-slate-800'; ?> cursor-pointer"
+		class="ashrafco-cart-trigger flex flex-col items-center justify-center flex-1 h-full py-1 no-underline transition-colors <?php echo $is_cart_active ? 'text-[#101211]' : 'text-slate-500 hover:text-slate-800'; ?> cursor-pointer"
 		aria-label="السلة"
 		aria-controls="ashrafco-cart-drawer"
 		aria-expanded="false"
@@ -140,18 +140,18 @@ if ( taxonomy_exists( 'product_cat' ) ) {
 			</svg>
 			<!-- Dynamic badge -->
 			<span id="mobile-nav-cart-badge"
-				class="ashrafco-cart-count-badge absolute -top-1.5 -right-2 bg-[#d90429] text-white text-[9px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none shadow-xs">
+				class="ashrafco-cart-count-badge absolute -top-1.5 -right-2 bg-[#A3E635] text-[#101211] text-[9px] font-black rounded-full min-w-[17px] h-[17px] px-1 flex items-center justify-center leading-none shadow-xs">
 				<?php echo esc_html( $cart_count ); ?>
 			</span>
 		</span>
-		<span class="text-[11px] <?php echo $is_cart_active ? 'font-bold' : 'font-medium'; ?> mt-1 leading-none">السلة</span>
-		<span class="w-7 h-0.5 <?php echo $is_cart_active ? 'bg-[#d90429]' : 'bg-transparent'; ?> rounded-full mx-auto mt-0.5"></span>
+		<span class="text-[11px] <?php echo $is_cart_active ? 'font-black' : 'font-medium'; ?> mt-1 leading-none">السلة</span>
+		<span class="w-7 h-0.5 <?php echo $is_cart_active ? 'bg-[#A3E635]' : 'bg-transparent'; ?> rounded-full mx-auto mt-0.5"></span>
 	</a>
 
 	<!-- Item 5 (Left): حسابي (Account) -->
 	<a
 		href="<?php echo esc_url( $account_url ); ?>"
-		class="flex flex-col items-center justify-center flex-1 h-full py-1 no-underline transition-colors <?php echo $is_account_active ? 'text-[#d90429]' : 'text-slate-500 hover:text-slate-800'; ?>"
+		class="flex flex-col items-center justify-center flex-1 h-full py-1 no-underline transition-colors <?php echo $is_account_active ? 'text-[#101211]' : 'text-slate-500 hover:text-slate-800'; ?>"
 		aria-label="حسابي"
 		<?php echo $is_account_active ? 'aria-current="page"' : ''; ?>
 	>
@@ -162,8 +162,8 @@ if ( taxonomy_exists( 'product_cat' ) ) {
 				<circle cx="12" cy="7" r="4"/>
 			</svg>
 		</span>
-		<span class="text-[11px] <?php echo $is_account_active ? 'font-bold' : 'font-medium'; ?> mt-1 leading-none">حسابي</span>
-		<span class="w-7 h-0.5 <?php echo $is_account_active ? 'bg-[#d90429]' : 'bg-transparent'; ?> rounded-full mx-auto mt-0.5"></span>
+		<span class="text-[11px] <?php echo $is_account_active ? 'font-black' : 'font-medium'; ?> mt-1 leading-none">حسابي</span>
+		<span class="w-7 h-0.5 <?php echo $is_account_active ? 'bg-[#A3E635]' : 'bg-transparent'; ?> rounded-full mx-auto mt-0.5"></span>
 	</a>
 </nav>
 
@@ -198,17 +198,17 @@ if ( taxonomy_exists( 'product_cat' ) ) {
 		<!-- Drawer Header -->
 		<div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
 			<div class="flex items-center gap-2.5">
-				<div class="w-8 h-8 rounded-xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+				<div class="w-8 h-8 rounded-xl bg-[#f7fee7] text-[#244A27] flex items-center justify-center flex-shrink-0">
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
 					</svg>
 				</div>
 				<div>
 					<h3 id="test-theme-drawer-title" class="font-bold text-base text-slate-900 leading-tight">
-						<?php echo esc_html( sprintf( __( 'تصنيفات ومعدات %s', 'ashrafco' ), function_exists( 'ashrafco_get_store_name' ) ? ashrafco_get_store_name( 'ar' ) : 'أشرفكو' ) ); ?>
+						<?php echo esc_html( sprintf( __( 'تشكيلات %s', 'custom-store-boilerplate' ), function_exists( 'ashrafco_get_store_name' ) ? ashrafco_get_store_name( 'ar' ) : 'Ben10' ) ); ?>
 					</h3>
 					<p class="text-[11px] text-slate-400">
-						<?php esc_html_e( 'اختر القسم لتصفح أحدث أدوات ومعدات تركيب السيراميك', 'ashrafco' ); ?>
+						<?php esc_html_e( 'اختر التشكيلة لتصفح أحدث ساعات ومجموعات Ben10', 'custom-store-boilerplate' ); ?>
 					</p>
 				</div>
 			</div>
@@ -218,7 +218,7 @@ if ( taxonomy_exists( 'product_cat' ) ) {
 				type="button"
 				id="test-theme-drawer-close"
 				class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors"
-				aria-label="<?php esc_attr_e( 'إغلاق التصنيفات', 'ashrafco' ); ?>"
+				aria-label="<?php esc_attr_e( 'إغلاق التصنيفات', 'custom-store-boilerplate' ); ?>"
 			>
 				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -238,28 +238,28 @@ if ( taxonomy_exists( 'product_cat' ) ) {
 					?>
 						<a
 							href="<?php echo esc_url( $cat_link ); ?>"
-							class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-red-50/70 border border-slate-100 hover:border-red-200 transition-all group"
+							class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-[#f7fee7] border border-slate-100 hover:border-[#bef264] transition-all group"
 						>
 							<div class="flex items-center gap-3">
-								<div class="w-10 h-10 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center flex-shrink-0 overflow-hidden text-slate-400 group-hover:text-red-600 transition-colors">
+								<div class="w-10 h-10 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center flex-shrink-0 overflow-hidden text-slate-400 group-hover:text-[#244A27] transition-colors">
 									<?php if ( $image_url ) : ?>
 										<img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( $cat->name ); ?>" width="40" height="40" loading="lazy" decoding="async" class="w-full h-full object-cover aspect-square">
 									<?php else : ?>
 										<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
 										</svg>
 									<?php endif; ?>
 								</div>
 								<div>
-									<div class="font-bold text-sm text-slate-800 group-hover:text-red-600 transition-colors">
+									<div class="font-bold text-sm text-slate-800 group-hover:text-[#244A27] transition-colors">
 										<?php echo esc_html( $cat->name ); ?>
 									</div>
 									<div class="text-[11px] text-slate-400">
-										<?php printf( esc_html( _n( '%s منتج', '%s منتجات', $cat_count, 'ashrafco' ) ), number_format_i18n( $cat_count ) ); ?>
+										<?php printf( esc_html( _n( '%s منتج', '%s منتجات', $cat_count, 'custom-store-boilerplate' ) ), number_format_i18n( $cat_count ) ); ?>
 									</div>
 								</div>
 							</div>
-							<svg class="w-4 h-4 text-slate-300 group-hover:text-red-600 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<svg class="w-4 h-4 text-slate-300 group-hover:text-[#244A27] transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
 							</svg>
 						</a>
@@ -268,21 +268,21 @@ if ( taxonomy_exists( 'product_cat' ) ) {
 			<?php else : ?>
 				<!-- Default / Fallback Category Items -->
 				<div class="grid grid-cols-1 gap-2 text-sm">
-					<a href="<?php echo esc_url( $shop_url ); ?>" class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-red-50 border border-slate-100 group">
-						<span class="font-bold text-slate-800 group-hover:text-red-600">ماكينات قص البورسلين والسيراميك</span>
-						<svg class="w-4 h-4 text-slate-300 group-hover:text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+					<a href="<?php echo esc_url( $shop_url ); ?>" class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-[#f7fee7] border border-slate-100 hover:border-[#bef264] transition-all group">
+						<span class="font-bold text-slate-800 group-hover:text-[#244A27]">ساعات كلاسيكية فاخرة</span>
+						<svg class="w-4 h-4 text-slate-300 group-hover:text-[#244A27]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
 					</a>
-					<a href="<?php echo esc_url( $shop_url ); ?>" class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-red-50 border border-slate-100 group">
-						<span class="font-bold text-slate-800 group-hover:text-red-600">أقراص وسكاكين وألماس القص</span>
-						<svg class="w-4 h-4 text-slate-300 group-hover:text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+					<a href="<?php echo esc_url( $shop_url ); ?>" class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-[#f7fee7] border border-slate-100 hover:border-[#bef264] transition-all group">
+						<span class="font-bold text-slate-800 group-hover:text-[#244A27]">ساعات رياضية وأوتوماتيك</span>
+						<svg class="w-4 h-4 text-slate-300 group-hover:text-[#244A27]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
 					</a>
-					<a href="<?php echo esc_url( $shop_url ); ?>" class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-red-50 border border-slate-100 group">
-						<span class="font-bold text-slate-800 group-hover:text-red-600">موازين وأجهزة الليزر ثلاثية الأبعاد</span>
-						<svg class="w-4 h-4 text-slate-300 group-hover:text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+					<a href="<?php echo esc_url( $shop_url ); ?>" class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-[#f7fee7] border border-slate-100 hover:border-[#bef264] transition-all group">
+						<span class="font-bold text-slate-800 group-hover:text-[#244A27]">أحدث الإصدارات والتصاميم</span>
+						<svg class="w-4 h-4 text-slate-300 group-hover:text-[#244A27]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
 					</a>
-					<a href="<?php echo esc_url( $shop_url ); ?>" class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-red-50 border border-slate-100 group">
-						<span class="font-bold text-slate-800 group-hover:text-red-600">أدوات الشفط وأطقم التركيب والتثبيت</span>
-						<svg class="w-4 h-4 text-slate-300 group-hover:text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+					<a href="<?php echo esc_url( $shop_url ); ?>" class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 hover:bg-[#f7fee7] border border-slate-100 hover:border-[#bef264] transition-all group">
+						<span class="font-bold text-slate-800 group-hover:text-[#244A27]">إكسسوارات وسوارات الساعات</span>
+						<svg class="w-4 h-4 text-slate-300 group-hover:text-[#244A27]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
 					</a>
 				</div>
 			<?php endif; ?>
@@ -292,9 +292,9 @@ if ( taxonomy_exists( 'product_cat' ) ) {
 		<div class="p-4 border-t border-slate-100 bg-slate-50/50">
 			<a
 				href="<?php echo esc_url( $shop_url ); ?>"
-				class="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all"
+				class="w-full bg-[#101211] hover:bg-[#1f2420] text-[#A3E635] border border-[#244A27] font-bold text-sm py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all"
 			>
-				<span><?php esc_html_e( 'تصفح جميع المنتجات في المتجر', 'ashrafco' ); ?></span>
+				<span><?php esc_html_e( 'تصفح جميع المنتجات في المتجر', 'custom-store-boilerplate' ); ?></span>
 				<svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
 				</svg>
@@ -334,17 +334,17 @@ if ( taxonomy_exists( 'product_cat' ) ) {
 		<!-- Drawer Header -->
 		<div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
 			<div class="flex items-center gap-2.5">
-				<div class="w-8 h-8 rounded-xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+				<div class="w-8 h-8 rounded-xl bg-[#f7fee7] text-[#244A27] flex items-center justify-center flex-shrink-0">
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
 					</svg>
 				</div>
 				<div>
 					<h3 id="test-theme-saved-title" class="font-bold text-base text-slate-900 leading-tight">
-						<?php esc_html_e( 'المنتجات المحفوظة', 'ashrafco' ); ?>
+						<?php esc_html_e( 'المنتجات المحفوظة', 'custom-store-boilerplate' ); ?>
 					</h3>
 					<p class="text-[11px] text-slate-400">
-						<?php esc_html_e( 'قائمتك المفضلة للمعدات وماكينات القص للمقارنة والشراء السريع', 'ashrafco' ); ?>
+						<?php esc_html_e( 'قائمتك المفضلة للساعات والمنتجات المختارة للوصول والمقارنة السريعة', 'custom-store-boilerplate' ); ?>
 					</p>
 				</div>
 			</div>
@@ -354,7 +354,7 @@ if ( taxonomy_exists( 'product_cat' ) ) {
 				type="button"
 				id="test-theme-saved-close"
 				class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors"
-				aria-label="<?php esc_attr_e( 'إغلاق المحفوظات', 'ashrafco' ); ?>"
+				aria-label="<?php esc_attr_e( 'إغلاق المحفوظات', 'custom-store-boilerplate' ); ?>"
 			>
 				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -364,7 +364,7 @@ if ( taxonomy_exists( 'product_cat' ) ) {
 
 		<!-- Empty State / Saved Content Container -->
 		<div class="p-6 text-center space-y-4">
-			<div class="w-16 h-16 mx-auto rounded-full bg-red-50 text-red-600 flex items-center justify-center shadow-inner">
+			<div class="w-16 h-16 mx-auto rounded-full bg-[#f7fee7] text-[#244A27] flex items-center justify-center shadow-inner">
 				<svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
 				</svg>
@@ -378,9 +378,9 @@ if ( taxonomy_exists( 'product_cat' ) ) {
 			<div class="pt-2">
 				<a
 					href="<?php echo esc_url( $shop_url ); ?>"
-					class="inline-flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold text-sm py-2.5 px-6 rounded-xl shadow-md transition-all"
+					class="inline-flex items-center justify-center gap-2 bg-[#101211] hover:bg-[#1f2420] text-[#A3E635] border border-[#244A27] font-bold text-sm py-2.5 px-6 rounded-xl shadow-md transition-all"
 				>
-					<span>تصفح أحدث المعدات الآن</span>
+					<span>تصفح أحدث الساعات الآن</span>
 				</a>
 			</div>
 		</div>

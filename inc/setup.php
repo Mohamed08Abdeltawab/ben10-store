@@ -160,14 +160,16 @@ if (!function_exists('custom_store_body_classes')) {
 if (!function_exists('ashrafco_get_store_name')) {
 	function ashrafco_get_store_name($lang = 'ar')
 	{
-		return ('en' === $lang) ? 'Ashrafco' : 'أشرفكو';
+		$store_name = 'Ben10';
+		return (string) apply_filters('ashrafco_store_name', $store_name, $lang);
 	}
 }
 
 if (!function_exists('ashrafco_get_store_logo_url')) {
 	function ashrafco_get_store_logo_url()
 	{
-		return get_template_directory_uri() . '/assets/images/eagle-logo.webp';
+		$logo_url = get_template_directory_uri() . '/assets/images/ben10-logo.svg';
+		return (string) apply_filters('ashrafco_store_logo_url', $logo_url);
 	}
 }
 

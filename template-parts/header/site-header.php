@@ -1,6 +1,6 @@
 <?php
 /**
- * Header Template Part - Ashrafco (أشرفكو)
+ * Header Template Part - Ben10 Timepieces
  *
  * Scoped strictly to reference images:
  * - Mobile (< 768px): Two rows with brand on right, hamburger on left, search + white wishlist pill below.
@@ -42,18 +42,16 @@ $is_home_active   = ! $is_offers_active && ! $is_shop_active && (is_front_page()
 
 		<!-- First Row: Brand on Right, Hamburger Menu on Far Left -->
 		<div class="flex items-center justify-between w-full px-4 pt-3 pb-2.5" dir="rtl">
-			<!-- Mobile Brand Logo & Arabic Text: "أشرفكو" first in RTL, eagle to the left -->
+			<!-- Mobile Brand Logo: Ben10 Brand Identity -->
 			<a href="<?php echo esc_url(home_url('/')); ?>"
-				class="header-brand-link flex items-center gap-2.5 text-white no-underline shrink-0 select-none"
-				dir="rtl"
-				aria-label="<?php bloginfo('name'); ?>">
-				<span class="text-2xl font-black text-white tracking-wide leading-none font-cairo"><?php echo esc_html( function_exists( 'ashrafco_get_store_name' ) ? ashrafco_get_store_name( 'ar' ) : 'أشرفكو' ); ?></span>
+				class="header-brand-link flex items-center text-white no-underline shrink-0 select-none py-1"
+				aria-label="<?php echo esc_attr( function_exists( 'ashrafco_get_store_name' ) ? ashrafco_get_store_name( 'en' ) : 'Ben10' ); ?>">
 				<img
-					src="<?php echo esc_url( function_exists( 'ashrafco_get_store_logo_url' ) ? ashrafco_get_store_logo_url() : ( get_stylesheet_directory_uri() . '/assets/images/eagle-logo.webp' ) ); ?>"
-					alt="<?php echo esc_attr( function_exists( 'ashrafco_get_store_name' ) ? ashrafco_get_store_name( 'ar' ) : 'أشرفكو' ); ?>"
-					width="32"
+					src="<?php echo esc_url( function_exists( 'ashrafco_get_store_logo_url' ) ? ashrafco_get_store_logo_url() : ( get_stylesheet_directory_uri() . '/assets/images/ben10-logo.svg' ) ); ?>"
+					alt="<?php echo esc_attr( function_exists( 'ashrafco_get_store_name' ) ? ashrafco_get_store_name( 'en' ) : 'Ben10' ); ?>"
+					width="140"
 					height="32"
-					class="ashrafco-eagle-logo w-8 h-8 max-w-[32px] max-h-[32px] object-contain shrink-0"
+					class="ben10-header-logo h-8 w-auto max-h-[32px] object-contain shrink-0"
 				/>
 			</a>
 
@@ -69,8 +67,8 @@ $is_home_active   = ! $is_offers_active && ! $is_shop_active && (is_front_page()
 				<button
 					id="open-categories-drawer"
 					type="button"
-					class="mobile-hamburger-btn w-10 h-10 bg-[#161616] border border-white/10 rounded-2xl flex items-center justify-center text-white focus:outline-none shrink-0 cursor-pointer shadow-sm"
-					aria-label="أقسام المتجر">
+					class="mobile-hamburger-btn w-10 h-10 bg-[#161917] border border-white/10 rounded-2xl flex items-center justify-center text-white focus:outline-none focus:border-[#A3E635]/50 shrink-0 cursor-pointer shadow-sm hover:border-[#A3E635]/40 transition-colors"
+					aria-label="تشكيلات المتجر">
 					<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
 						<line x1="4" y1="7" x2="20" y2="7"></line>
 						<line x1="4" y1="12" x2="20" y2="12"></line>
@@ -80,8 +78,8 @@ $is_home_active   = ! $is_offers_active && ! $is_shop_active && (is_front_page()
 			</div>
 		</div>
 
-		<!-- Subtle Red Horizontal Accent Divider -->
-		<div class="w-full h-[1px] bg-[#3b080c]/50"></div>
+		<!-- Subtle Dark Green Horizontal Accent Divider -->
+		<div class="w-full h-[1px] bg-[#244A27]/30"></div>
 
 		<!-- Second Row: Wishlist Pill on Left & Full-Width Search on Right -->
 		<div class="flex items-center gap-2.5 px-4 pt-2.5 pb-3 w-full" dir="rtl">
@@ -91,8 +89,8 @@ $is_home_active   = ! $is_offers_active && ! $is_shop_active && (is_front_page()
 					<input type="hidden" name="post_type" value="product">
 
 					<input type="search" id="test-theme-search-input" name="s"
-						placeholder="ابحث عن منتج أو ماركة أو فئة ..."
-						class="w-full h-11 bg-white text-slate-800 placeholder-slate-400 text-xs sm:text-sm rounded-2xl pr-10 pl-4 border-0 focus:outline-none focus:ring-2 focus:ring-[#ff171f]/40 shadow-sm"
+						placeholder="ابحث عن ساعة، ماركة، أو تشكيلة ..."
+						class="w-full h-11 bg-white text-slate-800 placeholder-slate-400 text-xs sm:text-sm rounded-2xl pr-10 pl-4 border-0 focus:outline-none focus:ring-2 focus:ring-[#A3E635]/50 shadow-sm"
 						autocomplete="off"
 						value="<?php echo get_search_query() ? esc_attr(get_search_query()) : ''; ?>" />
 
@@ -111,7 +109,7 @@ $is_home_active   = ! $is_offers_active && ! $is_shop_active && (is_front_page()
 				</div>
 			</div>
 
-			<!-- Mobile Wishlist Button (White Background, Centered Red Heart, Red Count Badge on Top-Right) -->
+			<!-- Mobile Wishlist Button (White Background, Clean Heart, Green Count Badge on Top-Right) -->
 			<a href="<?php echo esc_url($wishlist_url); ?>" id="mobile-header-wishlist-btn"
 				data-wishlist-drawer-trigger="true"
 				class="mobile-header-wishlist-btn ashrafco-wishlist-trigger relative flex items-center justify-center w-11 h-11 bg-white rounded-2xl shadow-sm shrink-0 no-underline cursor-pointer"
@@ -119,11 +117,11 @@ $is_home_active   = ! $is_offers_active && ! $is_shop_active && (is_front_page()
 				aria-controls="ashrafco-wishlist-drawer"
 				aria-expanded="false"
 				data-wishlist-count="<?php echo esc_attr($display_wishlist_count); ?>">
-				<svg class="w-5 h-5 text-[#ff171f] fill-[#ff171f] shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-					<path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+				<svg class="w-5 h-5 text-[#101211] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
 				</svg>
 				<span id="mobile-header-wishlist-badge"
-					class="header-wishlist-count-badge absolute -top-1.5 -right-1.5 bg-[#ff171f] text-white text-[10px] font-black rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none shadow-sm select-none <?php echo $display_wishlist_count <= 0 ? 'hidden' : ''; ?>">
+					class="header-wishlist-count-badge absolute -top-1.5 -right-1.5 bg-[#A3E635] text-[#101211] text-[10px] font-black rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center leading-none shadow-sm select-none <?php echo $display_wishlist_count <= 0 ? 'hidden' : ''; ?>">
 					<?php echo esc_html($display_wishlist_count); ?>
 				</span>
 			</a>
@@ -133,41 +131,39 @@ $is_home_active   = ! $is_offers_active && ! $is_shop_active && (is_front_page()
 
 
 	<!-- =================================================================
-	     2. DESKTOP HEADER: Single Horizontal Row (>= 768px) - Matching Image 2
+	     2. DESKTOP HEADER: Single Horizontal Row (>= 768px)
 	     ================================================================= -->
 	<div class="hidden md:flex items-center justify-between w-full h-[62px] px-4 lg:px-8" dir="rtl">
 
-		<!-- Right Side: Ashrafco Brand Logo & Navigation Links -->
+		<!-- Right Side: Ben10 Brand Logo & Navigation Links -->
 		<div class="flex items-center gap-5 lg:gap-8 shrink-0">
-			<!-- Brand Lockup: Arabic text "أشرفكو" on right, eagle on left -->
+			<!-- Brand Lockup: Ben10 SVG Logo -->
 			<a href="<?php echo esc_url(home_url('/')); ?>"
-				class="header-brand-link flex items-center gap-2.5 text-white no-underline shrink-0 select-none"
-				dir="rtl"
-				aria-label="<?php bloginfo('name'); ?>">
-				<span class="text-2xl font-black text-white tracking-wide leading-none font-cairo"><?php echo esc_html( function_exists( 'ashrafco_get_store_name' ) ? ashrafco_get_store_name( 'ar' ) : 'أشرفكو' ); ?></span>
+				class="header-brand-link flex items-center text-white no-underline shrink-0 select-none py-1"
+				aria-label="<?php echo esc_attr( function_exists( 'ashrafco_get_store_name' ) ? ashrafco_get_store_name( 'en' ) : 'Ben10' ); ?>">
 				<img
-					src="<?php echo esc_url( function_exists( 'ashrafco_get_store_logo_url' ) ? ashrafco_get_store_logo_url() : ( get_stylesheet_directory_uri() . '/assets/images/eagle-logo.webp' ) ); ?>"
-					alt="<?php echo esc_attr( function_exists( 'ashrafco_get_store_name' ) ? ashrafco_get_store_name( 'ar' ) : 'أشرفكو' ); ?>"
-					width="32"
-					height="32"
-					class="ashrafco-eagle-logo w-8 h-8 max-w-[32px] max-h-[32px] object-contain shrink-0"
+					src="<?php echo esc_url( function_exists( 'ashrafco_get_store_logo_url' ) ? ashrafco_get_store_logo_url() : ( get_stylesheet_directory_uri() . '/assets/images/ben10-logo.svg' ) ); ?>"
+					alt="<?php echo esc_attr( function_exists( 'ashrafco_get_store_name' ) ? ashrafco_get_store_name( 'en' ) : 'Ben10' ); ?>"
+					width="160"
+					height="36"
+					class="ben10-header-logo h-9 w-auto max-h-[36px] object-contain shrink-0"
 				/>
 			</a>
 
-			<!-- Main Navigation Links: الرئيسية (active with red underline), المتجر, عروضنا -->
+			<!-- Main Navigation Links: الرئيسية (active with green underline), المتجر, عروضنا -->
 			<nav class="flex items-center gap-5 lg:gap-7 font-bold text-sm lg:text-base text-white" aria-label="التنقل الرئيسي">
 				<a href="<?php echo esc_url(home_url('/')); ?>"
-					class="relative py-1 text-white no-underline font-bold transition-colors <?php echo $is_home_active ? 'after:content-[\'\'] after:absolute after:-bottom-2.5 after:right-0 after:w-full after:h-[3px] after:bg-[#ff171f] after:rounded-full' : 'hover:text-white/80'; ?>">
+					class="relative py-1 text-white no-underline font-bold transition-colors <?php echo $is_home_active ? 'after:content-[\'\'] after:absolute after:-bottom-2.5 after:right-0 after:w-full after:h-[3px] after:bg-[#A3E635] after:rounded-full' : 'hover:text-[#A3E635]'; ?>">
 					الرئيسية
 				</a>
 
 				<a href="<?php echo esc_url($shop_url); ?>"
-					class="relative py-1 text-white no-underline font-bold transition-colors <?php echo $is_shop_active ? 'after:content-[\'\'] after:absolute after:-bottom-2.5 after:right-0 after:w-full after:h-[3px] after:bg-[#ff171f] after:rounded-full' : 'hover:text-white/80'; ?>">
+					class="relative py-1 text-white no-underline font-bold transition-colors <?php echo $is_shop_active ? 'after:content-[\'\'] after:absolute after:-bottom-2.5 after:right-0 after:w-full after:h-[3px] after:bg-[#A3E635] after:rounded-full' : 'hover:text-[#A3E635]'; ?>">
 					المتجر
 				</a>
 
 				<a href="<?php echo esc_url($offers_url); ?>"
-					class="relative py-1 text-white no-underline font-bold transition-colors <?php echo $is_offers_active ? 'after:content-[\'\'] after:absolute after:-bottom-2.5 after:right-0 after:w-full after:h-[3px] after:bg-[#ff171f] after:rounded-full' : 'hover:text-white/80'; ?>">
+					class="relative py-1 text-white no-underline font-bold transition-colors <?php echo $is_offers_active ? 'after:content-[\'\'] after:absolute after:-bottom-2.5 after:right-0 after:w-full after:h-[3px] after:bg-[#A3E635] after:rounded-full' : 'hover:text-[#A3E635]'; ?>">
 					عروضنا
 				</a>
 			</nav>
@@ -179,8 +175,8 @@ $is_home_active   = ! $is_offers_active && ! $is_shop_active && (is_front_page()
 				<input type="hidden" name="post_type" value="product">
 
 				<input type="search" id="desktop-theme-search-input" name="s"
-					placeholder="ابحث عن منتج أو ماركة أو فئة ..."
-					class="w-full h-11 bg-white text-slate-800 placeholder-slate-400 text-xs sm:text-sm rounded-2xl pr-10 pl-4 border-0 focus:outline-none focus:ring-2 focus:ring-[#ff171f]/40 shadow-sm transition-all"
+					placeholder="ابحث عن ساعة، ماركة، أو تشكيلة ..."
+					class="w-full h-11 bg-white text-slate-800 placeholder-slate-400 text-xs sm:text-sm rounded-2xl pr-10 pl-4 border-0 focus:outline-none focus:ring-2 focus:ring-[#A3E635]/50 shadow-sm transition-all"
 					autocomplete="off"
 					value="<?php echo get_search_query() ? esc_attr(get_search_query()) : ''; ?>" />
 
@@ -202,16 +198,16 @@ $is_home_active   = ! $is_offers_active && ! $is_shop_active && (is_front_page()
 		<!-- Left Area: Utility Action Icons (Cart, Wishlist, Account) -->
 		<div class="flex items-center gap-5 lg:gap-7 shrink-0">
 
-			<!-- 1. السلة (Cart Outline Icon + Red Count Badge + "السلة" Label) -->
+			<!-- 1. السلة (Cart Outline Icon + Green Count Badge + "السلة" Label) -->
 			<a href="<?php echo esc_url($cart_url); ?>"
 				id="header-cart-drawer-trigger"
 				data-cart-drawer-trigger="true"
-				class="ashrafco-cart-trigger desktop-header-action-item flex flex-col items-center justify-center text-white group hover:opacity-90 transition-opacity no-underline cursor-pointer select-none"
+				class="ashrafco-cart-trigger desktop-header-action-item flex flex-col items-center justify-center text-white group hover:text-[#A3E635] transition-colors no-underline cursor-pointer select-none"
 				aria-label="السلة"
 				aria-controls="ashrafco-cart-drawer"
 				aria-expanded="false">
 				<div class="relative flex items-center justify-center">
-					<svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="1.8"
+					<svg class="w-6 h-6 text-white group-hover:text-[#A3E635] transition-colors" fill="none" stroke="currentColor" stroke-width="1.8"
 						stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
 						<circle cx="9" cy="20" r="1.5" />
 						<circle cx="18" cy="20" r="1.5" />
@@ -219,35 +215,35 @@ $is_home_active   = ! $is_offers_active && ! $is_shop_active && (is_front_page()
 					</svg>
 					<span
 						id="header-cart-count-badge"
-						class="ashrafco-cart-count-badge absolute -top-1.5 -right-2 bg-[#ff171f] text-white text-[10px] font-black rounded-full min-w-[17px] h-[17px] px-1 flex items-center justify-center leading-none shadow-xs">
+						class="ashrafco-cart-count-badge absolute -top-1.5 -right-2 bg-[#A3E635] text-[#101211] text-[10px] font-black rounded-full min-w-[17px] h-[17px] px-1 flex items-center justify-center leading-none shadow-xs">
 						<?php echo esc_html($display_cart_count); ?>
 					</span>
 				</div>
-				<span class="mt-1 text-[11px] font-semibold text-white leading-none">السلة</span>
+				<span class="mt-1 text-[11px] font-semibold text-white group-hover:text-[#A3E635] transition-colors leading-none">السلة</span>
 			</a>
 
-			<!-- 2. المفضلة (Desktop Wishlist: Standalone Heart Outline + Red Count Badge + "المفضلة" Label) -->
+			<!-- 2. المفضلة (Desktop Wishlist: Standalone Heart Outline + Green Count Badge + "المفضلة" Label) -->
 			<a href="<?php echo esc_url($wishlist_url); ?>"
 				id="desktop-header-wishlist-btn"
 				data-wishlist-drawer-trigger="true"
-				class="ashrafco-wishlist-trigger desktop-header-action-item flex flex-col items-center justify-center text-white group hover:opacity-90 transition-opacity no-underline select-none cursor-pointer"
+				class="ashrafco-wishlist-trigger desktop-header-action-item flex flex-col items-center justify-center text-white group hover:text-[#A3E635] transition-colors no-underline select-none cursor-pointer"
 				aria-label="المفضلة"
 				aria-controls="ashrafco-wishlist-drawer"
 				aria-expanded="false"
 				data-wishlist-count="<?php echo esc_attr($display_wishlist_count); ?>">
 				<div class="relative flex items-center justify-center">
-					<svg id="desktop-wishlist-icon" class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="1.8"
+					<svg id="desktop-wishlist-icon" class="w-6 h-6 text-white group-hover:text-[#A3E635] transition-colors" fill="none" stroke="currentColor" stroke-width="1.8"
 						stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
 						<path
 							d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
 					</svg>
 					<span
 						id="desktop-header-wishlist-badge"
-						class="header-wishlist-count-badge absolute -top-1.5 -right-2 bg-[#ff171f] text-white text-[10px] font-black rounded-full min-w-[17px] h-[17px] px-1 flex items-center justify-center leading-none shadow-xs <?php echo $display_wishlist_count <= 0 ? 'hidden' : ''; ?>">
+						class="header-wishlist-count-badge absolute -top-1.5 -right-2 bg-[#A3E635] text-[#101211] text-[10px] font-black rounded-full min-w-[17px] h-[17px] px-1 flex items-center justify-center leading-none shadow-xs <?php echo $display_wishlist_count <= 0 ? 'hidden' : ''; ?>">
 						<?php echo esc_html($display_wishlist_count); ?>
 					</span>
 				</div>
-				<span class="mt-1 text-[11px] font-semibold text-white leading-none">المفضلة</span>
+				<span class="mt-1 text-[11px] font-semibold text-white group-hover:text-[#A3E635] transition-colors leading-none">المفضلة</span>
 			</a>
 
 			<!-- 2.5 الإشعارات (Customer Notifications Bell) -->
