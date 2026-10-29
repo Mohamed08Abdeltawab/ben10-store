@@ -48,11 +48,10 @@ remove_action( 'woocommerce_cart_is_empty', 'wc_empty_cart_message', 10 );
 		<!-- Action Button -->
 		<a
 			href="<?php echo esc_url( apply_filters( 'woocommerce_return_to_shop_redirect', wc_get_page_permalink( 'shop' ) ) ); ?>"
-			style="color: #ffffff !important; text-decoration: none !important;"
-			class="w-full sm:w-auto min-w-[200px] inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl text-sm font-black !text-white bg-red-600 hover:bg-red-700 hover:!text-white visited:!text-white active:scale-[0.99] transition-all shadow-md shadow-red-600/20 cursor-pointer select-none no-underline"
+			class="w-full sm:w-auto min-w-[200px] inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl text-sm font-black text-white bg-red-600 hover:bg-red-700 hover:text-white visited:text-white active:scale-[0.99] transition-all shadow-md shadow-red-600/20 cursor-pointer select-none no-underline"
 		>
-			<span style="color: #ffffff !important;" class="!text-white">تصفح المتجر</span>
-			<svg class="w-4 h-4 rotate-180 text-white" style="color: #ffffff !important;" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+			<span class="text-white">تصفح المتجر</span>
+			<svg class="w-4 h-4 rotate-180 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
 			</svg>
 		</a>

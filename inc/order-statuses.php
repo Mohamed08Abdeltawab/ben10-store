@@ -311,33 +311,41 @@ add_action('init', 'ashrafco_migrate_legacy_order_statuses', 20);
 add_action('admin_head', function () {
 	?>
 	<style>
+		.wp-list-table .order-status.status-processing,
+		.wp-list-table mark.order-status.status-processing,
 		.order-status.status-processing,
 		mark.order-status.status-processing {
-			background: #fffbeb !important;
-			color: #b45309 !important;
-			border: 1px solid #fde68a !important;
-			font-weight: 700 !important;
+			background: #fffbeb;
+			color: #b45309;
+			border: 1px solid #fde68a;
+			font-weight: 700;
 		}
+		.wp-list-table .order-status.status-shipped,
+		.wp-list-table mark.order-status.status-shipped,
 		.order-status.status-shipped,
 		mark.order-status.status-shipped {
-			background: #eff6ff !important;
-			color: #1d4ed8 !important;
-			border: 1px solid #bfdbfe !important;
-			font-weight: 700 !important;
+			background: #eff6ff;
+			color: #1d4ed8;
+			border: 1px solid #bfdbfe;
+			font-weight: 700;
 		}
+		.wp-list-table .order-status.status-completed,
+		.wp-list-table mark.order-status.status-completed,
 		.order-status.status-completed,
 		mark.order-status.status-completed {
-			background: #ecfdf5 !important;
-			color: #047857 !important;
-			border: 1px solid #a7f3d0 !important;
-			font-weight: 700 !important;
+			background: #ecfdf5;
+			color: #047857;
+			border: 1px solid #a7f3d0;
+			font-weight: 700;
 		}
+		.wp-list-table .order-status.status-cancelled,
+		.wp-list-table mark.order-status.status-cancelled,
 		.order-status.status-cancelled,
 		mark.order-status.status-cancelled {
-			background: #fff1f2 !important;
-			color: #be123c !important;
-			border: 1px solid #fecdd3 !important;
-			font-weight: 700 !important;
+			background: #fff1f2;
+			color: #be123c;
+			border: 1px solid #fecdd3;
+			font-weight: 700;
 		}
 	</style>
 	<?php

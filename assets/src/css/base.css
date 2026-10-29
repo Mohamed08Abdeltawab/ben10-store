@@ -16,11 +16,6 @@ html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
-    margin-top: 0 !important;
-}
-
-#wpadminbar {
-    display: none !important;
 }
 
 body {

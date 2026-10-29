@@ -20,18 +20,18 @@ $mobile_banner_url = get_stylesheet_directory_uri() . '/assets/images/hero/hero-
 ?>
 
 <style>
-/* Guaranteed styling for login & registration buttons against WooCommerce overrides */
+/* Scoped styling for login & registration buttons */
 .ashrafco-auth-wrapper .woocommerce-form-login__submit,
 .ashrafco-auth-wrapper .woocommerce-form-register__submit {
-	background-color: var(--color-primary, #d90429) !important;
-	color: #ffffff !important;
-	border: none !important;
-	box-shadow: 0 4px 14px rgba(217, 4, 41, 0.25) !important;
+	background-color: var(--color-primary, #d90429);
+	color: #ffffff;
+	border: none;
+	box-shadow: 0 4px 14px rgba(217, 4, 41, 0.25);
 }
 .ashrafco-auth-wrapper .woocommerce-form-login__submit:hover,
 .ashrafco-auth-wrapper .woocommerce-form-register__submit:hover {
-	background-color: var(--color-primary-hover, #b90323) !important;
-	color: #ffffff !important;
+	background-color: var(--color-primary-hover, #b90323);
+	color: #ffffff;
 }
 </style>
 

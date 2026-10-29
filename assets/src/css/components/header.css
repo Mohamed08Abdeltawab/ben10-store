@@ -210,7 +210,7 @@
     }
 
     .ashrafco-notif-dropdown-mobile.hidden {
-        display: none !important;
+        display: none;
     }
 
     .ashrafco-notif-dropdown-mobile .ashrafco-notif-list-container {
@@ -233,7 +233,7 @@
 }
 
 .ashrafco-notif-dropdown-desktop.hidden {
-    display: none !important;
+    display: none;
 }
 
 .ashrafco-notif-dropdown-desktop .ashrafco-notif-list-container {

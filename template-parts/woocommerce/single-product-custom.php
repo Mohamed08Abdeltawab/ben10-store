@@ -1060,13 +1060,13 @@ $active_main_full = $gallery_images_data[0]['full'];
 <style>
 /* Scoped Add-to-Cart & Purchase Area Styling */
 .test-theme-add-to-cart-wrapper form.cart {
-	display: flex !important;
-	align-items: center !important;
-	gap: 0.75rem !important;
-	flex-wrap: wrap !important;
-	margin: 0 !important;
-	padding: 0 !important;
-	width: 100% !important;
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+	margin: 0;
+	padding: 0;
+	width: 100%;
 }
 
 /* Hide any duplicate native WooCommerce stock notifications */
@@ -1075,186 +1075,186 @@ $active_main_full = $gallery_images_data[0]['full'];
 .test-theme-add-to-cart-wrapper form.cart .stock,
 .test-theme-add-to-cart-wrapper form.cart p.stock,
 .test-theme-add-to-cart-wrapper .woocommerce-variation-availability {
-	display: none !important;
+	display: none;
 }
 
 .test-theme-add-to-cart-wrapper form.cart .quantity {
-	display: inline-flex !important;
-	align-items: center !important;
-	background: #f8fafc !important;
-	border: 1.5px solid #e2e8f0 !important;
-	border-radius: 1rem !important;
-	padding: 0.25rem !important;
-	gap: 0.35rem !important;
-	margin: 0 !important;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
-	transition: all 0.2s ease !important;
-	flex-shrink: 0 !important;
+	display: inline-flex;
+	align-items: center;
+	background: #f8fafc;
+	border: 1.5px solid #e2e8f0;
+	border-radius: 1rem;
+	padding: 0.25rem;
+	gap: 0.35rem;
+	margin: 0;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+	transition: all 0.2s ease;
+	flex-shrink: 0;
 }
 
 .test-theme-add-to-cart-wrapper form.cart .quantity:hover {
-	border-color: #cbd5e1 !important;
+	border-color: #cbd5e1;
 }
 
 .test-theme-add-to-cart-wrapper form.cart .quantity input.qty {
-	width: 2.75rem !important;
-	height: 2.5rem !important;
-	text-align: center !important;
-	font-weight: 800 !important;
-	font-size: 0.95rem !important;
-	color: #0f172a !important;
-	background: transparent !important;
-	border: none !important;
-	outline: none !important;
-	padding: 0 !important;
-	margin: 0 !important;
-	-moz-appearance: textfield !important;
+	width: 2.75rem;
+	height: 2.5rem;
+	text-align: center;
+	font-weight: 800;
+	font-size: 0.95rem;
+	color: #0f172a;
+	background: transparent;
+	border: none;
+	outline: none;
+	padding: 0;
+	margin: 0;
+	-moz-appearance: textfield;
 }
 
 .test-theme-add-to-cart-wrapper form.cart .quantity input.qty::-webkit-outer-spin-button,
 .test-theme-add-to-cart-wrapper form.cart .quantity input.qty::-webkit-inner-spin-button {
-	-webkit-appearance: none !important;
-	margin: 0 !important;
+	-webkit-appearance: none;
+	margin: 0;
 }
 
 .test-theme-add-to-cart-wrapper form.cart .single_add_to_cart_button {
-	flex: 1 1 auto !important;
-	min-width: 150px !important;
-	height: 3.25rem !important;
-	background: linear-gradient(135deg, #e00325 0%, #ba021d 100%) !important;
-	color: #ffffff !important;
-	font-weight: 900 !important;
-	font-size: 0.95rem !important;
-	letter-spacing: -0.01em !important;
-	border-radius: 1rem !important;
-	border: none !important;
-	padding: 0 1.25rem !important;
-	display: inline-flex !important;
-	align-items: center !important;
-	justify-content: center !important;
-	gap: 0.65rem !important;
-	cursor: pointer !important;
-	box-shadow: 0 4px 14px -2px rgba(224, 3, 37, 0.38) !important;
-	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
-	user-select: none !important;
-	text-decoration: none !important;
+	flex: 1 1 auto;
+	min-width: 150px;
+	height: 3.25rem;
+	background: linear-gradient(135deg, #e00325 0%, #ba021d 100%);
+	color: #ffffff;
+	font-weight: 900;
+	font-size: 0.95rem;
+	letter-spacing: -0.01em;
+	border-radius: 1rem;
+	border: none;
+	padding: 0 1.25rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.65rem;
+	cursor: pointer;
+	box-shadow: 0 4px 14px -2px rgba(224, 3, 37, 0.38);
+	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+	user-select: none;
+	text-decoration: none;
 }
 
 .test-theme-add-to-cart-wrapper form.cart .single_add_to_cart_button:hover {
-	background: linear-gradient(135deg, #f0052a 0%, #c90220 100%) !important;
-	box-shadow: 0 6px 20px -2px rgba(224, 3, 37, 0.48) !important;
-	transform: translateY(-1px) !important;
+	background: linear-gradient(135deg, #f0052a 0%, #c90220 100%);
+	box-shadow: 0 6px 20px -2px rgba(224, 3, 37, 0.48);
+	transform: translateY(-1px);
 }
 
 .test-theme-add-to-cart-wrapper form.cart .single_add_to_cart_button:active {
-	transform: translateY(1px) scale(0.99) !important;
-	box-shadow: 0 2px 8px -1px rgba(224, 3, 37, 0.3) !important;
+	transform: translateY(1px) scale(0.99);
+	box-shadow: 0 2px 8px -1px rgba(224, 3, 37, 0.3);
 }
 
 .test-theme-add-to-cart-wrapper form.cart .single_add_to_cart_button .ashrafco-cart-icon {
-	width: 1.25rem !important;
-	height: 1.25rem !important;
-	stroke: currentColor !important;
-	stroke-width: 2.2 !important;
-	transition: transform 0.2s ease !important;
+	width: 1.25rem;
+	height: 1.25rem;
+	stroke: currentColor;
+	stroke-width: 2.2;
+	transition: transform 0.2s ease;
 }
 
 .test-theme-add-to-cart-wrapper form.cart .single_add_to_cart_button.ashrafco-btn-loading {
-	position: relative !important;
-	color: transparent !important;
-	pointer-events: none !important;
-	opacity: 0.85 !important;
+	position: relative;
+	color: transparent;
+	pointer-events: none;
+	opacity: 0.85;
 }
 
 .test-theme-add-to-cart-wrapper form.cart .single_add_to_cart_button.ashrafco-btn-loading .ashrafco-cart-icon {
-	visibility: hidden !important;
+	visibility: hidden;
 }
 
 .test-theme-add-to-cart-wrapper form.cart .single_add_to_cart_button.ashrafco-btn-loading::after {
-	content: "" !important;
-	position: absolute !important;
-	width: 1.35rem !important;
-	height: 1.35rem !important;
-	top: 50% !important;
-	left: 50% !important;
-	margin: -0.675rem 0 0 -0.675rem !important;
-	border: 2.5px solid rgba(255, 255, 255, 0.35) !important;
-	border-top-color: #ffffff !important;
-	border-radius: 50% !important;
-	animation: ashrafco-btn-spin 0.65s linear infinite !important;
+	content: "";
+	position: absolute;
+	width: 1.35rem;
+	height: 1.35rem;
+	top: 50%;
+	left: 50%;
+	margin: -0.675rem 0 0 -0.675rem;
+	border: 2.5px solid rgba(255, 255, 255, 0.35);
+	border-top-color: #ffffff;
+	border-radius: 50%;
+	animation: ashrafco-btn-spin 0.65s linear infinite;
 }
 
 /* Direct Checkout Instant Buy Button */
 .ashrafco-direct-checkout-btn {
-	flex: 1 1 180px !important;
-	min-width: 170px !important;
-	height: 3.25rem !important;
-	background: #0f172a !important;
-	color: #ffffff !important;
-	font-weight: 900 !important;
-	font-size: 0.95rem !important;
-	border: none !important;
-	border-radius: 1rem !important;
-	padding: 0 1.25rem !important;
-	display: inline-flex !important;
-	align-items: center !important;
-	justify-content: center !important;
-	gap: 0.5rem !important;
-	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
-	box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.35) !important;
-	cursor: pointer !important;
-	user-select: none !important;
-	text-decoration: none !important;
-	white-space: nowrap !important;
+	flex: 1 1 180px;
+	min-width: 170px;
+	height: 3.25rem;
+	background: #0f172a;
+	color: #ffffff;
+	font-weight: 900;
+	font-size: 0.95rem;
+	border: none;
+	border-radius: 1rem;
+	padding: 0 1.25rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+	box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.35);
+	cursor: pointer;
+	user-select: none;
+	text-decoration: none;
+	white-space: nowrap;
 }
 
 .ashrafco-direct-checkout-btn:hover {
-	background: #1e293b !important;
-	box-shadow: 0 6px 20px -2px rgba(15, 23, 42, 0.48) !important;
-	transform: translateY(-1px) !important;
+	background: #1e293b;
+	box-shadow: 0 6px 20px -2px rgba(15, 23, 42, 0.48);
+	transform: translateY(-1px);
 }
 
 .ashrafco-direct-checkout-btn:active {
-	transform: translateY(1px) scale(0.99) !important;
+	transform: translateY(1px) scale(0.99);
 }
 
 .ashrafco-direct-checkout-btn svg {
-	width: 1.25rem !important;
-	height: 1.25rem !important;
-	stroke: currentColor !important;
-	stroke-width: 2.2 !important;
-	flex-shrink: 0 !important;
+	width: 1.25rem;
+	height: 1.25rem;
+	stroke: currentColor;
+	stroke-width: 2.2;
+	flex-shrink: 0;
 }
 
 .ashrafco-direct-checkout-btn.ashrafco-btn-loading {
-	position: relative !important;
-	color: transparent !important;
-	pointer-events: none !important;
-	opacity: 0.85 !important;
+	position: relative;
+	color: transparent;
+	pointer-events: none;
+	opacity: 0.85;
 }
 
 .ashrafco-direct-checkout-btn.ashrafco-btn-loading svg {
-	visibility: hidden !important;
+	visibility: hidden;
 }
 
 .ashrafco-direct-checkout-btn.ashrafco-btn-loading::after {
-	content: "" !important;
-	position: absolute !important;
-	width: 1.35rem !important;
-	height: 1.35rem !important;
-	top: 50% !important;
-	left: 50% !important;
-	margin: -0.675rem 0 0 -0.675rem !important;
-	border: 2.5px solid rgba(255, 255, 255, 0.35) !important;
-	border-top-color: #ffffff !important;
-	border-radius: 50% !important;
-	animation: ashrafco-btn-spin 0.65s linear infinite !important;
+	content: "";
+	position: absolute;
+	width: 1.35rem;
+	height: 1.35rem;
+	top: 50%;
+	left: 50%;
+	margin: -0.675rem 0 0 -0.675rem;
+	border: 2.5px solid rgba(255, 255, 255, 0.35);
+	border-top-color: #ffffff;
+	border-radius: 50%;
+	animation: ashrafco-btn-spin 0.65s linear infinite;
 }
 
 .ashrafco-purchase-wishlist-btn {
-	height: 2.75rem !important;
-	width: 2.75rem !important;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+	height: 2.75rem;
+	width: 2.75rem;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 </style>
 

@@ -175,7 +175,7 @@
 /* Ensure no default browser underline on ins tags in drawer prices */
 .ashrafco-item-price,
 .ashrafco-item-price ins {
-    text-decoration: none !important;
+    text-decoration: none;
 }
 
 /* Quantity Controls */

@@ -19,6 +19,9 @@ module.exports = {
     'is-open',
     'is-active',
   ],
+  // "!container" is a false-positive extracted from JavaScript guards such as
+  // `if (!container)`. It is not used in any template, so do not emit it.
+  blocklist: ['!container'],
   theme: {
     extend: {
       colors: {
