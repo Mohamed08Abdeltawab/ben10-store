@@ -275,14 +275,234 @@ add_action('init', function () {
 }, 20);
 
 /**
+ * Get the legacy theme's hero asset directory as it appears in slider markup.
+ *
+ * @return string
+ */
+function test_theme_get_stale_hero_asset_path()
+{
+	return '/wp-content/themes/test-theme/assets/images/hero/';
+}
+
+/**
+ * Check whether a URL is a same-site or relative URL under the stale hero directory.
+ *
+ * External URLs are deliberately left alone even when their path matches.
+ *
+ * @param string $url
+ * @return bool
+ */
+function test_theme_is_stale_hero_url($url)
+{
+	$url = trim((string) $url);
+	if ('' === $url) {
+		return false;
+	}
+
+	$stale_path = test_theme_get_stale_hero_asset_path();
+	if (0 === strpos($url, $stale_path)) {
+		return true;
+	}
+
+	$protocol_relative = (0 === strpos($url, '//'));
+	if (!$protocol_relative && 0 !== stripos($url, 'http://') && 0 !== stripos($url, 'https://')) {
+		return false;
+	}
+
+	$parsed = wp_parse_url($protocol_relative ? 'http:' . $url : $url);
+	if (!is_array($parsed) || empty($parsed['host']) || empty($parsed['path'])) {
+		return false;
+	}
+
+	$home_host = wp_parse_url(home_url('/'), PHP_URL_HOST);
+	if (empty($home_host) || 0 !== strcasecmp($home_host, $parsed['host'])) {
+		return false;
+	}
+
+	return 0 === strpos($parsed['path'], $stale_path);
+}
+
+/**
+ * Rewrite one stale hero URL to the active theme, preserving query and fragment.
+ *
+ * Only same-site URLs (or root-relative URLs) are changed; external URLs and
+ * unrelated links/text are returned untouched.
+ *
+ * @param string $url
+ * @return string
+ */
+function test_theme_rewrite_stale_hero_url($url)
+{
+	$original = (string) $url;
+	$url = trim($original);
+	if ('' === $url) {
+		return $original;
+	}
+
+	$stale_path = test_theme_get_stale_hero_asset_path();
+	$current_base = get_stylesheet_directory_uri() . '/assets/images/hero/';
+	$current_relative = wp_make_link_relative($current_base);
+
+	if (0 === strpos($url, $stale_path)) {
+		return $current_relative . substr($url, strlen($stale_path));
+	}
+
+	$protocol_relative = (0 === strpos($url, '//'));
+	if (!$protocol_relative && 0 !== stripos($url, 'http://') && 0 !== stripos($url, 'https://')) {
+		return $original;
+	}
+
+	$parsed = wp_parse_url($protocol_relative ? 'http:' . $url : $url);
+	if (!is_array($parsed) || empty($parsed['host']) || empty($parsed['path'])) {
+		return $original;
+	}
+
+	$home_host = wp_parse_url(home_url('/'), PHP_URL_HOST);
+	if (empty($home_host) || 0 !== strcasecmp($home_host, $parsed['host'])) {
+		return $original;
+	}
+	if (0 !== strpos($parsed['path'], $stale_path)) {
+		return $original;
+	}
+
+	$suffix = substr($parsed['path'], strlen($stale_path));
+	$query = !empty($parsed['query']) ? '?' . $parsed['query'] : '';
+	$fragment = !empty($parsed['fragment']) ? '#' . $parsed['fragment'] : '';
+
+	if ($protocol_relative) {
+		$host = $parsed['host'] . (isset($parsed['port']) ? ':' . $parsed['port'] : '');
+		return '//' . $host . $current_relative . $suffix . $query . $fragment;
+	}
+
+	return $current_base . $suffix . $query . $fragment;
+}
+
+/**
+ * Rewrite CSS url() values inside a style attribute or style block.
+ *
+ * @param string $css
+ * @return string
+ */
+function test_theme_rewrite_css_hero_urls($css)
+{
+	if (!is_string($css) || '' === $css) {
+		return $css;
+	}
+
+	$rewritten = preg_replace_callback(
+		'#(url\(\s*)(["\']?)(.*?)(\2\s*\))#is',
+		function ($matches) {
+			return $matches[1] . $matches[2] . test_theme_rewrite_stale_hero_url($matches[3]) . $matches[4];
+		},
+		$css
+	);
+
+	return null === $rewritten ? $css : $rewritten;
+}
+
+/**
+ * Rewrite the URL(s) held by one image-related HTML attribute.
+ *
+ * @param string $value
+ * @param string $attribute
+ * @return string
+ */
+function test_theme_rewrite_hero_image_attribute($value, $attribute)
+{
+	$value = (string) $value;
+	$attribute = strtolower((string) $attribute);
+
+	if (false !== strpos($attribute, 'srcset')) {
+		$parts = explode(',', $value);
+		foreach ($parts as $index => $part) {
+			if (preg_match('#^(\s*)(\S+)(.*)$#s', $part, $matches)) {
+				$parts[$index] = $matches[1] . test_theme_rewrite_stale_hero_url($matches[2]) . $matches[3];
+			}
+		}
+		return implode(',', $parts);
+	}
+
+	if (false !== stripos($value, 'url(')) {
+		return test_theme_rewrite_css_hero_urls($value);
+	}
+
+	return test_theme_rewrite_stale_hero_url($value);
+}
+
+/**
+ * Detect a residual same-site stale hero URL in image/CSS contexts.
+ *
+ * External URLs containing the same path are not residual failures and are
+ * intentionally preserved.
+ *
+ * @param string $output
+ * @return bool
+ */
+function test_theme_output_has_residual_stale_hero_url($output)
+{
+	if (!is_string($output) || '' === $output) {
+		return false;
+	}
+
+	$image_attributes = 'src|srcset|data-src|data-srcset|data-lazy-src|data-lazy-srcset|data-bg|data-background|data-background-image|data-image|poster';
+	if (preg_match_all('#(?<![\w-])((?:' . $image_attributes . '|style))\s*=\s*(["\'])(.*?)\2#is', $output, $attributes)) {
+		foreach ($attributes[3] as $index => $value) {
+			$attribute = strtolower($attributes[1][$index]);
+
+			if ('style' === $attribute || false !== stripos($value, 'url(')) {
+				if (preg_match_all('#url\(\s*(["\']?)(.*?)\1\s*\)#is', $value, $urls)) {
+					foreach ($urls[2] as $url) {
+						if (test_theme_is_stale_hero_url($url)) {
+							return true;
+						}
+					}
+				}
+				continue;
+			}
+
+			if (false !== strpos($attribute, 'srcset')) {
+				foreach (explode(',', $value) as $candidate) {
+					if (preg_match('#^\s*(\S+)#', $candidate, $matches) && test_theme_is_stale_hero_url($matches[1])) {
+						return true;
+					}
+				}
+				continue;
+			}
+
+			if (test_theme_is_stale_hero_url($value)) {
+				return true;
+			}
+		}
+	}
+
+	if (preg_match_all('#<style\b[^>]*>(.*?)</style>#is', $output, $styles)) {
+		foreach ($styles[1] as $css) {
+			if (preg_match_all('#url\(\s*(["\']?)(.*?)\1\s*\)#is', $css, $urls)) {
+				foreach ($urls[2] as $url) {
+					if (test_theme_is_stale_hero_url($url)) {
+						return true;
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+/**
  * Repoint stale test-theme hero image URLs at the active theme's copies.
  *
  * The existing slider records were provisioned while the legacy test-theme
  * was active. The same hero files exist in this theme, so the rendered URLs
  * are corrected without touching slider records or plugin internals.
  *
+ * Only image attributes and CSS url() values are rewritten, and only when the
+ * URL belongs to this site. External URLs, query strings, links, text, and
+ * markup outside those URL values are preserved.
+ *
  * @param string $output Smart Slider shortcode output.
- * @return string Corrected output, or an empty string when it still depends on test-theme.
+ * @return string Corrected output, or an empty string when a same-site stale URL remains.
  */
 function test_theme_repair_stale_hero_asset_urls($output)
 {
@@ -294,25 +514,47 @@ function test_theme_repair_stale_hero_asset_urls($output)
 		return $output;
 	}
 
-	$stale_path = '/wp-content/themes/test-theme/assets/images/hero/';
+	$stale_path = test_theme_get_stale_hero_asset_path();
 	if (false === strpos($output, $stale_path)) {
 		return $output;
 	}
 
-	$current_base = get_stylesheet_directory_uri() . '/assets/images/hero/';
-	$rewritten = preg_replace(
-		'#(?:https?:)?//[^"\'\s<>]*?' . preg_quote($stale_path, '#') . '#i',
-		$current_base,
+	$image_attributes = 'src|srcset|data-src|data-srcset|data-lazy-src|data-lazy-srcset|data-bg|data-background|data-background-image|data-image|poster';
+
+	$rewritten = preg_replace_callback(
+		'#((?<![\w-])(?:' . $image_attributes . ')\s*=\s*)(["\'])(.*?)\2#is',
+		function ($matches) {
+			return $matches[1] . $matches[2] . test_theme_rewrite_hero_image_attribute($matches[3], $matches[1]) . $matches[2];
+		},
 		$output
 	);
-
 	if (null !== $rewritten) {
 		$output = $rewritten;
 	}
 
-	$output = str_replace($stale_path, wp_make_link_relative($current_base), $output);
+	$rewritten = preg_replace_callback(
+		'#((?<![\w-])style\s*=\s*)(["\'])(.*?)\2#is',
+		function ($matches) {
+			return $matches[1] . $matches[2] . test_theme_rewrite_css_hero_urls($matches[3]) . $matches[2];
+		},
+		$output
+	);
+	if (null !== $rewritten) {
+		$output = $rewritten;
+	}
 
-	return false === strpos($output, $stale_path) ? $output : '';
+	$rewritten = preg_replace_callback(
+		'#(<style\b[^>]*>)(.*?)(</style>)#is',
+		function ($matches) {
+			return $matches[1] . test_theme_rewrite_css_hero_urls($matches[2]) . $matches[3];
+		},
+		$output
+	);
+	if (null !== $rewritten) {
+		$output = $rewritten;
+	}
+
+	return test_theme_output_has_residual_stale_hero_url($output) ? '' : $output;
 }
 
 /**

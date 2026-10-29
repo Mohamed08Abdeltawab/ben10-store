@@ -123,6 +123,63 @@ function test_theme_normalize_country($val)
 }
 
 /**
+ * Canonical country filter values and the request aliases accepted for each.
+ *
+ * Only exact (case-insensitive) matches are accepted so unknown request values
+ * can never be interpreted as the broad "أخرى" bucket.
+ *
+ * @return array<string, string[]>
+ */
+function test_theme_get_country_filter_aliases()
+{
+	return array(
+		'الصين' => array('الصين', 'صين', 'china'),
+		'ألمانيا' => array('ألمانيا', 'ألمان', 'germany'),
+		'إيطاليا' => array('إيطاليا', 'ايطاليا', 'إيطال', 'ايطال', 'italy'),
+		'مصر (صناعة محلية)' => array('مصر (صناعة محلية)', 'مصر', 'محلي', 'egypt'),
+		'تركيا' => array('تركيا', 'ترك', 'turkey'),
+		'تايوان' => array('تايوان', 'taiwan'),
+		'اليابان' => array('اليابان', 'يابان', 'japan'),
+		'إسبانيا' => array('إسبانيا', 'اسبانيا', 'إسبان', 'اسبان', 'spain'),
+		'الولايات المتحدة' => array('الولايات المتحدة', 'ولايات', 'أمريك', 'امريك', 'usa', 'united states'),
+		'أخرى' => array('أخرى', 'اخرى', 'other'),
+	);
+}
+
+/**
+ * Parse and validate country filter values from a request.
+ *
+ * Unknown values are rejected instead of being normalized to "أخرى". If every
+ * supplied value is unknown the result is an empty array, which callers must
+ * treat as an impossible filter (zero results), never as "no filter".
+ *
+ * @param mixed $values
+ * @return string[] Canonical country names.
+ */
+function test_theme_parse_country_filter($values)
+{
+	$alias_map = array();
+	foreach (test_theme_get_country_filter_aliases() as $canonical => $aliases) {
+		foreach ($aliases as $alias) {
+			$alias_map[mb_strtolower(trim((string) $alias))] = $canonical;
+		}
+	}
+
+	$matched = array();
+	foreach ((array) $values as $value) {
+		if (!is_scalar($value)) {
+			continue;
+		}
+		$key = mb_strtolower(trim(wp_unslash((string) $value)));
+		if ('' !== $key && isset($alias_map[$key])) {
+			$matched[] = $alias_map[$key];
+		}
+	}
+
+	return array_values(array_unique($matched));
+}
+
+/**
  * Get normalized country of origin for a product, or null if unassigned.
  *
  * @param int $post_id
@@ -163,21 +220,41 @@ function test_theme_get_product_filter_index()
 		}
 	}
 
-	static $local_index = null;
-	if (null !== $local_index) {
-		return $local_index;
-	}
-
 	$cached = wp_cache_get('product_filter_index', 'test_theme_catalog');
 	if (is_array($cached) && isset($cached['products'])) {
-		$local_index = $cached;
-		return $local_index;
+		return $cached;
 	}
 
 	$local_index = test_theme_build_product_filter_index();
 	wp_cache_set('product_filter_index', $local_index, 'test_theme_catalog', HOUR_IN_SECONDS);
 
 	return $local_index;
+}
+
+/**
+ * Get the brand tokens used to match the filter_brand request values.
+ *
+ * @param int $product_id
+ * @return string[]
+ */
+function test_theme_get_product_brand_tokens($product_id)
+{
+	$brands = array();
+	if (!taxonomy_exists('product_brand')) {
+		return $brands;
+	}
+
+	$brand_terms = wp_get_post_terms($product_id, 'product_brand');
+	if (!is_wp_error($brand_terms)) {
+		foreach ($brand_terms as $brand_term) {
+			$brands[] = $brand_term->slug;
+			$brands[] = urldecode($brand_term->slug);
+			$brands[] = sanitize_title($brand_term->name);
+			$brands[] = $brand_term->name;
+		}
+	}
+
+	return array_values(array_unique(array_filter($brands)));
 }
 
 /**
@@ -216,11 +293,14 @@ function test_theme_build_product_filter_index()
 
 		if ($product instanceof \WC_Product) {
 			$price = (float) $product->get_price();
-			$is_instock = $product->is_in_stock();
+			$stock_status = (string) $product->get_stock_status();
 		} else {
 			$price = (float) get_post_meta($product_id, '_price', true);
-			$is_instock = ('instock' === get_post_meta($product_id, '_stock_status', true));
+			$stock_status = (string) get_post_meta($product_id, '_stock_status', true);
 		}
+		// Match the in_stock_only query exactly. WooCommerce::is_in_stock()
+		// also returns true for onbackorder, so it cannot be used here.
+		$is_instock = ('instock' === $stock_status);
 
 		$visibility = wp_get_post_terms($product_id, 'product_visibility', array('fields' => 'slugs'));
 		$visibility = is_array($visibility) ? $visibility : array();
@@ -239,12 +319,16 @@ function test_theme_build_product_filter_index()
 		}
 		$cats = array_values(array_unique(array_filter($cats)));
 
+		$brands = test_theme_get_product_brand_tokens($product_id);
+
 		$index['products'][$product_id] = array(
 			'country' => $country,
 			'class' => $classification,
 			'price' => $price,
+			'stock_status' => $stock_status,
 			'is_instock' => (bool) $is_instock,
 			'cats' => $cats,
+			'brands' => $brands,
 			'catalog_hidden' => $exclude_catalog,
 			'hidden' => ($exclude_catalog && $exclude_search),
 			'search_hidden' => $exclude_search,
@@ -260,21 +344,155 @@ function test_theme_build_product_filter_index()
 }
 
 /**
- * Clear the theme-local filter index after catalog changes.
+ * Read the version used to namespace theme-local catalog counts transients.
+ *
+ * The theme owns a non-autoloaded option and bumps it on every relevant
+ * catalog change. Core's transient version is also mixed in so changes made
+ * through Ashrafco Core invalidate the theme counts as well, without relying
+ * on a getter function that may not exist.
+ *
+ * @return string
+ */
+function test_theme_get_catalog_counts_version()
+{
+	$theme_version = (int) get_option('test_theme_catalog_counts_version', 0);
+	$core_version = (int) get_transient('ashrafco_catalog_cache_version');
+
+	return $theme_version . '-' . $core_version;
+}
+
+/**
+ * Bump the theme-owned catalog counts version and clear the index in-request cache.
+ */
+function test_theme_bump_catalog_counts_version()
+{
+	$current = (int) get_option('test_theme_catalog_counts_version', 0);
+	$next = max(time(), $current + 1);
+
+	update_option('test_theme_catalog_counts_version', $next, false);
+	wp_cache_delete('product_filter_index', 'test_theme_catalog');
+}
+
+/**
+ * Clear the theme-local filter index and counts after catalog changes.
  */
 function test_theme_invalidate_product_filter_index()
 {
-	wp_cache_delete('product_filter_index', 'test_theme_catalog');
+	test_theme_bump_catalog_counts_version();
 }
+
+/**
+ * Invalidate counts when a product/variation is published, unpublished, trashed, or restored.
+ *
+ * @param string $new_status
+ * @param string $old_status
+ * @param WP_Post $post
+ */
+function test_theme_invalidate_on_product_status_change($new_status, $old_status, $post)
+{
+	if ($new_status === $old_status) {
+		return;
+	}
+	if ($post instanceof WP_Post && in_array($post->post_type, array('product', 'product_variation'), true)) {
+		test_theme_bump_catalog_counts_version();
+	}
+}
+
+/**
+ * Invalidate counts when product taxonomy assignments change.
+ *
+ * @param int $object_id
+ * @param array $terms
+ * @param array $tt_ids
+ * @param string $taxonomy
+ */
+function test_theme_invalidate_on_object_terms($object_id, $terms, $tt_ids, $taxonomy)
+{
+	if (in_array($taxonomy, array('product_cat', 'product_tag', 'product_brand'), true)) {
+		test_theme_bump_catalog_counts_version();
+	}
+}
+
+/**
+ * Invalidate counts when a product taxonomy term is created, edited, or deleted.
+ *
+ * @param int $term_id
+ * @param int $tt_id
+ * @param string $taxonomy
+ */
+function test_theme_invalidate_on_term_change($term_id, $tt_id = 0, $taxonomy = '')
+{
+	if (in_array($taxonomy, array('product_cat', 'product_tag', 'product_brand'), true)) {
+		test_theme_bump_catalog_counts_version();
+	}
+}
+
+/**
+ * Invalidate counts when relevant product meta is written directly.
+ *
+ * WooCommerce saves normally fire the product/variation hooks above, but
+ * imports and integrations may update price, stock, country, or classification
+ * meta directly. One bump per request is enough because the version namespaces
+ * every subsequent counts lookup.
+ *
+ * @param int $meta_id
+ * @param int $object_id
+ * @param string $meta_key
+ * @param mixed $meta_value
+ */
+function test_theme_invalidate_on_product_meta_change($meta_id, $object_id, $meta_key, $meta_value)
+{
+	static $bumped = false;
+	if ($bumped) {
+		return;
+	}
+
+	$keys = array(
+		'_price',
+		'_regular_price',
+		'_sale_price',
+		'_stock',
+		'_stock_status',
+		'_manage_stock',
+		'_backorders',
+		'_test_theme_tool_type',
+		'_test_theme_country_of_origin',
+		'country_of_origin',
+		'_tiling_country',
+	);
+	if (!in_array($meta_key, $keys, true)) {
+		return;
+	}
+	if (!in_array(get_post_type($object_id), array('product', 'product_variation'), true)) {
+		return;
+	}
+
+	$bumped = true;
+	test_theme_bump_catalog_counts_version();
+}
+
 add_action('woocommerce_new_product', 'test_theme_invalidate_product_filter_index');
 add_action('woocommerce_update_product', 'test_theme_invalidate_product_filter_index');
 add_action('woocommerce_delete_product', 'test_theme_invalidate_product_filter_index');
+add_action('woocommerce_product_set_stock', 'test_theme_invalidate_product_filter_index');
+add_action('woocommerce_variation_set_stock', 'test_theme_invalidate_product_filter_index');
 add_action('woocommerce_product_set_stock_status', 'test_theme_invalidate_product_filter_index');
 add_action('woocommerce_variation_set_stock_status', 'test_theme_invalidate_product_filter_index');
-add_action('set_object_terms', 'test_theme_invalidate_product_filter_index');
-add_action('edited_product_cat', 'test_theme_invalidate_product_filter_index');
-add_action('created_product_cat', 'test_theme_invalidate_product_filter_index');
-add_action('delete_product_cat', 'test_theme_invalidate_product_filter_index');
+add_action('woocommerce_new_product_variation', 'test_theme_invalidate_product_filter_index');
+add_action('woocommerce_update_product_variation', 'test_theme_invalidate_product_filter_index');
+add_action('woocommerce_save_product_variation', 'test_theme_invalidate_product_filter_index');
+add_action('woocommerce_before_delete_product_variation', 'test_theme_invalidate_product_filter_index');
+add_action('woocommerce_delete_product_variation', 'test_theme_invalidate_product_filter_index');
+add_action('woocommerce_scheduled_sales', 'test_theme_invalidate_product_filter_index', 20);
+add_action('update_option_woocommerce_hide_out_of_stock_items', 'test_theme_invalidate_product_filter_index');
+add_action('transition_post_status', 'test_theme_invalidate_on_product_status_change', 10, 3);
+add_action('set_object_terms', 'test_theme_invalidate_on_object_terms', 10, 4);
+add_action('created_term', 'test_theme_invalidate_on_term_change', 10, 3);
+add_action('edited_term', 'test_theme_invalidate_on_term_change', 10, 3);
+add_action('delete_term', 'test_theme_invalidate_on_term_change', 10, 3);
+add_action('added_post_meta', 'test_theme_invalidate_on_product_meta_change', 10, 4);
+add_action('updated_post_meta', 'test_theme_invalidate_on_product_meta_change', 10, 4);
+add_action('deleted_post_meta', 'test_theme_invalidate_on_product_meta_change', 10, 4);
 
 /**
  * Get product IDs matching the given countries.
@@ -284,21 +502,15 @@ add_action('delete_product_cat', 'test_theme_invalidate_product_filter_index');
  */
 function test_theme_get_product_ids_by_country($countries)
 {
+	$countries = test_theme_parse_country_filter($countries);
 	if (empty($countries)) {
 		return array();
 	}
 	$index = test_theme_get_product_filter_index();
 	$matched = array();
-	foreach ((array) $countries as $c) {
-		$keys = array((string) $c);
-		$normalized = test_theme_normalize_country($c);
-		if (!empty($normalized)) {
-			$keys[] = $normalized;
-		}
-		foreach (array_unique($keys) as $key) {
-			if (!empty($index['by_country'][$key])) {
-				$matched = array_merge($matched, $index['by_country'][$key]);
-			}
+	foreach ($countries as $country) {
+		if (!empty($index['by_country'][$country])) {
+			$matched = array_merge($matched, $index['by_country'][$country]);
 		}
 	}
 	return array_values(array_unique($matched));
@@ -326,7 +538,53 @@ function test_theme_get_product_ids_by_classification($classes)
 }
 
 /**
+ * Split a filter request value into a list of scalar strings.
+ *
+ * @param mixed $value
+ * @return string[]
+ */
+function test_theme_get_request_filter_values($value)
+{
+	$values = is_array($value) ? $value : array($value);
+	$list = array();
+
+	foreach ($values as $item) {
+		if (!is_scalar($item)) {
+			continue;
+		}
+		$item = trim((string) $item);
+		if ('' === $item) {
+			continue;
+		}
+		if (!is_array($value) && false !== strpos($item, ',')) {
+			foreach (explode(',', $item) as $part) {
+				$part = trim((string) $part);
+				if ('' !== $part) {
+					$list[] = $part;
+				}
+			}
+			continue;
+		}
+		$list[] = $item;
+	}
+
+	return $list;
+}
+
+/**
  * Compute real-time filter counts for WooCommerce archive sidebar.
+ *
+ * Count semantics:
+ * - Every facet ignores its own active selection and applies all other active
+ *   filters, so each count shows what selecting that option would return.
+ * - "In stock" is a strict _stock_status === 'instock' count, matching the
+ *   in_stock_only query. onbackorder products are intentionally excluded.
+ * - When woocommerce_hide_out_of_stock_items is "yes", outofstock products are
+ *   excluded from every count, matching WooCommerce's catalog query.
+ * - Unknown country request values are rejected as an impossible filter and
+ *   produce zero counts instead of falling back to the broad "أخرى" bucket.
+ * - Search requests are never persisted to transients, and cache keys only
+ *   include the filter arguments this function actually reads.
  *
  * @param array $args
  * @return array
@@ -354,38 +612,28 @@ function test_theme_compute_filter_counts($args = array())
 		'معدات وأجهزة',
 		'أخرى',
 	);
+	$zero_result = array(
+		'instock' => 0,
+		'countries' => array_fill_keys($country_keys, 0),
+		'classifications' => array_fill_keys($classification_keys, 0),
+	);
 
-	$version = function_exists('ashrafco_get_catalog_cache_version') ? ashrafco_get_catalog_cache_version() : 1;
-	// Namespace local-index counts so stale pre-fix/core cache entries are not reused.
-	$index_source = function_exists('ashrafco_get_product_filter_index') ? 'core' : 'theme-v1';
-	$queried_cat_id = is_product_category() ? get_queried_object_id() : 0;
-	$cache_key = 'ashrafco_fc_' . $version . '_' . $index_source . '_' . md5(wp_json_encode($args) . '_' . $queried_cat_id);
+	$args = is_array($args) ? $args : array();
 
-	$cached = get_transient($cache_key);
-	if (is_array($cached) && isset($cached['instock'], $cached['countries'], $cached['classifications'])) {
-		return $cached;
-	}
-
-	$index = test_theme_get_product_filter_index();
-	$all_products = isset($index['products']) ? $index['products'] : array();
-
-	// Determine matching category filter
+	// Category: match the sanitized slugs the main query applies.
 	$target_cats = array();
-	if (!empty($args['filter_cat'])) {
-		if (is_array($args['filter_cat'])) {
-			$raw_cats = $args['filter_cat'];
-		} else {
-			$raw_str = (string) $args['filter_cat'];
-			$raw_cats = strpos($raw_str, ',') !== false ? explode(',', $raw_str) : array($raw_str);
+	$category_key = array();
+	if (isset($args['filter_cat'])) {
+		foreach (test_theme_get_request_filter_values($args['filter_cat']) as $raw_cat) {
+			$target_cats[] = $raw_cat;
+			$target_cats[] = sanitize_title($raw_cat);
+			$target_cats[] = rawurlencode($raw_cat);
+			$target_cats[] = urldecode($raw_cat);
+			$category_key[] = sanitize_title($raw_cat);
 		}
-		foreach ($raw_cats as $tc) {
-			$tc = (string) $tc;
-			$target_cats[] = $tc;
-			$target_cats[] = sanitize_title($tc);
-			$target_cats[] = rawurlencode($tc);
-			$target_cats[] = urldecode($tc);
-		}
-		$target_cats = array_values(array_filter(array_unique($target_cats)));
+		$target_cats = array_values(array_filter(array_unique($target_cats), 'strlen'));
+		$category_key = array_values(array_filter(array_unique($category_key), 'strlen'));
+		sort($category_key);
 	} elseif (is_product_category()) {
 		$queried = get_queried_object();
 		if ($queried && !empty($queried->slug)) {
@@ -395,99 +643,190 @@ function test_theme_compute_filter_counts($args = array())
 				sanitize_title($slug),
 				rawurlencode($slug),
 				urldecode($slug),
-			))));
+			)), 'strlen'));
+			$category_key = $target_cats;
+			sort($category_key);
 		}
 	}
 
-	$has_search = !empty($args['s']);
-	$search_matched_ids = null;
+	// Countries: only known aliases are accepted. An unknown-only selection is
+	// an impossible filter, not an inactive one.
+	$selected_countries = array();
+	$country_filter_invalid = false;
+	if (isset($args['filter_country'])) {
+		$raw_countries = array_filter(array_map('sanitize_text_field', test_theme_get_request_filter_values($args['filter_country'])), 'strlen');
+		if (!empty($raw_countries)) {
+			$selected_countries = test_theme_parse_country_filter($raw_countries);
+			if (empty($selected_countries)) {
+				$country_filter_invalid = true;
+			}
+			sort($selected_countries);
+		}
+	}
 
+	// Classifications: unknown values naturally match no product, like the query.
+	$selected_classes = array();
+	if (isset($args['filter_classification'])) {
+		$selected_classes = array_values(array_unique(array_filter(array_map('sanitize_text_field', test_theme_get_request_filter_values($args['filter_classification'])), 'strlen')));
+		sort($selected_classes);
+	}
+
+	// Brands: the query uses sanitize_title(), so counts do too.
+	$selected_brands = array();
+	if (isset($args['filter_brand'])) {
+		$selected_brands = array_values(array_unique(array_filter(array_map('sanitize_title', test_theme_get_request_filter_values($args['filter_brand'])), 'strlen')));
+		sort($selected_brands);
+	}
+
+	$has_search = isset($args['s']) && is_scalar($args['s']) && '' !== trim((string) $args['s']);
+	$search_term = $has_search ? sanitize_text_field((string) $args['s']) : '';
+
+	$has_min = isset($args['min_price']) && is_scalar($args['min_price']) && '' !== trim((string) $args['min_price']);
+	$has_max = isset($args['max_price']) && is_scalar($args['max_price']) && '' !== trim((string) $args['max_price']);
+	$min_p = $has_min ? max(0, floatval($args['min_price'])) : 0;
+	$max_p = $has_max ? max(0, floatval($args['max_price'])) : 0;
+	$price_impossible = ($has_min && $has_max && $max_p < $min_p);
+
+	$in_stock_only = isset($args['in_stock_only']) && is_scalar($args['in_stock_only']) && '1' === (string) $args['in_stock_only'];
+	$hide_out_of_stock = ('yes' === get_option('woocommerce_hide_out_of_stock_items'));
+
+	$index_source = function_exists('ashrafco_get_product_filter_index') ? 'core' : 'theme';
+	$version = preg_replace('/[^0-9A-Za-z_-]/', '', (string) test_theme_get_catalog_counts_version());
+	$cache_args = array(
+		'cats' => $category_key,
+		'archive' => is_product_category() ? (int) get_queried_object_id() : 0,
+		'countries' => $country_filter_invalid ? array('__invalid__') : $selected_countries,
+		'classes' => $selected_classes,
+		'brands' => $selected_brands,
+		'min' => $has_min ? number_format($min_p, 6, '.', '') : '',
+		'max' => $has_max ? number_format($max_p, 6, '.', '') : '',
+		'stock_only' => $in_stock_only ? 1 : 0,
+		'hide_out_of_stock' => $hide_out_of_stock ? 1 : 0,
+		'impossible_price' => $price_impossible ? 1 : 0,
+	);
+	$cache_key = 'ashrafco_fc_' . $version . '_' . $index_source . '_' . md5((string) wp_json_encode($cache_args));
+
+	// Search results are user-specific and can generate unbounded keys.
+	if (!$has_search) {
+		$cached = get_transient($cache_key);
+		if (is_array($cached) && isset($cached['instock'], $cached['countries'], $cached['classifications'])) {
+			return $cached;
+		}
+	}
+
+	if ($country_filter_invalid || $price_impossible) {
+		if (!$has_search) {
+			set_transient($cache_key, $zero_result, 6 * HOUR_IN_SECONDS);
+		}
+		return $zero_result;
+	}
+
+	$search_matched_ids = null;
 	if ($has_search) {
-		// Bounded query for search terms instead of unbounded -1
+		// Bounded query for search terms instead of unbounded -1.
 		$search_query = new WP_Query(array(
 			'post_type' => 'product',
 			'post_status' => 'publish',
 			'posts_per_page' => 500,
 			'fields' => 'ids',
 			'no_found_rows' => true,
-			's' => sanitize_text_field($args['s']),
+			's' => $search_term,
 		));
-		$search_matched_ids = array_flip($search_query->posts);
+		$search_matched_ids = array_flip(array_map('intval', $search_query->posts));
 	}
 
-	$has_min = isset($args['min_price']) && '' !== trim((string) $args['min_price']);
-	$has_max = isset($args['max_price']) && '' !== trim((string) $args['max_price']);
-	$min_p = $has_min ? max(0, floatval($args['min_price'])) : 0;
-	$max_p = $has_max ? max(0, floatval($args['max_price'])) : 0;
+	$index = test_theme_get_product_filter_index();
+	$all_products = isset($index['products']) ? $index['products'] : array();
 
 	$country_counts = array_fill_keys($country_keys, 0);
 	$classification_counts = array_fill_keys($classification_keys, 0);
 	$instock_count = 0;
 
-	$in_stock_only = !empty($args['in_stock_only']);
-
 	foreach ($all_products as $pid => $pinfo) {
-		// Respect WooCommerce catalog visibility
+		$pinfo = is_array($pinfo) ? $pinfo : array();
+
+		// Respect WooCommerce catalog visibility.
 		if ($has_search) {
 			if (!empty($pinfo['search_hidden'])) {
 				continue;
 			}
-		} else {
-			if (!empty($pinfo['catalog_hidden']) || !empty($pinfo['hidden'])) {
-				continue;
-			}
+		} elseif (!empty($pinfo['catalog_hidden']) || !empty($pinfo['hidden'])) {
+			continue;
 		}
 
-		// Search keyword filter
+		// Strict stock status, matching the _stock_status query clause.
+		if (isset($pinfo['stock_status'])) {
+			$stock_status = (string) $pinfo['stock_status'];
+		} else {
+			$product = function_exists('wc_get_product') ? wc_get_product($pid) : null;
+			$stock_status = $product instanceof \WC_Product
+				? (string) $product->get_stock_status()
+				: (!empty($pinfo['is_instock']) ? 'instock' : 'outofstock');
+		}
+		if ($hide_out_of_stock && 'outofstock' === $stock_status) {
+			continue;
+		}
+		$product_is_instock = ('instock' === $stock_status);
+
+		// Search keyword filter.
 		if ($has_search && !isset($search_matched_ids[$pid])) {
 			continue;
 		}
 
-		// Category filter
-		if (!empty($target_cats)) {
-			if (empty($pinfo['cats']) || !array_intersect($target_cats, $pinfo['cats'])) {
-				continue;
-			}
-		}
-
-		// Price range filter (with strict min > max boundary validation)
-		if ($has_min && $has_max) {
-			if ($max_p >= $min_p) {
-				if ($pinfo['price'] < $min_p || $pinfo['price'] > $max_p) {
-					continue;
-				}
-			} else {
-				// Impossible range (min > max): matches 0 products
-				continue;
-			}
-		} elseif ($has_min) {
-			if ($pinfo['price'] < $min_p) {
-				continue;
-			}
-		} elseif ($has_max) {
-			if ($pinfo['price'] > $max_p) {
-				continue;
-			}
-		}
-
-		if (!empty($pinfo['is_instock'])) {
-			$instock_count++;
-		}
-
-		if ($in_stock_only && empty($pinfo['is_instock'])) {
+		// Category filter.
+		if (!empty($target_cats) && (empty($pinfo['cats']) || !array_intersect($target_cats, (array) $pinfo['cats']))) {
 			continue;
 		}
 
-		$c = $pinfo['country'];
-		if (null !== $c && isset($country_counts[$c])) {
-			$country_counts[$c]++;
+		// Price range filter (with strict min > max boundary validation).
+		$price = isset($pinfo['price']) ? (float) $pinfo['price'] : 0.0;
+		if ($has_min && $has_max) {
+			if ($price < $min_p || $price > $max_p) {
+				continue;
+			}
+		} elseif ($has_min) {
+			if ($price < $min_p) {
+				continue;
+			}
+		} elseif ($has_max) {
+			if ($price > $max_p) {
+				continue;
+			}
 		}
 
-		$cls = $pinfo['class'];
-		if (isset($classification_counts[$cls])) {
-			$classification_counts[$cls]++;
-		} else {
-			$classification_counts['أخرى']++;
+		// Brand filter.
+		if (!empty($selected_brands)) {
+			$product_brands = isset($pinfo['brands']) && is_array($pinfo['brands'])
+				? $pinfo['brands']
+				: test_theme_get_product_brand_tokens($pid);
+			if (!array_intersect($selected_brands, $product_brands)) {
+				continue;
+			}
+		}
+
+		$product_country = isset($pinfo['country']) ? $pinfo['country'] : null;
+		$product_class = isset($pinfo['class']) ? (string) $pinfo['class'] : 'أخرى';
+		if (!isset($classification_counts[$product_class])) {
+			$product_class = 'أخرى';
+		}
+
+		$matches_stock = !$in_stock_only || $product_is_instock;
+		$matches_country = (empty($selected_countries) || in_array($product_country, $selected_countries, true));
+		$matches_class = (empty($selected_classes) || in_array($product_class, $selected_classes, true));
+
+		// In-stock facet: ignore its own filter, apply country + classification.
+		if ($matches_country && $matches_class && $product_is_instock) {
+			$instock_count++;
+		}
+
+		// Country facet: ignore country, apply stock + classification.
+		if ($matches_stock && $matches_class && null !== $product_country && isset($country_counts[$product_country])) {
+			$country_counts[$product_country]++;
+		}
+
+		// Classification facet: ignore classification, apply stock + country.
+		if ($matches_stock && $matches_country) {
+			$classification_counts[$product_class]++;
 		}
 	}
 
@@ -497,7 +836,10 @@ function test_theme_compute_filter_counts($args = array())
 		'classifications' => $classification_counts,
 	);
 
-	set_transient($cache_key, $result, 6 * HOUR_IN_SECONDS);
+	if (!$has_search) {
+		set_transient($cache_key, $result, 6 * HOUR_IN_SECONDS);
+	}
+
 	return $result;
 }
 
@@ -542,16 +884,11 @@ function test_theme_filter_products_query($q)
 	$matching_ids = array();
 
 	// Country Filter
-	if (!empty($_GET['filter_country'])) {
-		if (is_array($_GET['filter_country'])) {
-			$raw_countries = wp_unslash($_GET['filter_country']);
-		} else {
-			$raw_c_str = (string) wp_unslash($_GET['filter_country']);
-			$raw_countries = strpos($raw_c_str, ',') !== false ? explode(',', $raw_c_str) : array($raw_c_str);
-		}
-		$countries = array_filter(array_map('sanitize_text_field', (array) $raw_countries));
+	if (isset($_GET['filter_country'])) {
+		$countries = array_filter(array_map('sanitize_text_field', test_theme_get_request_filter_values(wp_unslash($_GET['filter_country']))), 'strlen');
 
 		if (!empty($countries)) {
+			// Unknown values return an empty ID list, which becomes post__in [0].
 			$country_ids = test_theme_get_product_ids_by_country($countries);
 			$matching_ids = $country_ids;
 			$restrict_ids = true;
@@ -559,14 +896,8 @@ function test_theme_filter_products_query($q)
 	}
 
 	// Classification Filter
-	if (!empty($_GET['filter_classification'])) {
-		if (is_array($_GET['filter_classification'])) {
-			$raw_classes = wp_unslash($_GET['filter_classification']);
-		} else {
-			$raw_cls_str = (string) wp_unslash($_GET['filter_classification']);
-			$raw_classes = strpos($raw_cls_str, ',') !== false ? explode(',', $raw_cls_str) : array($raw_cls_str);
-		}
-		$classes = array_filter(array_map('sanitize_text_field', (array) $raw_classes));
+	if (isset($_GET['filter_classification'])) {
+		$classes = array_filter(array_map('sanitize_text_field', test_theme_get_request_filter_values(wp_unslash($_GET['filter_classification']))), 'strlen');
 
 		if (!empty($classes)) {
 			$class_ids = test_theme_get_product_ids_by_classification($classes);
@@ -636,14 +967,8 @@ function test_theme_filter_products_query($q)
 	}
 
 	// 4. Category Terms Filter
-	if (!empty($_GET['filter_cat'])) {
-		if (is_array($_GET['filter_cat'])) {
-			$raw_cats = wp_unslash($_GET['filter_cat']);
-		} else {
-			$raw_cat_str = (string) wp_unslash($_GET['filter_cat']);
-			$raw_cats = strpos($raw_cat_str, ',') !== false ? explode(',', $raw_cat_str) : array($raw_cat_str);
-		}
-		$cat_slugs = array_filter(array_map('sanitize_title', (array) $raw_cats));
+	if (isset($_GET['filter_cat'])) {
+		$cat_slugs = array_filter(array_map('sanitize_title', test_theme_get_request_filter_values(wp_unslash($_GET['filter_cat']))), 'strlen');
 
 		if (!empty($cat_slugs)) {
 			// If on a taxonomy archive (product_cat), remove the initial single-cat clause so our multi-cat filter takes precedence
@@ -665,14 +990,8 @@ function test_theme_filter_products_query($q)
 	}
 
 	// 5. Brand Terms Filter
-	if (!empty($_GET['filter_brand'])) {
-		if (is_array($_GET['filter_brand'])) {
-			$raw_brands = wp_unslash($_GET['filter_brand']);
-		} else {
-			$raw_b_str = (string) wp_unslash($_GET['filter_brand']);
-			$raw_brands = strpos($raw_b_str, ',') !== false ? explode(',', $raw_b_str) : array($raw_b_str);
-		}
-		$brand_slugs = array_filter(array_map('sanitize_title', (array) $raw_brands));
+	if (isset($_GET['filter_brand'])) {
+		$brand_slugs = array_filter(array_map('sanitize_title', test_theme_get_request_filter_values(wp_unslash($_GET['filter_brand']))), 'strlen');
 
 		if (!empty($brand_slugs)) {
 			$term_ids = array();
