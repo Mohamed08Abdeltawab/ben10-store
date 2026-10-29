@@ -73,8 +73,8 @@
 
 .test-theme-field-group input:focus,
 .test-theme-field-group select:focus {
-	border-color: #d90429;
-	box-shadow: 0 0 0 2px rgba(217, 4, 41, 0.15);
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 2px var(--color-focus-ring);
 	outline: none;
 }
 

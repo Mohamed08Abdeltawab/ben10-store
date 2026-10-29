@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 64" width="280" height="64" fill="none">
+  <defs>
+    <linearGradient id="emblemGradDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1f2420"/>
+      <stop offset="100%" stop-color="#101211"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Emblem on Left: X=8..56, Center=(32, 32), r=22 -->
+  <g transform="translate(4, 4)">
+    <!-- Octagon Case in Deep Black with Dark Green Border -->
+    <polygon points="20,4 36,4 48,16 48,32 36,44 20,44 8,32 8,16" 
+             fill="url(#emblemGradDark)" stroke="#244A27" stroke-width="1.8" stroke-linejoin="round"/>
+    <!-- Dial Bezel -->
+    <circle cx="28" cy="24" r="18" fill="#101211" stroke="#244A27" stroke-width="1.5"/>
+    <!-- Lume Markers -->
+    <rect x="27" y="9" width="2" height="4" rx="0.8" fill="#A3E635"/>
+    <rect x="41" y="23" width="4" height="2" rx="0.8" fill="#A3E635"/>
+    <rect x="27" y="35" width="2" height="4" rx="0.8" fill="#A3E635"/>
+    <rect x="11" y="23" width="4" height="2" rx="0.8" fill="#A3E635"/>
+    <!-- Hands at 10:10 -->
+    <g transform="rotate(-60 28 24)">
+      <line x1="28" y1="24" x2="28" y2="14" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
+      <line x1="28" y1="17" x2="28" y2="14" stroke="#A3E635" stroke-width="1.6" stroke-linecap="round"/>
+    </g>
+    <g transform="rotate(60 28 24)">
+      <line x1="28" y1="24" x2="28" y2="11" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round"/>
+      <line x1="28" y1="15" x2="28" y2="11" stroke="#A3E635" stroke-width="1.4" stroke-linecap="round"/>
+    </g>
+    <circle cx="28" cy="24" r="2.2" fill="#101211" stroke="#A3E635" stroke-width="1.2"/>
+    <circle cx="28" cy="24" r="1" fill="#A3E635"/>
+  </g>
+
+  <!-- Wordmark 'BEN' (Deep Black #101211 for maximum light background contrast) -->
+  <!-- B -->
+  <path d="M68 18 H86 C91.5 18 95 21 95 25 C95 27.8 93.2 30 90.5 31 C94 32.2 96 35 96 39 C96 44 91.8 47 86 47 H68 V18 Z 
+           M76 24 V29 H84 C86.5 29 88 28 88 26.5 C88 25 86.5 24 84 24 H76 Z 
+           M76 35 V41 H85 C87.8 41 89.2 40 89.2 38 C89.2 36 87.8 35 85 35 H76 Z" 
+        fill="#101211"/>
+
+  <!-- E -->
+  <path d="M103 18 H125 V24.5 H111 V29 H123 V35 H111 V40.5 H125 V47 H103 V18 Z" 
+        fill="#101211"/>
+
+  <!-- N -->
+  <path d="M133 18 H140.5 L153 37.5 V18 H160.5 V47 H153.5 L140.5 27 V47 H133 V18 Z" 
+        fill="#101211"/>
+
+  <!-- Number '10' (Deep Black #101211 with Ben10 Green #A3E635 Accents) -->
+  <!-- 1 -->
+  <path d="M171 25.5 L178.5 18 H185 V47 H177 V26 L172.5 29.5 L171 25.5 Z" 
+        fill="#101211"/>
+  <!-- Bevel Highlight on 1 in Ben10 Green -->
+  <polygon points="171,25.5 178.5,18 181,18 174,27" fill="#A3E635"/>
+
+  <!-- 0: Precision Watch Bezel Register -->
+  <g transform="translate(193, 17)">
+    <!-- Outer Register Ring in Deep Black with Dark Green border -->
+    <path d="M16 0 C24.8 0 32 6.7 32 15 C32 23.3 24.8 30 16 30 C7.2 30 0 23.3 0 15 C0 6.7 7.2 0 16 0 Z 
+             M16 6.5 C11 6.5 7 10.3 7 15 C7 19.7 11 23.5 16 23.5 C21 23.5 25 19.7 25 15 C25 10.3 21 6.5 16 6.5 Z" 
+          fill="#101211" stroke="#244A27" stroke-width="0.8"/>
+    <!-- Inner Lume Ring in Ben10 Green -->
+    <circle cx="16" cy="15" r="8" fill="none" stroke="#A3E635" stroke-width="1.8"/>
+    <!-- Dial Crosshairs -->
+    <rect x="15" y="1" width="2" height="4.5" fill="#A3E635"/>
+    <rect x="15" y="24.5" width="2" height="4.5" fill="#A3E635"/>
+    <rect x="1" y="14" width="4.5" height="2" fill="#A3E635"/>
+    <rect x="26.5" y="14" width="4.5" height="2" fill="#A3E635"/>
+    <!-- Center Core -->
+    <circle cx="16" cy="15" r="2.5" fill="#101211" stroke="#A3E635" stroke-width="1"/>
+  </g>
+
+  <!-- Subtitle: TIMEPIECES -->
+  <text x="148" y="58" font-family="'Inter', system-ui, sans-serif" font-weight="700" font-size="7" fill="#244A27" letter-spacing="4.5">T I M E P I E C E S</text>
+</svg>

@@ -1,15 +1,15 @@
 .ashrafco-checkout {
-	--ashrafco-primary: #d90429;
-	--ashrafco-primary-dark: #b30320;
-	--ashrafco-primary-soft: #fff1f3;
-	--ashrafco-navy: #0f172a;
-	--ashrafco-navy-light: #1e293b;
-	--ashrafco-muted: #64748b;
-	--ashrafco-border: #e2e8f0;
-	--ashrafco-border-subtle: #f1f5f9;
-	--ashrafco-surface: #f8fafc;
-	--ashrafco-card-bg: #ffffff;
-	--ashrafco-success: #059669;
+	--ashrafco-primary: var(--color-primary);
+	--ashrafco-primary-dark: var(--color-primary-dark);
+	--ashrafco-primary-soft: var(--color-primary-light);
+	--ashrafco-navy: var(--color-secondary);
+	--ashrafco-navy-light: var(--color-secondary-hover);
+	--ashrafco-muted: var(--color-text-muted);
+	--ashrafco-border: var(--color-border);
+	--ashrafco-border-subtle: var(--color-border-subtle);
+	--ashrafco-surface: var(--color-surface-subtle);
+	--ashrafco-card-bg: var(--color-surface);
+	--ashrafco-success: var(--color-success);
 	background: transparent;
 	color: var(--ashrafco-navy);
 	padding: 8px 0 64px;

@@ -11,7 +11,7 @@
     justify-content: center;
     gap: 0.5rem;
     background-color: var(--color-primary);
-    color: var(--color-text-inverse);
+    color: var(--color-text-on-primary, #101211);
     font-weight: 700;
     font-size: var(--font-size-sm);
     padding: 0.625rem 1.25rem;
@@ -26,7 +26,7 @@
 .btn-primary:hover {
     background-color: var(--color-primary-hover);
     box-shadow: var(--shadow-md);
-    color: var(--color-text-inverse);
+    color: var(--color-text-on-primary, #101211);
 }
 
 .btn-primary:active {
@@ -97,7 +97,7 @@
 
 .btn-outline:hover {
     border-color: var(--color-primary);
-    color: var(--color-primary);
+    color: var(--color-dark-green, #244A27);
     background-color: var(--color-primary-light);
 }
 
@@ -117,7 +117,7 @@
 
 .btn-icon:hover {
     border-color: var(--color-primary);
-    color: var(--color-primary);
+    color: var(--color-dark-green, #244A27);
 }
 
 .btn-full {

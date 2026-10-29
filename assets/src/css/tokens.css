@@ -8,21 +8,31 @@
 
 :root {
     /* =========================================================================
-       1. Brand Colors & State Variations
+       1. Brand Colors & State Variations (Ben10 Identity)
        ========================================================================= */
-    --color-primary: #d90429;
-    --color-primary-hover: #b90323;
-    --color-primary-light: #fff1f2;
-    --color-primary-active: #99001e;
-    
-    --color-secondary: #0f172a;
-    --color-secondary-hover: #1e293b;
-    --color-secondary-light: #334155;
+    /* Primary Ben10 Electric Green */
+    --color-primary: #A3E635;
+    --color-primary-hover: #8ce025;
+    --color-primary-light: #f7fee7;
+    --color-primary-active: #65a30d;
+    --color-primary-dark: #244A27;
 
+    /* Distinctive Brand Accents */
+    --color-brand-green: #A3E635;
+    --color-dark-green: #244A27;
+    --color-deep-black: #101211;
+
+    /* Secondary & Dark Surfaces (Deep Black Architecture) */
+    --color-secondary: #101211;
+    --color-secondary-hover: #1f2420;
+    --color-secondary-light: #244A27;
+    --color-secondary-surface: #161917;
+
+    /* Accent & Ratings (Amber Gold) */
     --color-accent: #f59e0b;
     --color-accent-hover: #d97706;
 
-    /* Feedback & Status Colors */
+    /* Feedback & Status Colors (Semantically Consistent) */
     --color-success: #16a34a;
     --color-success-light: #f0fdf4;
     --color-warning: #eab308;
@@ -33,20 +43,25 @@
     --color-info-light: #eff6ff;
 
     /* Neutrals, Surfaces & Backgrounds */
-    --color-bg: #f7f7fa;
+    --color-bg: #f8faf8;
     --color-surface: #ffffff;
-    --color-surface-subtle: #f8fafc;
-    --color-surface-hover: #f1f5f9;
-    --color-border: #e2e8f0;
-    --color-border-subtle: #f1f5f9;
-    --color-border-strong: #cbd5e1;
+    --color-surface-subtle: #f8faf8;
+    --color-surface-hover: #f1f4f1;
+    --color-border: #e2e8e2;
+    --color-border-subtle: #f0f4f0;
+    --color-border-strong: #cbd5cb;
 
     /* Typography Colors */
-    --color-text-main: #1e293b;
-    --color-text-dark: #1e293b;
+    --color-text-main: #101211;
+    --color-text-dark: #101211;
     --color-text-muted: #64748b;
     --color-text-subtle: #94a3b8;
     --color-text-inverse: #ffffff;
+    --color-text-on-primary: #101211;
+
+    /* Focus & Interactive State Tokens */
+    --color-focus: #84cc16;
+    --color-focus-ring: rgba(163, 230, 53, 0.45);
 
     /* Shorthand Token Aliases for Rapid Styling */
     --primary: var(--color-primary);
@@ -58,6 +73,10 @@
     --text-main: var(--color-text-main);
     --dark-text: var(--color-text-dark);
     --muted-text: var(--color-text-muted);
+    --text-on-primary: var(--color-text-on-primary);
+    --dark-green: var(--color-dark-green);
+    --deep-black: var(--color-deep-black);
+    --focus-ring: var(--color-focus-ring);
 
     /* =========================================================================
        2. Typography Stacks & Scale
