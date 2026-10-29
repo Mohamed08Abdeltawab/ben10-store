@@ -363,45 +363,27 @@ defined('ABSPATH') || exit;
 								</div>
 
 								<!-- 3. المواصفات الأساسية (Basic Specifications) -->
-								<div
-									class="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-4 sm:p-6 space-y-5">
+								<div class="bg-white rounded-2xl border border-slate-200/90 shadow-2xs p-4 sm:p-6 space-y-5">
 									<div class="flex items-center justify-between border-b border-slate-100 pb-3.5">
 										<div class="flex items-center gap-2.5">
-											<span
-												class="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center flex-shrink-0">
-												<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-														d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-												</svg>
+											<span class="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center flex-shrink-0">
+												<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
 											</span>
-											<h3 class="text-sm sm:text-base font-extrabold text-slate-900">المواصفات
-												الأساسية</h3>
+											<h3 class="text-sm sm:text-base font-extrabold text-slate-900">المواصفات الأساسية للساعة</h3>
 										</div>
-										<span
-											class="w-5 h-5 rounded-full bg-sky-50 text-sky-600 border border-sky-100 flex items-center justify-center text-xs font-bold cursor-help"
-											title="المواصفات العامة الثابتة للمنتج مثل العلامة والموديل والضمان وبلد الصنع">?</span>
+										<span class="w-5 h-5 rounded-full bg-sky-50 text-sky-600 border border-sky-100 flex items-center justify-center text-xs font-bold cursor-help" title="المواصفات العامة الثابتة للساعات المشتركة عبر جميع الفئات وتُحفظ مركزياً">?</span>
 									</div>
 
-									<!-- 3 Rows, 2 Columns (RTL) Matching Reference Screenshot -->
 									<div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
 
-										<!-- Row 1: العلامة التجارية (Right) & موديل الشركة المصنّعة (Left) -->
+										<!-- 1. العلامة التجارية -->
 										<div class="space-y-1.5">
 											<div class="flex items-center justify-between">
-												<label for="product_brand_select"
-													class="block text-xs font-bold text-slate-700">
-													العلامة التجارية
-												</label>
-												<button type="button" onclick="toggleNewBrandInput()"
-													id="toggle-new-brand-btn"
-													class="text-[11px] font-bold text-primary hover:underline cursor-pointer">
-													+ إضافة علامة جديدة
-												</button>
+												<label for="product_brand_select" class="block text-xs font-bold text-slate-700">العلامة التجارية</label>
+												<button type="button" onclick="toggleNewBrandInput()" id="toggle-new-brand-btn" class="text-[11px] font-bold text-primary hover:underline cursor-pointer">+ إضافة علامة جديدة</button>
 											</div>
 											<div class="relative" id="product_brand_select_wrapper">
-												<select id="product_brand_select" name="product_brand"
-													onchange="handleBrandSelectChange(this)"
-													class="w-full text-xs font-bold py-2.5 pr-4 pl-9 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800 appearance-none cursor-pointer">
+												<select id="product_brand_select" name="product_brand" onchange="handleBrandSelectChange(this)" class="w-full text-xs font-bold py-2.5 pr-4 pl-9 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800 appearance-none cursor-pointer">
 													<option value="">اختر العلامة التجارية...</option>
 													<?php foreach ($all_portal_brands as $brand_item): ?>
 														<option value="<?php echo esc_attr($brand_item['name']); ?>" <?php selected($f_brand, $brand_item['name']); ?>>
@@ -409,175 +391,254 @@ defined('ABSPATH') || exit;
 														</option>
 													<?php endforeach; ?>
 													<?php if (!empty($f_brand) && !in_array($f_brand, array_column($all_portal_brands, 'name'), true)): ?>
-														<option value="<?php echo esc_attr($f_brand); ?>" selected>
-															<?php echo esc_html($f_brand); ?>
-														</option>
+														<option value="<?php echo esc_attr($f_brand); ?>" selected><?php echo esc_html($f_brand); ?></option>
 													<?php endif; ?>
 													<option value="custom">+ علامة تجارية أخرى...</option>
 												</select>
-												<span
-													class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-													<svg class="w-4 h-4" fill="none" stroke="currentColor"
-														viewBox="0 0 24 24">
-														<path stroke-linecap="round" stroke-linejoin="round"
-															stroke-width="2" d="M19 9l-7 7-7-7" />
-													</svg>
-												</span>
+												<span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></span>
 											</div>
-											<!-- Inline input for adding custom brand -->
 											<div id="product_brand_custom_wrapper" class="hidden mt-2">
 												<div class="flex items-center gap-2">
-													<input type="text" id="product_brand_custom" name="product_brand_custom"
-														placeholder="اكتب اسم العلامة التجارية..."
-														class="w-full text-xs font-medium py-2 px-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
-													<button type="button" onclick="saveQuickNewBrand()"
-														class="px-3 py-2 text-xs font-bold text-white bg-primary rounded-xl hover:bg-[#b90323] whitespace-nowrap cursor-pointer">
-														تأكيد
-													</button>
-													<button type="button" onclick="cancelNewBrandInput()"
-														class="px-2.5 py-2 text-xs font-bold text-slate-500 bg-slate-100 rounded-xl hover:bg-slate-200 whitespace-nowrap cursor-pointer">
-														إلغاء
-													</button>
+													<input type="text" id="product_brand_custom" name="product_brand_custom" placeholder="اكتب اسم العلامة التجارية..." class="w-full text-xs font-medium py-2 px-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
+													<button type="button" onclick="saveQuickNewBrand()" class="px-3 py-2 text-xs font-bold text-white bg-primary rounded-xl hover:bg-[#b90323] whitespace-nowrap cursor-pointer">تأكيد</button>
+													<button type="button" onclick="cancelNewBrandInput()" class="px-2.5 py-2 text-xs font-bold text-slate-500 bg-slate-100 rounded-xl hover:bg-slate-200 whitespace-nowrap cursor-pointer">إلغاء</button>
 												</div>
 											</div>
 										</div>
 
+										<!-- 2. الموديل -->
 										<div class="space-y-1.5">
-											<label for="product_manufacturer_model"
-												class="block text-xs font-bold text-slate-700">
-												موديل الشركة المصنّعة
-											</label>
-											<input type="text" id="product_manufacturer_model"
-												name="product_manufacturer_model" value="<?php echo esc_attr($f_model); ?>"
-												placeholder="ASH-KIT-TILE-PRO"
-												class="w-full text-xs font-mono py-2.5 px-3.5 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
+											<label for="product_manufacturer_model" class="block text-xs font-bold text-slate-700">الموديل / رقم الموديل</label>
+											<input type="text" id="product_manufacturer_model" name="product_manufacturer_model" value="<?php echo esc_attr($f_model); ?>" placeholder="مثال: BEN10-OMNI-01" class="w-full text-xs font-mono py-2.5 px-3.5 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
 										</div>
 
-										<!-- Row 2: فترة الضمان (Right) & محتويات العبوة (Left) -->
+										<!-- 3. مادة الهيكل (Case Material) -->
 										<div class="space-y-1.5">
-											<label for="product_warranty" class="block text-xs font-bold text-slate-700">
-												فترة الضمان
-											</label>
+											<label for="product_case_material" class="block text-xs font-bold text-slate-700">مادة الهيكل (Case Material)</label>
 											<div class="relative">
-												<select id="product_warranty" name="product_warranty"
-													onchange="handleWarrantyChange(this)"
-													class="w-full text-xs font-bold py-2.5 pr-4 pl-9 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800 appearance-none cursor-pointer">
+												<select id="product_case_material" name="product_case_material" onchange="handleGenericCustomToggle(this, 'product_case_material_custom_wrap', 'product_case_material_custom')" class="w-full text-xs font-bold py-2.5 pr-4 pl-9 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800 appearance-none cursor-pointer">
 													<?php
-													$warranty_options = array(
-														'بدون ضمان',
-														'3 أشهر',
-														'6 أشهر',
-														'سنة واحدة',
-														'سنتان',
-														'3 سنوات',
-														'ضمان مخصص',
-													);
+													$case_options = array('ستانلس ستيل 316L', 'تيتانيوم فائق الخفة', 'سيراميك عالي الصلابة', 'كربون فايبر', 'ذهب أصفر عيار 18 قيراط', 'ذهب وردي عيار 18 قيراط', 'سبائك زنك مطلية PVD', 'بوليمر مقوى / ريزين', 'خامة مخصصة');
+													$is_custom_case = !empty($f_case_material) && !in_array($f_case_material, $case_options, true);
+													foreach ($case_options as $c_opt):
+														$is_sel = ($f_case_material === $c_opt) || ('خامة مخصصة' === $c_opt && $is_custom_case);
+													?>
+													<option value="<?php echo ('خامة مخصصة' === $c_opt) ? 'custom' : esc_attr($c_opt); ?>" <?php echo $is_sel ? 'selected' : ''; ?>><?php echo esc_html($c_opt); ?></option>
+													<?php endforeach; ?>
+												</select>
+												<span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></span>
+											</div>
+											<div id="product_case_material_custom_wrap" class="<?php echo $is_custom_case ? '' : 'hidden'; ?> mt-2">
+												<input type="text" id="product_case_material_custom" name="product_case_material_custom" value="<?php echo esc_attr($is_custom_case ? $f_case_material : ''); ?>" placeholder="اكتب مادة الهيكل المخصصة..." class="w-full text-xs font-medium py-2 px-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
+											</div>
+										</div>
+
+										<!-- 4. مادة السوار (Band Material) -->
+										<div class="space-y-1.5">
+											<label for="product_band_material" class="block text-xs font-bold text-slate-700">مادة السوار (Band Material)</label>
+											<div class="relative">
+												<select id="product_band_material" name="product_band_material" onchange="handleGenericCustomToggle(this, 'product_band_material_custom_wrap', 'product_band_material_custom')" class="w-full text-xs font-bold py-2.5 pr-4 pl-9 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800 appearance-none cursor-pointer">
+													<?php
+													$band_options = array('جلد طبيعي فاخر', 'ستانلس ستيل مصمت', 'سيليكون رياضي مرن', 'نايلون عسكري الناتو (NATO)', 'تيتانيوم فائق المتانة', 'سيراميك مصقول', 'مطاط فائق التحمل (Rubber)', 'قماش منسوج', 'خامة مخصصة');
+													$is_custom_band = !empty($f_band_material) && !in_array($f_band_material, $band_options, true);
+													foreach ($band_options as $b_opt):
+														$is_sel = ($f_band_material === $b_opt) || ('خامة مخصصة' === $b_opt && $is_custom_band);
+													?>
+													<option value="<?php echo ('خامة مخصصة' === $b_opt) ? 'custom' : esc_attr($b_opt); ?>" <?php echo $is_sel ? 'selected' : ''; ?>><?php echo esc_html($b_opt); ?></option>
+													<?php endforeach; ?>
+												</select>
+												<span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></span>
+											</div>
+											<div id="product_band_material_custom_wrap" class="<?php echo $is_custom_band ? '' : 'hidden'; ?> mt-2">
+												<input type="text" id="product_band_material_custom" name="product_band_material_custom" value="<?php echo esc_attr($is_custom_band ? $f_band_material : ''); ?>" placeholder="اكتب مادة السوار المخصصة..." class="w-full text-xs font-medium py-2 px-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
+											</div>
+										</div>
+
+										<!-- 5. لون الساعة (Watch Color) -->
+										<div class="space-y-1.5">
+											<label for="product_watch_color" class="block text-xs font-bold text-slate-700">لون الساعة / الهيكل</label>
+											<div class="relative">
+												<select id="product_watch_color" name="product_watch_color" onchange="handleGenericCustomToggle(this, 'product_watch_color_custom_wrap', 'product_watch_color_custom')" class="w-full text-xs font-bold py-2.5 pr-4 pl-9 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800 appearance-none cursor-pointer">
+													<?php
+													$watch_color_options = array('فضي كلاسيكي', 'أسود مطفي (Matte Black)', 'ذهبي أصفر لامع', 'ذهبي وردي (Rose Gold)', 'رمادي تيتانيوم (Gunmetal)', 'أزرق ملكي', 'أخضر أومنيتريكس (Omnitrix Green)', 'لون مخصص');
+													$is_custom_w_color = !empty($f_watch_color) && !in_array($f_watch_color, $watch_color_options, true);
+													foreach ($watch_color_options as $wc_opt):
+														$is_sel = ($f_watch_color === $wc_opt) || ('لون مخصص' === $wc_opt && $is_custom_w_color);
+													?>
+													<option value="<?php echo ('لون مخصص' === $wc_opt) ? 'custom' : esc_attr($wc_opt); ?>" <?php echo $is_sel ? 'selected' : ''; ?>><?php echo esc_html($wc_opt); ?></option>
+													<?php endforeach; ?>
+												</select>
+												<span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></span>
+											</div>
+											<div id="product_watch_color_custom_wrap" class="<?php echo $is_custom_w_color ? '' : 'hidden'; ?> mt-2">
+												<input type="text" id="product_watch_color_custom" name="product_watch_color_custom" value="<?php echo esc_attr($is_custom_w_color ? $f_watch_color : ''); ?>" placeholder="اكتب لون الساعة المخصص..." class="w-full text-xs font-medium py-2 px-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
+											</div>
+										</div>
+
+										<!-- 6. لون الميناء (Dial Color) [Watch Only] -->
+										<div class="space-y-1.5 watch-only-spec">
+											<label for="product_dial_color" class="block text-xs font-bold text-slate-700">لون الميناء (Dial Color)</label>
+											<div class="relative">
+												<select id="product_dial_color" name="product_dial_color" onchange="handleGenericCustomToggle(this, 'product_dial_color_custom_wrap', 'product_dial_color_custom')" class="w-full text-xs font-bold py-2.5 pr-4 pl-9 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800 appearance-none cursor-pointer">
+													<?php
+													$dial_color_options = array('أسود ملكي', 'أزرق سنبراش مشع', 'أبيض لؤلؤي', 'أخضر زمردي', 'فضي مشع', 'رمادي شاحب', 'ميناء شفاف هيكلي (Skeleton)', 'لون مخصص');
+													$is_custom_d_color = !empty($f_dial_color) && !in_array($f_dial_color, $dial_color_options, true);
+													foreach ($dial_color_options as $dc_opt):
+														$is_sel = ($f_dial_color === $dc_opt) || ('لون مخصص' === $dc_opt && $is_custom_d_color);
+													?>
+													<option value="<?php echo ('لون مخصص' === $dc_opt) ? 'custom' : esc_attr($dc_opt); ?>" <?php echo $is_sel ? 'selected' : ''; ?>><?php echo esc_html($dc_opt); ?></option>
+													<?php endforeach; ?>
+												</select>
+												<span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></span>
+											</div>
+											<div id="product_dial_color_custom_wrap" class="<?php echo $is_custom_d_color ? '' : 'hidden'; ?> mt-2">
+												<input type="text" id="product_dial_color_custom" name="product_dial_color_custom" value="<?php echo esc_attr($is_custom_d_color ? $f_dial_color : ''); ?>" placeholder="اكتب لون الميناء المخصص..." class="w-full text-xs font-medium py-2 px-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
+											</div>
+										</div>
+
+										<!-- 7. نوع الحركة (Movement Type) [Watch Only] -->
+										<div class="space-y-1.5 watch-only-spec">
+											<label for="product_movement_type" class="block text-xs font-bold text-slate-700">نوع الحركة (Movement Type)</label>
+											<div class="relative">
+												<select id="product_movement_type" name="product_movement_type" onchange="handleGenericCustomToggle(this, 'product_movement_type_custom_wrap', 'product_movement_type_custom')" class="w-full text-xs font-bold py-2.5 pr-4 pl-9 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800 appearance-none cursor-pointer">
+													<?php
+													$movement_options = array('أوتوماتيك ميكانيكية ذاتية التعبئة', 'كوارتز ياباني عالي الدقة', 'كوارتز سويسري فائق الدقة', 'ميكانيكية تعبئة يدوية', 'شحن شمسي / ضوئي (Solar)', 'رقمي ذكي (Smart Digital)', 'نوع حركة مخصص');
+													$is_custom_mov = !empty($f_movement_type) && !in_array($f_movement_type, $movement_options, true);
+													foreach ($movement_options as $m_opt):
+														$is_sel = ($f_movement_type === $m_opt) || ('نوع حركة مخصص' === $m_opt && $is_custom_mov);
+													?>
+													<option value="<?php echo ('نوع حركة مخصص' === $m_opt) ? 'custom' : esc_attr($m_opt); ?>" <?php echo $is_sel ? 'selected' : ''; ?>><?php echo esc_html($m_opt); ?></option>
+													<?php endforeach; ?>
+												</select>
+												<span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></span>
+											</div>
+											<div id="product_movement_type_custom_wrap" class="<?php echo $is_custom_mov ? '' : 'hidden'; ?> mt-2">
+												<input type="text" id="product_movement_type_custom" name="product_movement_type_custom" value="<?php echo esc_attr($is_custom_mov ? $f_movement_type : ''); ?>" placeholder="اكتب نوع الحركة المخصص..." class="w-full text-xs font-medium py-2 px-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
+											</div>
+										</div>
+
+										<!-- 8. مقاومة الماء (Water Resistance) [Watch Only] -->
+										<div class="space-y-1.5 watch-only-spec">
+											<label for="product_water_resistance" class="block text-xs font-bold text-slate-700">مقاومة الماء (Water Resistance)</label>
+											<div class="relative">
+												<select id="product_water_resistance" name="product_water_resistance" onchange="handleGenericCustomToggle(this, 'product_water_resistance_custom_wrap', 'product_water_resistance_custom')" class="w-full text-xs font-bold py-2.5 pr-4 pl-9 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800 appearance-none cursor-pointer">
+													<?php
+													$water_options = array('مقاومة للرذاذ والغسيل (3ATM / 30m)', 'مقاومة للسباحة السطحية (5ATM / 50m)', 'مقاومة للغوص والرياضات المائية (10ATM / 100m)', 'ساعة غوص احترافية (20ATM / 200m)', 'غير مقاومة للماء', 'مقاومة مخصصة');
+													$is_custom_wr = !empty($f_water_resistance) && !in_array($f_water_resistance, $water_options, true);
+													foreach ($water_options as $wr_opt):
+														$is_sel = ($f_water_resistance === $wr_opt) || ('مقاومة مخصصة' === $wr_opt && $is_custom_wr);
+													?>
+													<option value="<?php echo ('مقاومة مخصصة' === $wr_opt) ? 'custom' : esc_attr($wr_opt); ?>" <?php echo $is_sel ? 'selected' : ''; ?>><?php echo esc_html($wr_opt); ?></option>
+													<?php endforeach; ?>
+												</select>
+												<span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></span>
+											</div>
+											<div id="product_water_resistance_custom_wrap" class="<?php echo $is_custom_wr ? '' : 'hidden'; ?> mt-2">
+												<input type="text" id="product_water_resistance_custom" name="product_water_resistance_custom" value="<?php echo esc_attr($is_custom_wr ? $f_water_resistance : ''); ?>" placeholder="اكتب تصنيف مقاومة الماء المخصص..." class="w-full text-xs font-medium py-2 px-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
+											</div>
+										</div>
+
+										<!-- 9. قطر الهيكل (Case Diameter) [Watch Only] -->
+										<div class="space-y-1.5 watch-only-spec">
+											<label for="product_case_diameter" class="block text-xs font-bold text-slate-700">قطر الهيكل (Case Diameter)</label>
+											<div class="flex items-stretch rounded-xl border border-slate-200 focus-within:border-primary overflow-hidden bg-white shadow-2xs">
+												<input type="number" step="any" min="0" id="product_case_diameter" name="product_case_diameter" value="<?php echo esc_attr($f_case_diameter); ?>" placeholder="42" class="w-full text-xs font-bold py-2.5 px-3.5 bg-slate-50/60 hover:bg-white focus:bg-white focus:outline-none text-slate-800 text-right">
+												<span class="bg-slate-100/80 border-r border-slate-200 text-slate-600 text-xs font-bold px-3.5 py-2.5 flex items-center justify-center select-none min-w-[52px]">مم</span>
+											</div>
+										</div>
+
+										<!-- 10. نوع الزجاج (Glass Type) [Watch Only] -->
+										<div class="space-y-1.5 watch-only-spec">
+											<label for="product_glass_type" class="block text-xs font-bold text-slate-700">نوع الزجاج (Glass Type)</label>
+											<div class="relative">
+												<select id="product_glass_type" name="product_glass_type" onchange="handleGenericCustomToggle(this, 'product_glass_type_custom_wrap', 'product_glass_type_custom')" class="w-full text-xs font-bold py-2.5 pr-4 pl-9 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800 appearance-none cursor-pointer">
+													<?php
+													$glass_options = array('زجاج ياقوتي مقاوم للخدش (سافاير Sapphire)', 'زجاج كريستال معدني مقوى (Mineral Crystal)', 'زجاج هاردليكس (Hardlex)', 'أكريليك / بليكسي جلاس كلاسيكي', 'نوع مخصص');
+													$is_custom_gl = !empty($f_glass_type) && !in_array($f_glass_type, $glass_options, true);
+													foreach ($glass_options as $g_opt):
+														$is_sel = ($f_glass_type === $g_opt) || ('نوع مخصص' === $g_opt && $is_custom_gl);
+													?>
+													<option value="<?php echo ('نوع مخصص' === $g_opt) ? 'custom' : esc_attr($g_opt); ?>" <?php echo $is_sel ? 'selected' : ''; ?>><?php echo esc_html($g_opt); ?></option>
+													<?php endforeach; ?>
+												</select>
+												<span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></span>
+											</div>
+											<div id="product_glass_type_custom_wrap" class="<?php echo $is_custom_gl ? '' : 'hidden'; ?> mt-2">
+												<input type="text" id="product_glass_type_custom" name="product_glass_type_custom" value="<?php echo esc_attr($is_custom_gl ? $f_glass_type : ''); ?>" placeholder="اكتب نوع الزجاج المخصص..." class="w-full text-xs font-medium py-2 px-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
+											</div>
+										</div>
+
+										<!-- 11. الفئة المستهدفة (Target Audience) -->
+										<div class="space-y-1.5">
+											<label for="product_target_audience" class="block text-xs font-bold text-slate-700">الفئة المستهدفة</label>
+											<div class="relative">
+												<select id="product_target_audience" name="product_target_audience" class="w-full text-xs font-bold py-2.5 pr-4 pl-9 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800 appearance-none cursor-pointer">
+													<?php
+													$audience_options = array('رجالي', 'نسائي', 'للجنسين (Unisex)', 'شبابي / أطفال');
+													foreach ($audience_options as $a_opt):
+													?>
+														<option value="<?php echo esc_attr($a_opt); ?>" <?php selected($f_target_audience, $a_opt); ?>><?php echo esc_html($a_opt); ?></option>
+													<?php endforeach; ?>
+												</select>
+												<span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></span>
+											</div>
+										</div>
+
+										<!-- 12. فترة الضمان -->
+										<div class="space-y-1.5">
+											<label for="product_warranty" class="block text-xs font-bold text-slate-700">فترة الضمان</label>
+											<div class="relative">
+												<select id="product_warranty" name="product_warranty" onchange="handleWarrantyChange(this)" class="w-full text-xs font-bold py-2.5 pr-4 pl-9 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800 appearance-none cursor-pointer">
+													<?php
+													$warranty_options = array('سنتان ضمان شامل', 'سنة واحدة ضمان معتمد', '3 سنوات ضمان دولي', '5 سنوات ضمان الصانع', '6 أشهر ضد عيوب الصناعة', 'بدون ضمان', 'ضمان مخصص');
 													$is_custom_warranty = !empty($f_warranty) && !in_array($f_warranty, $warranty_options, true);
 													foreach ($warranty_options as $w_opt):
 														$is_sel = ($f_warranty === $w_opt) || ('ضمان مخصص' === $w_opt && $is_custom_warranty);
-														?>
-														<option value="<?php echo esc_attr($w_opt); ?>" <?php echo $is_sel ? 'selected' : ''; ?>>
-															<?php echo esc_html($w_opt); ?>
-														</option>
+													?>
+														<option value="<?php echo esc_attr($w_opt); ?>" <?php echo $is_sel ? 'selected' : ''; ?>><?php echo esc_html($w_opt); ?></option>
 													<?php endforeach; ?>
 												</select>
-												<span
-													class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-													<svg class="w-4 h-4" fill="none" stroke="currentColor"
-														viewBox="0 0 24 24">
-														<path stroke-linecap="round" stroke-linejoin="round"
-															stroke-width="2" d="M19 9l-7 7-7-7" />
-													</svg>
-												</span>
+												<span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></span>
 											</div>
-											<div id="product_warranty_custom_wrap"
-												class="<?php echo $is_custom_warranty ? '' : 'hidden'; ?> mt-2">
-												<input type="text" id="product_warranty_custom"
-													name="product_warranty_custom"
-													value="<?php echo esc_attr($is_custom_warranty ? $f_warranty : ''); ?>"
-													placeholder="اكتب فترة أو شروط الضمان المخصص..."
-													class="w-full text-xs font-medium py-2 px-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
+											<div id="product_warranty_custom_wrap" class="<?php echo $is_custom_warranty ? '' : 'hidden'; ?> mt-2">
+												<input type="text" id="product_warranty_custom" name="product_warranty_custom" value="<?php echo esc_attr($is_custom_warranty ? $f_warranty : ''); ?>" placeholder="اكتب فترة أو شروط الضمان المخصص..." class="w-full text-xs font-medium py-2 px-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
 											</div>
 										</div>
 
+										<!-- 13. بلد المنشأ -->
 										<div class="space-y-1.5">
-											<label for="product_package_contents"
-												class="block text-xs font-bold text-slate-700">
-												محتويات العبوة
-											</label>
-											<input type="text" id="product_package_contents" name="product_package_contents"
-												value="<?php echo esc_attr($f_pkg_contents); ?>"
-												placeholder="شنطة + أدوات تسوية وتثبيت + كلابش شفط + قواعد تثبيت + ملحقات إضافية"
-												class="w-full text-xs font-medium py-2.5 px-3.5 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
-										</div>
-
-										<!-- Row 3: بلد المنشأ (Right) & الوزن التقريبي (Left) -->
-										<div class="space-y-1.5">
-											<label for="product_country_origin"
-												class="block text-xs font-bold text-slate-700">
-												بلد المنشأ
-											</label>
+											<label for="product_country_origin" class="block text-xs font-bold text-slate-700">بلد المنشأ</label>
 											<div class="relative">
-												<select id="product_country_origin" name="product_country_origin"
-													onchange="handleCountryChange(this)"
-													class="w-full text-xs font-bold py-2.5 pr-4 pl-9 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800 appearance-none cursor-pointer">
+												<select id="product_country_origin" name="product_country_origin" onchange="handleCountryChange(this)" class="w-full text-xs font-bold py-2.5 pr-4 pl-9 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800 appearance-none cursor-pointer">
 													<?php
-													$country_options = array(
-														'الصين',
-														'ألمانيا',
-														'إيطاليا',
-														'مصر (صناعة محلية)',
-														'تركيا',
-														'تايوان',
-														'اليابان',
-														'إسبانيا',
-														'الولايات المتحدة',
-														'أخرى',
-													);
+													$country_options = array('سويسرا (Switzerland)', 'اليابان (Japan)', 'ألمانيا (Germany)', 'إيطاليا (Italy)', 'فرنسا (France)', 'المملكة المتحدة (UK)', 'الولايات المتحدة (USA)', 'الصين (درجة أولى)', 'أخرى');
 													$is_custom_country = !empty($f_country_origin) && !in_array($f_country_origin, $country_options, true);
 													foreach ($country_options as $c_opt):
 														$is_c_sel = ($f_country_origin === $c_opt) || ('أخرى' === $c_opt && $is_custom_country);
-														?>
-														<option value="<?php echo esc_attr($c_opt); ?>" <?php echo $is_c_sel ? 'selected' : ''; ?>>
-															<?php echo esc_html($c_opt); ?>
-														</option>
+													?>
+														<option value="<?php echo esc_attr($c_opt); ?>" <?php echo $is_c_sel ? 'selected' : ''; ?>><?php echo esc_html($c_opt); ?></option>
 													<?php endforeach; ?>
 												</select>
-												<span
-													class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-													<svg class="w-4 h-4" fill="none" stroke="currentColor"
-														viewBox="0 0 24 24">
-														<path stroke-linecap="round" stroke-linejoin="round"
-															stroke-width="2" d="M19 9l-7 7-7-7" />
-													</svg>
-												</span>
+												<span class="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></span>
 											</div>
-											<div id="product_country_custom_wrap"
-												class="<?php echo $is_custom_country ? '' : 'hidden'; ?> mt-2">
-												<input type="text" id="product_country_origin_custom"
-													name="product_country_origin_custom"
-													value="<?php echo esc_attr($is_custom_country ? $f_country_origin : ''); ?>"
-													placeholder="اكتب اسم بلد المنشأ..."
-													class="w-full text-xs font-medium py-2 px-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
+											<div id="product_country_custom_wrap" class="<?php echo $is_custom_country ? '' : 'hidden'; ?> mt-2">
+												<input type="text" id="product_country_origin_custom" name="product_country_origin_custom" value="<?php echo esc_attr($is_custom_country ? $f_country_origin : ''); ?>" placeholder="اكتب اسم بلد المنشأ..." class="w-full text-xs font-medium py-2 px-3 bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
 											</div>
 										</div>
 
+										<!-- 14. الوزن التقريبي -->
 										<div class="space-y-1.5">
-											<label for="product_approx_weight"
-												class="block text-xs font-bold text-slate-700">
-												الوزن التقريبي
-											</label>
-											<div
-												class="flex items-stretch rounded-xl border border-slate-200 focus-within:border-primary overflow-hidden bg-white shadow-2xs">
-												<input type="number" step="any" min="0" id="product_approx_weight"
-													name="product_approx_weight"
-													value="<?php echo esc_attr($f_approx_weight); ?>" placeholder="14"
-													class="w-full text-xs font-bold py-2.5 px-3.5 bg-slate-50/60 hover:bg-white focus:bg-white focus:outline-none text-slate-800 text-right">
-												<span
-													class="bg-slate-100/80 border-r border-slate-200 text-slate-600 text-xs font-bold px-3.5 py-2.5 flex items-center justify-center select-none min-w-[52px]">
-													كجم
-												</span>
+											<label for="product_approx_weight" class="block text-xs font-bold text-slate-700">الوزن التقريبي</label>
+											<div class="flex items-stretch rounded-xl border border-slate-200 focus-within:border-primary overflow-hidden bg-white shadow-2xs">
+												<input type="number" step="any" min="0" id="product_approx_weight" name="product_approx_weight" value="<?php echo esc_attr($f_approx_weight); ?>" placeholder="120" class="w-full text-xs font-bold py-2.5 px-3.5 bg-slate-50/60 hover:bg-white focus:bg-white focus:outline-none text-slate-800 text-right">
+												<span class="bg-slate-100/80 border-r border-slate-200 text-slate-600 text-xs font-bold px-3.5 py-2.5 flex items-center justify-center select-none min-w-[52px]">جرام</span>
 											</div>
+										</div>
+
+										<!-- 15. محتويات العبوة -->
+										<div class="space-y-1.5 md:col-span-2">
+											<label for="product_package_contents" class="block text-xs font-bold text-slate-700">محتويات العبوة</label>
+											<input type="text" id="product_package_contents" name="product_package_contents" value="<?php echo esc_attr($f_pkg_contents); ?>" placeholder="علبة الساعة الأصلية الفاخرة + بطاقة الضمان والشهادة المعتمدة + كتيب الإرشادات" class="w-full text-xs font-medium py-2.5 px-3.5 bg-slate-50/60 hover:bg-white focus:bg-white border border-slate-200 rounded-xl focus:outline-none focus:border-primary text-slate-800">
 										</div>
 
 									</div>

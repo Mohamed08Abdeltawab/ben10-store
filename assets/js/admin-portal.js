@@ -781,6 +781,18 @@
 				}
 			};
 
+			window.handleGenericCustomToggle = function (select, wrapId, inputId) {
+				var wrap = document.getElementById(wrapId);
+				if (!wrap) return;
+				if (select.value === 'custom') {
+					wrap.classList.remove('hidden');
+					var inp = document.getElementById(inputId);
+					if (inp) inp.focus();
+				} else {
+					wrap.classList.add('hidden');
+				}
+			};
+
 			window.handleCountryChange = function (select) {
 				var wrap = document.getElementById('product_country_custom_wrap');
 				if (!wrap) return;
@@ -901,14 +913,30 @@
 				container.innerHTML = html;
 			};
 
+			window.portalToggleWatchSpecificFields = function (catId) {
+				catId = parseInt(catId, 10);
+				var catData = window.ASHRAFCO_CATEGORY_SPECS && window.ASHRAFCO_CATEGORY_SPECS[catId];
+				var isAccessory = catData && (catData.slug === 'watch-accessories' || (catData.name && (catData.name.indexOf('إكسسوار') !== -1 || catData.name.indexOf('اكسسوار') !== -1)));
+				var watchOnlyFields = document.querySelectorAll('.watch-only-spec');
+				watchOnlyFields.forEach(function (el) {
+					if (isAccessory) {
+						el.classList.add('hidden');
+					} else {
+						el.classList.remove('hidden');
+					}
+				});
+			};
+
 			// Bind category select change to dynamic category specifications renderer
 			var catMainSelect = document.getElementById('product_category_main');
 			if (catMainSelect) {
 				catMainSelect.addEventListener('change', function () {
 					window.portalRenderCategorySpecs(this.value);
+					window.portalToggleWatchSpecificFields(this.value);
 				});
 				// Initial render on page load
 				window.portalRenderCategorySpecs(catMainSelect.value);
+				window.portalToggleWatchSpecificFields(catMainSelect.value);
 			}
 
 

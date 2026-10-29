@@ -329,6 +329,109 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['ashrafco_product_acti
 			delete_post_meta($saved_id, '_test_theme_weight');
 		}
 
+		// Core Watch Specifications
+		$case_mat_val = isset($_POST['product_case_material']) ? sanitize_text_field(wp_unslash($_POST['product_case_material'])) : '';
+		if ('custom' === $case_mat_val && !empty($_POST['product_case_material_custom'])) {
+			$case_mat_val = sanitize_text_field(wp_unslash($_POST['product_case_material_custom']));
+		}
+		if (!empty($case_mat_val)) {
+			update_post_meta($saved_id, '_test_theme_case_material', $case_mat_val);
+			update_post_meta($saved_id, '_watch_case_material', $case_mat_val);
+		} else {
+			delete_post_meta($saved_id, '_test_theme_case_material');
+			delete_post_meta($saved_id, '_watch_case_material');
+		}
+
+		$band_mat_val = isset($_POST['product_band_material']) ? sanitize_text_field(wp_unslash($_POST['product_band_material'])) : '';
+		if ('custom' === $band_mat_val && !empty($_POST['product_band_material_custom'])) {
+			$band_mat_val = sanitize_text_field(wp_unslash($_POST['product_band_material_custom']));
+		}
+		if (!empty($band_mat_val)) {
+			update_post_meta($saved_id, '_test_theme_band_material', $band_mat_val);
+			update_post_meta($saved_id, '_watch_band_material', $band_mat_val);
+		} else {
+			delete_post_meta($saved_id, '_test_theme_band_material');
+			delete_post_meta($saved_id, '_watch_band_material');
+		}
+
+		$watch_col_val = isset($_POST['product_watch_color']) ? sanitize_text_field(wp_unslash($_POST['product_watch_color'])) : '';
+		if ('custom' === $watch_col_val && !empty($_POST['product_watch_color_custom'])) {
+			$watch_col_val = sanitize_text_field(wp_unslash($_POST['product_watch_color_custom']));
+		}
+		if (!empty($watch_col_val)) {
+			update_post_meta($saved_id, '_test_theme_watch_color', $watch_col_val);
+			update_post_meta($saved_id, '_watch_color', $watch_col_val);
+		} else {
+			delete_post_meta($saved_id, '_test_theme_watch_color');
+			delete_post_meta($saved_id, '_watch_color');
+		}
+
+		$dial_col_val = isset($_POST['product_dial_color']) ? sanitize_text_field(wp_unslash($_POST['product_dial_color'])) : '';
+		if ('custom' === $dial_col_val && !empty($_POST['product_dial_color_custom'])) {
+			$dial_col_val = sanitize_text_field(wp_unslash($_POST['product_dial_color_custom']));
+		}
+		if (!empty($dial_col_val)) {
+			update_post_meta($saved_id, '_test_theme_dial_color', $dial_col_val);
+			update_post_meta($saved_id, '_watch_dial_color', $dial_col_val);
+		} else {
+			delete_post_meta($saved_id, '_test_theme_dial_color');
+			delete_post_meta($saved_id, '_watch_dial_color');
+		}
+
+		$movement_val = isset($_POST['product_movement_type']) ? sanitize_text_field(wp_unslash($_POST['product_movement_type'])) : '';
+		if ('custom' === $movement_val && !empty($_POST['product_movement_type_custom'])) {
+			$movement_val = sanitize_text_field(wp_unslash($_POST['product_movement_type_custom']));
+		}
+		if (!empty($movement_val)) {
+			update_post_meta($saved_id, '_test_theme_movement_type', $movement_val);
+			update_post_meta($saved_id, '_watch_movement_type', $movement_val);
+		} else {
+			delete_post_meta($saved_id, '_test_theme_movement_type');
+			delete_post_meta($saved_id, '_watch_movement_type');
+		}
+
+		$water_res_val = isset($_POST['product_water_resistance']) ? sanitize_text_field(wp_unslash($_POST['product_water_resistance'])) : '';
+		if ('custom' === $water_res_val && !empty($_POST['product_water_resistance_custom'])) {
+			$water_res_val = sanitize_text_field(wp_unslash($_POST['product_water_resistance_custom']));
+		}
+		if (!empty($water_res_val)) {
+			update_post_meta($saved_id, '_test_theme_water_resistance', $water_res_val);
+			update_post_meta($saved_id, '_watch_water_resistance', $water_res_val);
+		} else {
+			delete_post_meta($saved_id, '_test_theme_water_resistance');
+			delete_post_meta($saved_id, '_watch_water_resistance');
+		}
+
+		$case_diam_val = isset($_POST['product_case_diameter']) ? sanitize_text_field(wp_unslash($_POST['product_case_diameter'])) : '';
+		if (!empty($case_diam_val)) {
+			update_post_meta($saved_id, '_test_theme_case_diameter', $case_diam_val);
+			update_post_meta($saved_id, '_watch_case_diameter', $case_diam_val);
+		} else {
+			delete_post_meta($saved_id, '_test_theme_case_diameter');
+			delete_post_meta($saved_id, '_watch_case_diameter');
+		}
+
+		$glass_val = isset($_POST['product_glass_type']) ? sanitize_text_field(wp_unslash($_POST['product_glass_type'])) : '';
+		if ('custom' === $glass_val && !empty($_POST['product_glass_type_custom'])) {
+			$glass_val = sanitize_text_field(wp_unslash($_POST['product_glass_type_custom']));
+		}
+		if (!empty($glass_val)) {
+			update_post_meta($saved_id, '_test_theme_glass_type', $glass_val);
+			update_post_meta($saved_id, '_watch_glass_type', $glass_val);
+		} else {
+			delete_post_meta($saved_id, '_test_theme_glass_type');
+			delete_post_meta($saved_id, '_watch_glass_type');
+		}
+
+		$target_aud_val = isset($_POST['product_target_audience']) ? sanitize_text_field(wp_unslash($_POST['product_target_audience'])) : '';
+		if (!empty($target_aud_val)) {
+			update_post_meta($saved_id, '_test_theme_target_audience', $target_aud_val);
+			update_post_meta($saved_id, '_watch_target_audience', $target_aud_val);
+		} else {
+			delete_post_meta($saved_id, '_test_theme_target_audience');
+			delete_post_meta($saved_id, '_watch_target_audience');
+		}
+
 		// B. Category Specifications (Dynamic Key-Value Pairs from Active Category)
 		$raw_cat_values = isset($_POST['cat_spec_values']) ? (array) $_POST['cat_spec_values'] : array();
 		$raw_cat_meta = isset($_POST['cat_spec_meta']) ? (array) $_POST['cat_spec_meta'] : array();
@@ -374,6 +477,30 @@ if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['ashrafco_product_acti
 		}
 
 		update_post_meta($saved_id, '_ashrafco_category_spec_values', $saved_cat_specs);
+
+		// Append core watch specifications to theme specs table
+		$watch_specs_map = array(
+			'مادة الهيكل'     => $case_mat_val,
+			'مادة السوار'     => $band_mat_val,
+			'نوع الحركة'      => $movement_val,
+			'مقاومة الماء'     => $water_res_val,
+			'قطر الهيكل'      => !empty($case_diam_val) ? ($case_diam_val . ' مم') : '',
+			'نوع الزجاج'      => $glass_val,
+			'لون الساعة'      => $watch_col_val,
+			'لون الميناء'     => $dial_col_val,
+			'الفئة المستهدفة' => $target_aud_val,
+			'بلد المنشأ'      => $origin_val,
+			'فترة الضمان'     => $warranty_val,
+		);
+		foreach ($watch_specs_map as $ws_name => $ws_val) {
+			if (!empty($ws_val)) {
+				$specs_table_for_theme[] = array(
+					'name'  => $ws_name,
+					'value' => $ws_val,
+				);
+			}
+		}
+
 		update_post_meta($saved_id, '_test_theme_specs_table', $specs_table_for_theme);
 
 		if (!empty($mapped_cut_length)) {

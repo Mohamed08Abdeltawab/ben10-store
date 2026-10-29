@@ -829,58 +829,234 @@ function ashrafco_get_category_specs($term_id)
 		return $specs;
 	}
 
-	// Seed default specs for "أدوات تسوية وتثبيت البلاط" (Term ID 19 or name match) to match demo/screenshot
+	// Pre-configured default specs for watch categories (fallback if not saved in term meta)
 	$term = get_term($term_id, 'product_cat');
 	if ($term && !is_wp_error($term)) {
-		if (19 === $term_id || mb_stripos($term->name, 'تسوية') !== false || mb_stripos($term->name, 'تثبيت') !== false) {
-			$default_demo_specs = array(
+		$slug = $term->slug;
+
+		if ('classic-watches' === $slug || mb_stripos($term->name, 'كلاسيكية') !== false) {
+			return array(
 				array(
-					'id' => 'max_cut_length',
-					'name' => 'أقصى طول للقص / المقاس',
-					'type' => 'number',
-					'unit' => 'سم',
-					'options' => array(),
+					'id'       => 'dial_shape',
+					'name'     => 'شكل الميناء',
+					'type'     => 'select',
+					'unit'     => '',
+					'options'  => array('دائري', 'مربع', 'مستطيل', 'برميلي (Tonneau)', 'بيضاوي'),
 					'required' => 0,
-					'order' => 1,
+					'order'    => 1,
 				),
 				array(
-					'id' => 'max_thickness',
-					'name' => 'أقصى سمك للقص / سمك البلاط',
-					'type' => 'number',
-					'unit' => 'ملم',
-					'options' => array(),
+					'id'       => 'clasp_type',
+					'name'     => 'نوع الإغلاق',
+					'type'     => 'select',
+					'unit'     => '',
+					'options'  => array('إبزيم مشبك دبوسي (Pin Buckle)', 'قفل فراشة قابل للطي (Butterfly Clasp)', 'مشبك قابل للطي بزر أمان', 'مشبك مغناطيسي'),
 					'required' => 0,
-					'order' => 2,
-				),
-				array(
-					'id' => 'tool_type',
-					'name' => 'نوع الأداة',
-					'type' => 'select',
-					'unit' => '',
-					'options' => array('أداة يدوية', 'أداة كهربائية', 'أداة هوائية / ضغط', 'ملحقات ومستهلكات'),
-					'required' => 0,
-					'order' => 3,
-				),
-				array(
-					'id' => 'spare_parts',
-					'name' => 'توفر قطع الغيار والصيانة',
-					'type' => 'select',
-					'unit' => '',
-					'options' => array('نعم - متوفرة أصلية بمركز أشرفكو', 'نعم - متوفرة تجارية', 'متوفرة بالطلب', 'غير متوفرة حالياً'),
-					'required' => 0,
-					'order' => 4,
-				),
-				array(
-					'id' => 'cut_accuracy',
-					'name' => 'دقة القص',
-					'type' => 'text',
-					'unit' => '',
-					'options' => array(),
-					'required' => 0,
-					'order' => 5,
+					'order'    => 2,
 				),
 			);
-			return $default_demo_specs;
+		}
+
+		if ('sports-watches' === $slug || mb_stripos($term->name, 'رياضية') !== false) {
+			return array(
+				array(
+					'id'       => 'sport_functions',
+					'name'     => 'الوظائف الرياضية',
+					'type'     => 'text',
+					'unit'     => '',
+					'options'  => array(),
+					'required' => 0,
+					'order'    => 1,
+				),
+				array(
+					'id'       => 'illumination_type',
+					'name'     => 'نوع الإضاءة',
+					'type'     => 'select',
+					'unit'     => '',
+					'options'  => array('عقارب ومؤشرات مضيئة بتقنية لومينوس (Super-LumiNova)', 'إضاءة خلفية LED كهربائية', 'أنابيب غاز التريتيوم ذاتية الإضاءة', 'بدون إضاءة'),
+					'required' => 0,
+					'order'    => 2,
+				),
+			);
+		}
+
+		if ('chronograph-watches' === $slug || mb_stripos($term->name, 'كرونوغراف') !== false) {
+			return array(
+				array(
+					'id'       => 'subdials_count',
+					'name'     => 'عدد العدادات الفرعية',
+					'type'     => 'select',
+					'unit'     => '',
+					'options'  => array('2 عدادات فرعية', '3 عدادات فرعية', '4 عدادات فرعية'),
+					'required' => 0,
+					'order'    => 1,
+				),
+				array(
+					'id'       => 'chronograph_function',
+					'name'     => 'وظيفة الكرونوغراف',
+					'type'     => 'select',
+					'unit'     => '',
+					'options'  => array('قياس أجزاء الثانية (1/10 و 1/100)', 'تاكيميتر لقياس السرعة (Tachymeter)', 'كرونوغراف فلاي باك (Flyback)', 'قياس تراكمي 60 دقيقة و 12 ساعة'),
+					'required' => 0,
+					'order'    => 2,
+				),
+			);
+		}
+
+		if ('smart-watches' === $slug || mb_stripos($term->name, 'ذكية') !== false) {
+			return array(
+				array(
+					'id'       => 'os_compatibility',
+					'name'     => 'نظام التشغيل أو التوافق',
+					'type'     => 'select',
+					'unit'     => '',
+					'options'  => array('متوافق مع Android و iOS', 'WatchOS (Apple)', 'Wear OS (Google)', 'نظام مخصص فائق التوافق'),
+					'required' => 0,
+					'order'    => 1,
+				),
+				array(
+					'id'       => 'screen_size',
+					'name'     => 'حجم الشاشة',
+					'type'     => 'text',
+					'unit'     => 'بوصة',
+					'options'  => array(),
+					'required' => 0,
+					'order'    => 2,
+				),
+				array(
+					'id'       => 'battery_life',
+					'name'     => 'عمر البطارية',
+					'type'     => 'text',
+					'unit'     => '',
+					'options'  => array(),
+					'required' => 0,
+					'order'    => 3,
+				),
+				array(
+					'id'       => 'connectivity',
+					'name'     => 'الاتصال',
+					'type'     => 'select',
+					'unit'     => '',
+					'options'  => array('بلوتوث 5.3 + Wi-Fi', 'بلوتوث + Wi-Fi + شريحة اتصال eSIM', 'بلوتوث 5.0 منخفض الطاقة'),
+					'required' => 0,
+					'order'    => 4,
+				),
+				array(
+					'id'       => 'sensors',
+					'name'     => 'المستشعرات',
+					'type'     => 'text',
+					'unit'     => '',
+					'options'  => array(),
+					'required' => 0,
+					'order'    => 5,
+				),
+			);
+		}
+
+		if ('special-editions' === $slug || mb_stripos($term->name, 'إصدارات خاصة') !== false || mb_stripos($term->name, 'اصدارات خاصة') !== false) {
+			return array(
+				array(
+					'id'       => 'collection_name',
+					'name'     => 'اسم المجموعة',
+					'type'     => 'text',
+					'unit'     => '',
+					'options'  => array(),
+					'required' => 0,
+					'order'    => 1,
+				),
+				array(
+					'id'       => 'edition_number',
+					'name'     => 'رقم الإصدار',
+					'type'     => 'text',
+					'unit'     => '',
+					'options'  => array(),
+					'required' => 0,
+					'order'    => 2,
+				),
+			);
+		}
+
+		if ('watch-accessories' === $slug || mb_stripos($term->name, 'إكسسوار') !== false || mb_stripos($term->name, 'اكسسوار') !== false) {
+			return array(
+				array(
+					'id'       => 'accessory_type',
+					'name'     => 'نوع الإكسسوار',
+					'type'     => 'select',
+					'unit'     => '',
+					'options'  => array('سوار ساعة بديل', 'صندوق وحافظة ساعات فاخرة', 'جهاز تدوير الساعات الأوتوماتيكية (Watch Winder)', 'أداة ضبط وإزالة وصلات السوار', 'واقي شاشة وحماية', 'شاحن مغناطيسي'),
+					'required' => 0,
+					'order'    => 1,
+				),
+				array(
+					'id'       => 'accessory_size',
+					'name'     => 'المقاس',
+					'type'     => 'text',
+					'unit'     => 'مم',
+					'options'  => array(),
+					'required' => 0,
+					'order'    => 2,
+				),
+				array(
+					'id'       => 'watch_compatibility',
+					'name'     => 'التوافق مع الساعات',
+					'type'     => 'text',
+					'unit'     => '',
+					'options'  => array(),
+					'required' => 0,
+					'order'    => 3,
+				),
+			);
+		}
+
+		// Backward compatibility: Seed default specs for legacy industrial category if requested
+		if (19 === $term_id || mb_stripos($term->name, 'تسوية') !== false || mb_stripos($term->name, 'تثبيت') !== false) {
+			return array(
+				array(
+					'id'       => 'max_cut_length',
+					'name'     => 'أقصى طول للقص / المقاس',
+					'type'     => 'number',
+					'unit'     => 'سم',
+					'options'  => array(),
+					'required' => 0,
+					'order'    => 1,
+				),
+				array(
+					'id'       => 'max_thickness',
+					'name'     => 'أقصى سمك للقص / سمك البلاط',
+					'type'     => 'number',
+					'unit'     => 'ملم',
+					'options'  => array(),
+					'required' => 0,
+					'order'    => 2,
+				),
+				array(
+					'id'       => 'tool_type',
+					'name'     => 'نوع الأداة',
+					'type'     => 'select',
+					'unit'     => '',
+					'options'  => array('أداة يدوية', 'أداة كهربائية', 'أداة هوائية / ضغط', 'ملحقات ومستهلكات'),
+					'required' => 0,
+					'order'    => 3,
+				),
+				array(
+					'id'       => 'spare_parts',
+					'name'     => 'توفر قطع الغيار والصيانة',
+					'type'     => 'select',
+					'unit'     => '',
+					'options'  => array('نعم - متوفرة أصلية بمركز أشرفكو', 'نعم - متوفرة تجارية', 'متوفرة بالطلب', 'غير متوفرة حالياً'),
+					'required' => 0,
+					'order'    => 4,
+				),
+				array(
+					'id'       => 'cut_accuracy',
+					'name'     => 'دقة القص',
+					'type'     => 'text',
+					'unit'     => '',
+					'options'  => array(),
+					'required' => 0,
+					'order'    => 5,
+				),
+			);
 		}
 	}
 

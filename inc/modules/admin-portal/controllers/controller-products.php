@@ -105,6 +105,17 @@ function ashrafco_portal_get_products_data() {
 			$f_approx_weight = $edit_product->get_weight();
 		}
 
+		// Core Watch Specifications
+		$f_case_material    = get_post_meta($edit_product_id, '_test_theme_case_material', true) ?: get_post_meta($edit_product_id, '_watch_case_material', true);
+		$f_band_material    = get_post_meta($edit_product_id, '_test_theme_band_material', true) ?: get_post_meta($edit_product_id, '_watch_band_material', true);
+		$f_watch_color      = get_post_meta($edit_product_id, '_test_theme_watch_color', true) ?: get_post_meta($edit_product_id, '_watch_color', true);
+		$f_dial_color       = get_post_meta($edit_product_id, '_test_theme_dial_color', true) ?: get_post_meta($edit_product_id, '_watch_dial_color', true);
+		$f_movement_type    = get_post_meta($edit_product_id, '_test_theme_movement_type', true) ?: get_post_meta($edit_product_id, '_watch_movement_type', true);
+		$f_water_resistance = get_post_meta($edit_product_id, '_test_theme_water_resistance', true) ?: get_post_meta($edit_product_id, '_watch_water_resistance', true);
+		$f_case_diameter    = get_post_meta($edit_product_id, '_test_theme_case_diameter', true) ?: get_post_meta($edit_product_id, '_watch_case_diameter', true);
+		$f_glass_type       = get_post_meta($edit_product_id, '_test_theme_glass_type', true) ?: get_post_meta($edit_product_id, '_watch_glass_type', true);
+		$f_target_audience  = get_post_meta($edit_product_id, '_test_theme_target_audience', true) ?: get_post_meta($edit_product_id, '_watch_target_audience', true);
+
 		// 2. Category Specifications Values
 		$raw_saved_cat_specs = get_post_meta($edit_product_id, '_ashrafco_category_spec_values', true);
 		$f_cat_spec_values   = array();
@@ -161,13 +172,22 @@ function ashrafco_portal_get_products_data() {
 		$f_file_name        = '';
 		$f_file_size        = '';
 
-		// Basic Specs Defaults
-		$f_brand            = function_exists('ashrafco_get_store_name') ? ashrafco_get_store_name('ar') : 'أشرفكو';
+		// Basic Specs Defaults for Watches
+		$f_brand            = 'Ben10';
 		$f_model            = '';
-		$f_warranty         = 'سنة واحدة';
-		$f_pkg_contents     = '';
-		$f_country_origin   = 'الصين';
+		$f_warranty         = 'سنتان ضمان شامل';
+		$f_pkg_contents     = 'علبة الساعة الأصلية الفاخرة + بطاقة الضمان الدولي المعتمد + دليل الاستخدام';
+		$f_country_origin   = 'سويسرا';
 		$f_approx_weight    = '';
+		$f_case_material    = 'ستانلس ستيل 316L';
+		$f_band_material    = 'جلد طبيعي فاخر';
+		$f_watch_color      = 'فضي';
+		$f_dial_color       = 'أسود';
+		$f_movement_type    = 'أوتوماتيك ميكانيكية';
+		$f_water_resistance = 'مقاومة للماء والسباحة السطحية (5ATM / 50m)';
+		$f_case_diameter    = '42';
+		$f_glass_type       = 'زجاج ياقوتي مقاوم للخدش (سافاير Sapphire)';
+		$f_target_audience  = 'رجالي';
 		$f_cat_spec_values  = array();
 	}
 
@@ -184,6 +204,7 @@ function ashrafco_portal_get_products_data() {
 	foreach ($all_product_cats as $c_term) {
 		$all_portal_categories_specs[$c_term->term_id] = array(
 			'id'    => $c_term->term_id,
+			'slug'  => $c_term->slug,
 			'name'  => $c_term->name,
 			'specs' => function_exists('ashrafco_get_category_specs') ? ashrafco_get_category_specs($c_term->term_id) : array(),
 		);
@@ -287,6 +308,15 @@ function ashrafco_portal_get_products_data() {
 		'f_pkg_contents'              => $f_pkg_contents,
 		'f_country_origin'            => $f_country_origin,
 		'f_approx_weight'             => $f_approx_weight,
+		'f_case_material'             => $f_case_material,
+		'f_band_material'             => $f_band_material,
+		'f_watch_color'               => $f_watch_color,
+		'f_dial_color'                => $f_dial_color,
+		'f_movement_type'             => $f_movement_type,
+		'f_water_resistance'          => $f_water_resistance,
+		'f_case_diameter'             => $f_case_diameter,
+		'f_glass_type'                => $f_glass_type,
+		'f_target_audience'           => $f_target_audience,
 		'f_cat_spec_values'           => $f_cat_spec_values,
 		'cat_id_param'                => $cat_id_param,
 		'categories_summary'          => $categories_summary,

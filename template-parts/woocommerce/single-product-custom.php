@@ -595,25 +595,64 @@ $active_main_full = $gallery_images_data[0]['full'];
 		$dimensions = '500 × 300 مم';
 	}
 
-	// 1. Basic specifications list (Right card)
-	$basic_specs = array(
-		'الماركة' => $f_brand,
-		'رقم الموديل' => $f_model,
-		'نوع المنتج' => $tool_type,
-		'الخامة' => $material,
-		'الاستخدام' => $usage,
-		'الوزن' => $weight,
-	);
+	// Watch Specific Specifications Extraction
+	$case_material = get_post_meta($product_id, '_test_theme_case_material', true) ?: get_post_meta($product_id, '_watch_case_material', true);
+	$band_material = get_post_meta($product_id, '_test_theme_band_material', true) ?: get_post_meta($product_id, '_watch_band_material', true);
+	$watch_color = get_post_meta($product_id, '_test_theme_watch_color', true) ?: get_post_meta($product_id, '_watch_color', true);
+	$dial_color = get_post_meta($product_id, '_test_theme_dial_color', true) ?: get_post_meta($product_id, '_watch_dial_color', true);
+	$movement_type = get_post_meta($product_id, '_test_theme_movement_type', true) ?: get_post_meta($product_id, '_watch_movement_type', true);
+	$water_resistance = get_post_meta($product_id, '_test_theme_water_resistance', true) ?: get_post_meta($product_id, '_watch_water_resistance', true);
+	$case_diameter = get_post_meta($product_id, '_test_theme_case_diameter', true) ?: get_post_meta($product_id, '_watch_case_diameter', true);
+	$glass_type = get_post_meta($product_id, '_test_theme_glass_type', true) ?: get_post_meta($product_id, '_watch_glass_type', true);
+	$target_audience = get_post_meta($product_id, '_test_theme_target_audience', true) ?: get_post_meta($product_id, '_watch_target_audience', true);
 
-	// 2. Technical / Category specifications list (Left card)
-	$tech_specs = array(
-		'فئة الضمان' => $warranty,
-		'بلد الصنع والمنشأ' => $country_origin,
-		'الماركة' => $f_brand,
-		'وزن تقريبي' => $weight,
-		'محتويات العبوة' => $pkg_contents,
-		'الأبعاد' => $dimensions,
-	);
+	$cat_slug = $primary_cat ? $primary_cat->slug : '';
+	$is_watch_product = (!empty($case_material) || !empty($movement_type) || !empty($band_material) || !empty($water_resistance) || str_contains($cat_slug, 'watch') || str_contains($cat_slug, 'special-editions'));
+
+	if ($is_watch_product) {
+		// 1. Watch Basic specifications list (Right card)
+		$basic_specs = array(
+			'الماركة' => $f_brand,
+			'الموديل' => $f_model,
+			'الفئة المستهدفة' => $target_audience ?: 'للجنسين',
+			'مادة الهيكل' => $case_material ?: 'ستانلس ستيل 316L',
+			'مادة السوار' => $band_material ?: 'جلد طبيعي فاخر',
+			'قطر الهيكل' => !empty($case_diameter) ? ($case_diameter . ' مم') : '42 مم',
+			'لون الساعة' => $watch_color ?: 'فضي',
+			'لون الميناء' => $dial_color ?: 'أسود',
+		);
+
+		// 2. Watch Technical / Category specifications list (Left card)
+		$tech_specs = array(
+			'نوع الحركة' => $movement_type ?: 'أوتوماتيك ميكانيكية',
+			'مقاومة الماء' => $water_resistance ?: '5ATM / 50m',
+			'نوع الزجاج' => $glass_type ?: 'زجاج ياقوتي (سافاير)',
+			'فترة الضمان' => $warranty,
+			'بلد الصنع والمنشأ' => $country_origin,
+			'محتويات العبوة' => $pkg_contents,
+			'الوزن' => $weight,
+		);
+	} else {
+		// 1. Industrial Basic specifications list (Right card - Backward Compatible)
+		$basic_specs = array(
+			'الماركة' => $f_brand,
+			'رقم الموديل' => $f_model,
+			'نوع المنتج' => $tool_type,
+			'الخامة' => $material,
+			'الاستخدام' => $usage,
+			'الوزن' => $weight,
+		);
+
+		// 2. Industrial Technical specifications list (Left card - Backward Compatible)
+		$tech_specs = array(
+			'فئة الضمان' => $warranty,
+			'بلد الصنع والمنشأ' => $country_origin,
+			'الماركة' => $f_brand,
+			'وزن تقريبي' => $weight,
+			'محتويات العبوة' => $pkg_contents,
+			'الأبعاد' => $dimensions,
+		);
+	}
 
 	// Read dynamic category specifications from '_ashrafco_category_spec_values'
 	$raw_cat_specs = get_post_meta($product_id, '_ashrafco_category_spec_values', true);

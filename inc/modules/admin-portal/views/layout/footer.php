@@ -10,8 +10,6 @@ defined('ABSPATH') || exit;
 ?>
 	</main>
 
-	<!-- Ashrafco Admin Portal Core Client Script -->
-	<script src="<?php echo esc_url(add_query_arg('ver', ashrafco_get_asset_version('/assets/js/admin-portal.js'), get_stylesheet_directory_uri() . '/assets/js/admin-portal.js')); ?>"></script>
 	<!-- Ashrafco Category Specs & Portal Config Initial State -->
 	<script>
 		window.ASHRAFCO_PORTAL_CONFIG = {
@@ -24,6 +22,8 @@ defined('ABSPATH') || exit;
 		window.ASHRAFCO_CATEGORY_SPECS = <?php echo wp_json_encode($all_portal_categories_specs); ?>;
 		window.ASHRAFCO_SAVED_SPEC_VALUES = <?php echo wp_json_encode($f_cat_spec_values); ?>;
 	</script>
+	<!-- Ashrafco Admin Portal Core Client Script -->
+	<script src="<?php echo esc_url(add_query_arg('ver', ashrafco_get_asset_version('/assets/js/admin-portal.js'), get_stylesheet_directory_uri() . '/assets/js/admin-portal.js')); ?>"></script>
 
 	<!-- Ashrafco Analytics Dashboard Client Scripts -->
 	<script
