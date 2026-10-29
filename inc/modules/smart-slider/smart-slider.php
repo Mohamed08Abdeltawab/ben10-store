@@ -558,7 +558,40 @@ function test_theme_repair_stale_hero_asset_urls($output)
 }
 
 /**
- * 3. Render Hero Slider using Smart Slider 3 with fixed viewport CTA button overlay.
+ * Check if slider markup contains legacy industrial content.
+ *
+ * @param string $output
+ * @return bool
+ */
+function test_theme_slider_has_legacy_content($output)
+{
+	if (!is_string($output) || empty($output)) {
+		return false;
+	}
+
+	$legacy_indicators = array(
+		'hero-power-tools',
+		'hero-tile-cutting',
+		'hero-toolkits',
+		'A & S',
+		'ماكينات قص',
+		'سيراميك',
+		'بورسلين',
+		'عدد وأدوات',
+	);
+
+	foreach ($legacy_indicators as $indicator) {
+		if (false !== stripos($output, $indicator)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * 3. Render Hero Slider using Smart Slider 3 with fixed viewport CTA button overlay,
+ * or theme-controlled Ben10 Watch-Store Hero presentation when legacy slides are present.
  */
 function test_theme_render_hero_slider()
 {
@@ -570,6 +603,11 @@ function test_theme_render_hero_slider()
 	if (shortcode_exists('smartslider3')) {
 		$output = do_shortcode('[smartslider3 slider="' . esc_attr($slider_alias) . '"]');
 		$output = test_theme_repair_stale_hero_asset_urls($output);
+
+		// Suppress slider output if it contains unverified legacy industrial content
+		if (test_theme_slider_has_legacy_content($output)) {
+			$output = '';
+		}
 	}
 
 	if (!empty($output)) {
@@ -581,11 +619,11 @@ function test_theme_render_hero_slider()
 				class="hero-smartslider-wrapper relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm bg-transparent select-none">
 				<?php echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
-				<!-- Fixed Viewport CTA Overlay Button ("تسوق الآن") -->
+				<!-- Fixed Viewport CTA Overlay Button ("اكتشف التشكيلات") -->
 				<a href="<?php echo esc_url($shop_url); ?>" id="hero-banner-fixed-cta"
 					class="hero-banner-fixed-cta-btn absolute z-30" draggable="false"
-					aria-label="<?php esc_attr_e('تسوق الآن', 'ashrafco'); ?>">
-					<span><?php esc_html_e('تسوق الآن', 'ashrafco'); ?></span>
+					aria-label="<?php esc_attr_e('اكتشف تشكيلات Ben10', 'ashrafco'); ?>">
+					<span><?php esc_html_e('اكتشف تشكيلات Ben10', 'ashrafco'); ?></span>
 					<svg class="hero-cta-chevron w-3.5 h-3.5 mr-1.5 shrink-0" fill="none" stroke="currentColor"
 						viewBox="0 0 24 24" aria-hidden="true">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
@@ -597,30 +635,82 @@ function test_theme_render_hero_slider()
 		return;
 	}
 
-	// Graceful Fallback if Smart Slider 3 is disabled or empty
-	$fallback_img = get_stylesheet_directory_uri() . '/assets/images/hero/hero-power-tools.webp';
+	// High-Impact Theme-Controlled Ben10 Watch-Store Hero Presentation
+	$watch_hero_img = get_template_directory_uri() . '/assets/images/hero/ben10-hero-watch.jpg';
 	?>
-	<section
-		class="hero-smartslider-section mt-3 sm:mt-4 md:mt-5 max-w-[864px] w-full mx-auto px-3.5 sm:px-4 overflow-hidden bg-transparent"
-		aria-label="<?php esc_attr_e('لافتات العروض الرئيسية', 'ashrafco'); ?>">
-		<div
-			class="hero-smartslider-wrapper relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm bg-transparent">
-			<a href="<?php echo esc_url($shop_url); ?>" class="block w-full h-full">
-				<img src="<?php echo esc_url($fallback_img); ?>"
-					alt="<?php esc_attr_e('معدات وأدوات كهربائية متطورة - A & S Power Tools', 'ashrafco'); ?>"
-					class="w-full h-auto block rounded-2xl sm:rounded-3xl" loading="eager" decoding="async">
-			</a>
-			<!-- Fixed Viewport CTA Overlay Button ("تسوق الآن") -->
-			<a href="<?php echo esc_url($shop_url); ?>" id="hero-banner-fixed-cta"
-				class="hero-banner-fixed-cta-btn absolute z-30" draggable="false"
-				aria-label="<?php esc_attr_e('تسوق الآن', 'ashrafco'); ?>">
-				<span><?php esc_html_e('تسوق الآن', 'ashrafco'); ?></span>
-				<svg class="hero-cta-chevron w-3.5 h-3.5 mr-1.5 shrink-0" fill="none" stroke="currentColor"
-					viewBox="0 0 24 24" aria-hidden="true">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
-				</svg>
-			</a>
+	<section class="w-full max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-4 sm:pb-6" aria-label="<?php esc_attr_e('مقدمة Ben10 للساعات', 'ashrafco'); ?>">
+		<div class="relative w-full rounded-2xl sm:rounded-3xl bg-[#101211] border border-[#244A27]/40 shadow-2xl overflow-hidden">
+			<!-- Subtle Brand Ambient Gradients -->
+			<div class="absolute -top-24 -right-24 w-72 sm:w-96 h-72 sm:h-96 bg-[#A3E635]/10 rounded-full blur-3xl pointer-events-none"></div>
+			<div class="absolute -bottom-24 -left-24 w-72 sm:w-96 h-72 sm:h-96 bg-[#244A27]/25 rounded-full blur-3xl pointer-events-none"></div>
+
+			<div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 items-center gap-6 sm:gap-8 lg:gap-10 p-5 sm:p-8 lg:p-12" dir="rtl">
+				<!-- Content Column -->
+				<div class="lg:col-span-7 flex flex-col items-start text-right">
+					<!-- Brand Badge -->
+					<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#244A27]/50 border border-[#A3E635]/30 text-[#A3E635] text-xs font-bold mb-3.5 sm:mb-4 select-none">
+						<span class="w-2 h-2 rounded-full bg-[#A3E635] animate-pulse"></span>
+						<span>تشكيلة Ben10 الحصرية للساعات</span>
+					</div>
+
+					<!-- Hero Headline -->
+					<h1 class="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.25] sm:leading-[1.2] mb-3 sm:mb-4 m-0">
+						دقة متناهية.. وتصميم يعكس تميزك
+					</h1>
+
+					<!-- Supporting Copy -->
+					<p class="text-xs sm:text-base lg:text-lg text-slate-300 font-normal leading-relaxed mb-5 sm:mb-6 max-w-xl m-0">
+						اكتشف الفخامة والأناقة العصرية مع تشكيلة ساعات Ben10 الحصرية، المصممة بحرفية دقيقة وتفاصيل تعكس حضورك الواثق في كل لحظة.
+					</p>
+
+					<!-- Primary Call to Action -->
+					<div class="flex flex-wrap items-center gap-3.5 mb-5 sm:mb-6 w-full sm:w-auto">
+						<a href="<?php echo esc_url($shop_url); ?>"
+							class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#A3E635] hover:bg-[#8ce025] text-[#101211] font-black text-xs sm:text-sm md:text-base px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl shadow-lg shadow-[#A3E635]/20 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-[#A3E635] focus:ring-offset-2 focus:ring-offset-[#101211] select-none">
+							<span>اكتشف تشكيلات Ben10</span>
+							<svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+							</svg>
+						</a>
+					</div>
+
+					<!-- Brand Values Micro Highlights -->
+					<div class="flex flex-wrap items-center gap-3 sm:gap-5 pt-3.5 sm:pt-4 border-t border-white/10 text-[11px] sm:text-xs text-slate-300 font-medium">
+						<span class="inline-flex items-center gap-1.5">
+							<svg class="w-3.5 h-3.5 text-[#A3E635]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+								<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+							</svg>
+							تصاميم أصلية
+						</span>
+						<span class="inline-flex items-center gap-1.5">
+							<svg class="w-3.5 h-3.5 text-[#A3E635]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+								<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+							</svg>
+							حرفية متقنة
+						</span>
+						<span class="inline-flex items-center gap-1.5">
+							<svg class="w-3.5 h-3.5 text-[#A3E635]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+								<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+							</svg>
+							دقة استثنائية
+						</span>
+					</div>
+				</div>
+
+				<!-- Visual Column -->
+				<div class="lg:col-span-5 w-full flex items-center justify-center">
+					<div class="relative w-full aspect-[4/3] sm:aspect-[16/10] lg:aspect-square max-h-[380px] lg:max-h-[440px] rounded-2xl overflow-hidden border border-white/10 bg-[#161917] shadow-2xl group">
+						<img src="<?php echo esc_url($watch_hero_img); ?>"
+							alt="<?php esc_attr_e('ساعة Ben10 الفاخرة', 'ashrafco'); ?>"
+							width="800" height="600"
+							class="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700 ease-out"
+							loading="eager" decoding="async">
+						<div class="absolute inset-0 bg-gradient-to-t from-[#101211]/60 via-transparent to-transparent pointer-events-none"></div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</section>
 	<?php
 }
+

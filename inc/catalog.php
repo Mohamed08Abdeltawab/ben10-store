@@ -1345,3 +1345,198 @@ if (!function_exists('ashrafco_get_on_sale_catalog')) {
 		);
 	}
 }
+
+/**
+ * ============================================================================
+ * Ben10 Watch Catalog Safety & Query Helpers
+ * ============================================================================
+ */
+
+/**
+ * Determine if a product is an authentic watch product rather than legacy industrial inventory.
+ *
+ * @param int|WC_Product $product
+ * @return bool
+ */
+function ben10_is_watch_product($product)
+{
+	if (is_numeric($product)) {
+		$product = function_exists('wc_get_product') ? wc_get_product($product) : null;
+	}
+	if (!$product || !is_a($product, 'WC_Product')) {
+		return false;
+	}
+
+	$product_id = $product->get_id();
+
+	// Check SKU prefix for legacy products (e.g. ASH-*)
+	$sku = (string) $product->get_sku();
+	if (0 === strpos($sku, 'ASH-')) {
+		return false;
+	}
+
+	// Check if the product has any legacy tool type meta
+	$tool_type = get_post_meta($product_id, '_test_theme_tool_type', true);
+	if (!empty($tool_type)) {
+		return false;
+	}
+
+	// Check product categories
+	$term_names = wp_get_post_terms($product_id, 'product_cat', array('fields' => 'names'));
+	if (!is_wp_error($term_names) && !empty($term_names)) {
+		$legacy_cat_indicators = array('سيراميك', 'بورسلين', 'بلاط', 'ليزر', 'قص', 'شواخص', 'موازين', 'أدوات يدوية', 'أدوات كهربائية', 'معدات');
+		foreach ($term_names as $name) {
+			foreach ($legacy_cat_indicators as $indicator) {
+				if (false !== mb_stripos($name, $indicator)) {
+					return false;
+				}
+			}
+		}
+	}
+
+	// Check title for industrial keywords
+	$title = $product->get_name();
+	$industrial_keywords = array('ماكينة', 'كليبسات', 'ميزان', 'قص', 'بورسلين', 'سيراميك', 'صاروخ', 'بنطة', 'ديسك');
+	foreach ($industrial_keywords as $kw) {
+		if (false !== mb_stripos($title, $kw)) {
+			return false;
+		}
+	}
+
+	// Check for watch category or watch indicator
+	$watch_indicators = array('ساعة', 'ساعات', 'watch', 'watches', 'timepiece', 'chronograph');
+	if (!is_wp_error($term_names) && !empty($term_names)) {
+		foreach ($term_names as $name) {
+			foreach ($watch_indicators as $wi) {
+				if (false !== mb_stripos($name, $wi)) {
+					return true;
+				}
+			}
+		}
+	}
+	foreach ($watch_indicators as $wi) {
+		if (false !== mb_stripos($title, $wi)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Query authentic Ben10 watch products.
+ *
+ * @param array $args Query arguments
+ * @return WP_Query
+ */
+function ben10_get_watch_products($args = array())
+{
+	$limit = isset($args['limit']) ? (int) $args['limit'] : 8;
+	$orderby = isset($args['orderby']) ? $args['orderby'] : 'date';
+	$order = isset($args['order']) ? $args['order'] : 'DESC';
+
+	// Query candidates
+	$query_args = array(
+		'post_type'      => 'product',
+		'post_status'    => 'publish',
+		'posts_per_page' => 50,
+		'orderby'        => $orderby,
+		'order'          => $order,
+		'no_found_rows'  => true,
+	);
+
+	$candidates = new WP_Query($query_args);
+	$watch_ids = array();
+
+	if ($candidates->have_posts()) {
+		foreach ($candidates->posts as $post) {
+			if (ben10_is_watch_product($post->ID)) {
+				$watch_ids[] = $post->ID;
+				if (count($watch_ids) >= $limit) {
+					break;
+				}
+			}
+		}
+	}
+
+	if (empty($watch_ids)) {
+		// Return an empty WP_Query
+		return new WP_Query(array('post__in' => array(0)));
+	}
+
+	return new WP_Query(array(
+		'post_type'      => 'product',
+		'post_status'    => 'publish',
+		'post__in'       => $watch_ids,
+		'orderby'        => 'post__in',
+		'posts_per_page' => count($watch_ids),
+		'no_found_rows'  => true,
+	));
+}
+
+/**
+ * Retrieve authentic Ben10 watch categories (excluding legacy industrial categories).
+ *
+ * @return array
+ */
+function ben10_get_watch_categories()
+{
+	$terms = get_terms(array(
+		'taxonomy'   => 'product_cat',
+		'hide_empty' => false,
+	));
+
+	if (is_wp_error($terms) || empty($terms)) {
+		return array();
+	}
+
+	$legacy_slugs = array(
+		'uncategorized',
+		'tile-leveling-clips',
+		'laser-levels',
+		'tile-cutters',
+	);
+
+	$legacy_name_indicators = array('سيراميك', 'بورسلين', 'بلاط', 'ليزر', 'قص', 'شواخص', 'موازين', 'أدوات', 'معدات');
+
+	$watch_categories = array();
+	foreach ($terms as $term) {
+		if (in_array($term->slug, $legacy_slugs, true)) {
+			continue;
+		}
+
+		$is_legacy = false;
+		foreach ($legacy_name_indicators as $indicator) {
+			if (false !== mb_stripos($term->name, $indicator)) {
+				$is_legacy = true;
+				break;
+			}
+		}
+
+		if ($is_legacy) {
+			continue;
+		}
+
+		// Must match watch indicators
+		$watch_indicators = array('ساعة', 'ساعات', 'watch', 'timepiece', 'chronograph', 'كلاسيك', 'رياض');
+		$is_watch = false;
+		foreach ($watch_indicators as $wi) {
+			if (false !== mb_stripos($term->name, $wi) || false !== mb_stripos($term->slug, $wi)) {
+				$is_watch = true;
+				break;
+			}
+		}
+
+		if ($is_watch) {
+			$watch_categories[] = array(
+				'id'    => $term->term_id,
+				'name'  => $term->name,
+				'slug'  => $term->slug,
+				'count' => $term->count,
+				'link'  => get_term_link($term),
+			);
+		}
+	}
+
+	return $watch_categories;
+}

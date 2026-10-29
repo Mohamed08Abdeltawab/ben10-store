@@ -10,6 +10,7 @@
 @import "./components/modals.css";
 
 /* Modular Page Stylesheets */
+@import "./pages/front-page.css";
 @import "./pages/catalog.css";
 @import "./pages/single-product.css";
 @import "./pages/cart.css";
@@ -17,6 +18,7 @@
 @import "./pages/account.css";
 @import "./pages/admin-portal.css";
 @import "./pages/admin-metabox.css";
+
 
 @tailwind base;
 @tailwind components;

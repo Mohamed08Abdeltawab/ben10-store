@@ -1,0 +1,24 @@
+/**
+ * Ben10 Homepage & Storefront Stylesheet
+ *
+ * Scoped styles for the Ben10 watch-store landing page.
+ */
+
+.collection-card {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.collection-card:hover {
+    box-shadow: 0 10px 25px -5px rgba(36, 74, 39, 0.08), 0 8px 10px -6px rgba(36, 74, 39, 0.04);
+}
+
+.collection-card:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Ensure images within cards scale smoothly */
+.collection-card img {
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
