@@ -8,6 +8,76 @@
 
 defined('ABSPATH') || exit;
 
+/**
+ * Allow template-backed virtual routes to render with HTTP 200.
+ *
+ * The offers/promotions and wishlist routes are served by theme templates but
+ * have no WordPress page records. Without this, the main query marks the
+ * request as a 404 even though the intended template renders. Only exact
+ * paths with an existing template are short-circuited; all other unmatched
+ * URLs keep WordPress's normal 404 behavior. Pre-existing 404 responses and
+ * special request types (feeds, searches, paged, embeds, previews,
+ * trackbacks) are left untouched.
+ *
+ * @param bool $pre Whether to short-circuit WordPress 404 handling.
+ * @return bool
+ */
+if (!function_exists('test_theme_pre_handle_virtual_routes')) {
+	function test_theme_pre_handle_virtual_routes($pre)
+	{
+		$request_uri  = isset($_SERVER['REQUEST_URI']) ? wp_unslash($_SERVER['REQUEST_URI']) : '';
+		$request_path = trim((string) wp_parse_url($request_uri, PHP_URL_PATH), '/');
+
+		$request_query = array();
+		$query_string  = wp_parse_url($request_uri, PHP_URL_QUERY);
+		if (is_string($query_string) && '' !== $query_string) {
+			parse_str($query_string, $request_query);
+		}
+
+		if (
+			false !== $pre
+			|| is_admin()
+			|| wp_doing_ajax()
+			|| is_404()
+			|| is_feed()
+			|| is_search()
+			|| is_paged()
+			|| is_embed()
+			|| is_preview()
+			|| is_trackback()
+			// The page rewrite discards error=404 and suppresses is_search().
+			|| !empty($request_query['error'])
+			|| (isset($request_query['s']) && '' !== $request_query['s'])
+		) {
+			return $pre;
+		}
+
+		$virtual_routes = array(
+			'offers'     => 'page-offers.php',
+			'promotions' => 'page-offers.php',
+			'wishlist'   => 'page-wishlist.php',
+		);
+
+		if (isset($virtual_routes[$request_path]) && file_exists(get_template_directory() . '/' . $virtual_routes[$request_path])) {
+			global $wp_query;
+
+			// Never override a route that resolves to a real post or page.
+			if (!empty($wp_query->queried_object) || !empty($wp_query->posts)) {
+				return $pre;
+			}
+
+			$wp_query->is_404      = false;
+			$wp_query->is_single   = false;
+			$wp_query->is_singular = false;
+			$wp_query->query_vars['error'] = '';
+			return true;
+		}
+
+		return $pre;
+	}
+	add_filter('pre_handle_404', 'test_theme_pre_handle_virtual_routes');
+}
+
 if (!function_exists('custom_store_theme_setup')) {
 	/**
 	 * Sets up theme defaults and registers support for various WordPress and WooCommerce features.
